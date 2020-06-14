@@ -60,6 +60,7 @@
     <Compile Include="addons\PurePeerSignaling\scripts\HandshakeServer.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\Networking.cs" />
     <Compile Include="GameRoot.cs" />
+    <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
