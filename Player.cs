@@ -13,9 +13,10 @@ public class Player : Node
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        LookYaw = (Spatial) GetNode("LookYaw");
-        LookPitch = (Spatial) GetNode("LookYaw/LookPitch");
         Body = (RigidBody) GetNode("Body");
+        LookYaw = (Spatial) Body.GetNode("LookYaw");
+        LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
+        
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -49,6 +50,13 @@ public class Player : Node
         
         //what's the behavior of Normalized() when desiredMove is zero?
         desiredMove = desiredMove.Normalized();
+
+        //desiredMove is still in local space.
+        //We want to convert it to global space.
+        //but we still want it to not have any y component.
+        Vector3 globalMove = LookYaw.GlobalTransform.basis.Xform(desiredMove);
+        Body.LinearVelocity = globalMove;
+
         
     }
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.

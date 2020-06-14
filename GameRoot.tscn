@@ -33,9 +33,9 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="LookYaw" type="Spatial" parent="Player"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.47147, 0 )
+[node name="LookYaw" type="Spatial" parent="Player/Body"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.96953, 0 )
 
-[node name="LookPitch" type="Spatial" parent="Player/LookYaw"]
+[node name="LookPitch" type="Spatial" parent="Player/Body/LookYaw"]
 
-[node name="Camera" type="Camera" parent="Player/LookYaw/LookPitch"]
+[node name="Camera" type="Camera" parent="Player/Body/LookYaw/LookPitch"]
