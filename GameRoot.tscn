@@ -34,7 +34,7 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="LookYaw" type="Spatial" parent="Player/Body"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.96953, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66799, 0 )
 
 [node name="LookPitch" type="Spatial" parent="Player/Body/LookYaw"]
 

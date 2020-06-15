@@ -9,7 +9,11 @@ public class Player : Node
     RigidBody Body;
 
     [Export]
-    int mouseSensitivity = 100;
+    float mouseSensitivity = 100;
+    [Export]
+    float maxSpeed = 10;
+    [Export]
+    float acceleration = 10;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -49,13 +53,15 @@ public class Player : Node
             desiredMove += Vector3.Right;
         
         //what's the behavior of Normalized() when desiredMove is zero?
-        desiredMove = desiredMove.Normalized();
+        //I guess it's still zero?
+        desiredMove = desiredMove.Normalized()*maxSpeed;
 
         //desiredMove is still in local space.
         //We want to convert it to global space.
         //but we still want it to not have any y component.
         Vector3 globalMove = LookYaw.GlobalTransform.basis.Xform(desiredMove);
-        Body.LinearVelocity = globalMove;
+        
+        Body.AddCentralForce((globalMove-Body.LinearVelocity)*acceleration);
 
         
     }
