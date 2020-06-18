@@ -7,14 +7,14 @@ using System;
 public class GameRoot : Spatial
 {
 
-    public bool inMainMenu = false;
-    private Godot.Node currentMenuNode;
-    //Because this is at the root of the game
-    //This gets called after every other _Ready()
-    //most importantly, after the MainMenu has called _Ready()
+    private Godot.CanvasItem mainMenu;
+    private Godot.CanvasItem currentMenuNode = null;
+    private Player player;
     public override void _Ready()
     {
         Input.SetMouseMode(Input.MouseMode.Visible);
+        mainMenu = (CanvasItem) GetNode("MainMenu");
+        player = (Player) GetNode("Player");
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)
@@ -24,15 +24,19 @@ public class GameRoot : Spatial
         {
             if (keyEvent.IsActionPressed("ui_cancel"))
             {
-                inMainMenu = !inMainMenu;
-                if(inMainMenu)
+                //Then there is no menu, and we're going
+                //to open the main menu.
+                if(currentMenuNode is null)
                 {
+                    currentMenuNode = mainMenu;
+                    currentMenuNode.Visible = true;
                     Input.SetMouseMode(Input.MouseMode.Visible);
-                }
-                else
-                {
+                    player.setInputEnabled(false);
+                }else{
+                    currentMenuNode.Visible = false;
+                    currentMenuNode = null;
                     Input.SetMouseMode(Input.MouseMode.Captured);
-                    
+                    player.setInputEnabled(true);
                 }
             }
         }

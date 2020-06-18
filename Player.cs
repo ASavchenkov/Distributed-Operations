@@ -14,6 +14,9 @@ public class Player : Node
     float maxSpeed = 10;
     [Export]
     float acceleration = 10;
+
+    private bool inputEnabled = true;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -25,12 +28,20 @@ public class Player : Node
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if(@event is InputEventMouseMotion mouseEvent)
+        if(@event is InputEventMouseMotion mouseEvent && inputEnabled)
         {
             //Yes these look flipped. It's correct.
             LookYaw.RotateY(-mouseEvent.Relative.x/mouseSensitivity);
             LookPitch.RotateX(-mouseEvent.Relative.y/mouseSensitivity);
+            
         }
+    }
+
+    //some input is handled in _PhysicsProcess
+    //so we need a custom boolean
+    public void setInputEnabled(bool enabled)
+    {
+        inputEnabled = enabled;
     }
 
     public override void _PhysicsProcess(float delta)
@@ -43,15 +54,19 @@ public class Player : Node
         Vector3 desiredMove = new Vector3();
 
         //Add all the WASD controls to get a vector.
-        if(Input.IsActionPressed("MoveForward"))
-            desiredMove += Vector3.Forward;
-        else if(Input.IsActionPressed("MoveLeft"))
-            desiredMove += Vector3.Left;
-        else if(Input.IsActionPressed("MoveBack"))
-            desiredMove += Vector3.Back;
-        else if(Input.IsActionPressed("MoveRight"))
-            desiredMove += Vector3.Right;
+
         
+        if(inputEnabled)
+        {
+            if(Input.IsActionPressed("MoveForward"))
+                desiredMove += Vector3.Forward;
+            else if(Input.IsActionPressed("MoveLeft"))
+                desiredMove += Vector3.Left;
+            else if(Input.IsActionPressed("MoveBack"))
+                desiredMove += Vector3.Back;
+            else if(Input.IsActionPressed("MoveRight"))
+                desiredMove += Vector3.Right;
+        }
         //what's the behavior of Normalized() when desiredMove is zero?
         //I guess it's still zero?
         desiredMove = desiredMove.Normalized()*maxSpeed;
