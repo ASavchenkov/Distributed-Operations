@@ -14,6 +14,8 @@ public class Player : Node
     float maxSpeed = 10;
     [Export]
     float acceleration = 10;
+    [Export]
+    float maxPitch = 80;
 
     private bool inputEnabled = true;
 
@@ -23,7 +25,6 @@ public class Player : Node
         Body = (RigidBody) GetNode("Body");
         LookYaw = (Spatial) Body.GetNode("LookYaw");
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
-        
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -33,7 +34,10 @@ public class Player : Node
             //Yes these look flipped. It's correct.
             LookYaw.RotateY(-mouseEvent.Relative.x/mouseSensitivity);
             LookPitch.RotateX(-mouseEvent.Relative.y/mouseSensitivity);
-            
+            if(LookPitch.RotationDegrees.x > maxPitch)
+                LookPitch.RotationDegrees = new Vector3(maxPitch,0,0);
+            else if (LookPitch.RotationDegrees.x < -maxPitch)
+                LookPitch.RotationDegrees = new Vector3(-maxPitch,0,0);
         }
     }
 
