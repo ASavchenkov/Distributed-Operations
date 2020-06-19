@@ -59,8 +59,10 @@
     <Compile Include="addons\PurePeerSignaling\scripts\HandshakeClient.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\HandshakeServer.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\Networking.cs" />
+    <Compile Include="BasicScenes\Items\Boolet\Boolet.cs" />
     <Compile Include="GameRoot.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="BasicScenes\Items\Gun\Gun.cs" />
+    <Compile Include="BasicScenes\Player\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

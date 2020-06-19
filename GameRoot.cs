@@ -12,7 +12,7 @@ public class GameRoot : Spatial
     private Player player;
     public override void _Ready()
     {
-        Input.SetMouseMode(Input.MouseMode.Visible);
+        Input.SetMouseMode(Input.MouseMode.Captured);
         mainMenu = (CanvasItem) GetNode("MainMenu");
         player = (Player) GetNode("Player");
     }

@@ -15,7 +15,7 @@ public class Player : Node
     [Export]
     float acceleration = 10;
     [Export]
-    float maxPitch = 80;
+    float maxPitch = 80; //degrees
 
     private bool inputEnabled = true;
 
@@ -25,6 +25,12 @@ public class Player : Node
         Body = (RigidBody) GetNode("Body");
         LookYaw = (Spatial) Body.GetNode("LookYaw");
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
+
+        //for now we're going to manually add the gun item
+        //but in the future this happens outside the _Ready() function
+        var gunScene = GD.Load<PackedScene>("res://BasicScenes/Items/Gun/Gun.tscn");
+        var gunNode = gunScene.Instance();
+        GetNode("Body/LookYaw/LookPitch").AddChild(gunNode);
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -58,7 +64,6 @@ public class Player : Node
         Vector3 desiredMove = new Vector3();
 
         //Add all the WASD controls to get a vector.
-
         
         if(inputEnabled)
         {
@@ -79,7 +84,7 @@ public class Player : Node
         //We want to convert it to global space.
         //but we still want it to not have any y component.
         Vector3 globalMove = LookYaw.GlobalTransform.basis.Xform(desiredMove);
-        
+        globalMove.y = Body.LinearVelocity.y;
         Body.AddCentralForce((globalMove-Body.LinearVelocity)*acceleration);
 
         
