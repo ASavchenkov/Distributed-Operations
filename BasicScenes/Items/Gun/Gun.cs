@@ -9,6 +9,9 @@ public class Gun : Spatial
     Spatial GameRoot;
     Spatial BooletSpawn;
     PackedScene booletScene = (PackedScene) GD.Load("res://BasicScenes/Items/Boolet/Boolet.tscn");
+    
+    [Export]
+    public float muzzleVelocity = 10;//In meters per second I think?
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -20,10 +23,11 @@ public class Gun : Spatial
     public void Fire()
     {
         GD.Print("Fire pressed");
-        Vector3 direction = BooletSpawn.GlobalTransform.basis.Xform(-Vector3.Back);
+        
+        Vector3 velocity = BooletSpawn.GlobalTransform.basis.Xform(-Vector3.Back) * muzzleVelocity;
         Boolet boolet = (Boolet) booletScene.Instance();
 
-        boolet.Init(direction,BooletSpawn.GlobalTransform.origin);
+        boolet.Init(velocity,BooletSpawn.GlobalTransform.origin);
         GameRoot.AddChild(boolet);
     }
 

@@ -1,14 +1,20 @@
 using Godot;
 using System;
 
+/*
+Boolet doesn't use physics because all of its physics interactions
+are specific to high velocity ballistics, which the physics engine 
+is not designed for
+*/
 public class Boolet : Spatial
 {
 
-    public Vector3 direction;
+    public Vector3 velocity; 
 
-    public void Init(Vector3 _direction, Vector3 translation)
+    public void Init(Vector3 _velocity, Vector3 translation)
     {
-        direction = _direction;
+        velocity = _velocity;
+        GD.Print(velocity);
         this.Translation = translation;
         GD.Print(this.Translation);
     }
@@ -19,9 +25,8 @@ public class Boolet : Spatial
         
     }
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+    public override void _PhysicsProcess(float delta)
+    {
+        this.Translation += velocity * delta;
+    }
 }
