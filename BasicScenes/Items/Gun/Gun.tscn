@@ -7,6 +7,7 @@
 [node name="Gun" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.822461, -0.697933, -0.838167 )
 script = ExtResource( 1 )
+muzzleVelocity = 1.0
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.5, 0, 0, 0 )

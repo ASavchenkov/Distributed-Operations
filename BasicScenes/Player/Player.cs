@@ -84,10 +84,13 @@ public class Player : Node
         //We want to convert it to global space.
         //but we still want it to not have any y component.
         Vector3 globalMove = LookYaw.GlobalTransform.basis.Xform(desiredMove);
-        globalMove.y = Body.LinearVelocity.y;
         Body.AddCentralForce((globalMove-Body.LinearVelocity)*acceleration);
+   
+    }
 
-        
+    public void HandleHit()
+    {
+        GD.Print("Got hit signal");
     }
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.
 //  public override void _Process(float delta)

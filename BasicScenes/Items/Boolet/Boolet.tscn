@@ -4,10 +4,30 @@
 
 [sub_resource type="SphereMesh" id=1]
 
-[node name="Boolet" type="Spatial"]
+[node name="Boolet" type="RigidBody"]
+gravity_scale = 0.1
+axis_lock_angular_x = true
+axis_lock_angular_y = true
+axis_lock_angular_z = true
 script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": "Not having a collider is fine, since this thing uses a raycast to handle collision."
+}
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
+transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = null
+
+[node name="CastDirection" type="MeshInstance" parent="."]
+transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="RayCast" type="RayCast" parent="."]
+enabled = true
+collision_mask = 5
+collide_with_areas = true
+__meta__ = {
+"_editor_description_": "Only collide with colliders in the default layer (0) oand ballistics layer (2)"
+}

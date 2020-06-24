@@ -1,32 +1,63 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
-/*
-Boolet doesn't use physics because all of its physics interactions
-are specific to high velocity ballistics, which the physics engine 
-is not designed for
-*/
-public class Boolet : Spatial
+
+public class Boolet : RigidBody
 {
-
-    public Vector3 velocity; 
+    
+    public RayCast rayCast;
+    public MeshInstance castDirection;
 
     public void Init(Vector3 _velocity, Vector3 translation)
     {
-        velocity = _velocity;
-        GD.Print(velocity);
+        this.LinearVelocity = _velocity;
         this.Translation = translation;
-        GD.Print(this.Translation);
+        
     }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        
+        rayCast = (RayCast) GetNode("RayCast");
+        castDirection = (MeshInstance) GetNode("CastDirection");
     }
 
-    public override void _PhysicsProcess(float delta)
+
+
+    //This function might have something more,
+    //like an explosion, but for now it just deletes itself.
+    public void TerminalEffect()
     {
-        this.Translation += velocity * delta;
+        GD.Print("Terminal Effect");
+        QueueFree();
+    }
+
+
+    //a projectile might travel along a non-linear path in a single frame
+    //depending on penetration and ricochets.
+    public override void _IntegrateForces(PhysicsDirectBodyState state)
+    {
+        float timeLeft = state.Step;
+        
+        rayCast.CastTo = state.LinearVelocity * timeLeft * 10.0F;
+        castDirection.Translation = rayCast.CastTo;
+        rayCast.ForceRaycastUpdate();
+        
+        if(rayCast.IsColliding())
+        {
+            //GetCollider will never return null since IsColliding() returned true
+            //Thus null means it's not a
+            BallisticCollider target = rayCast.GetCollider() as BallisticCollider;
+            //If the collider is not a BallisticCollider
+            //Then do the default thing.
+            if (target is null)
+                TerminalEffect();
+            else
+            {
+                target.EmitSignal(nameof(BallisticCollider.Hit));
+                TerminalEffect();
+            }
+        }
     }
 }
