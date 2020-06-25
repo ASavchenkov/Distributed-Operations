@@ -8,7 +8,7 @@ public class Gun : Spatial
 {
     Spatial GameRoot;
     Spatial BooletSpawn;
-    PackedScene booletScene = (PackedScene) GD.Load("res://BasicScenes/Items/Boolet/Boolet.tscn");
+    PackedScene booletScene = (PackedScene) GD.Load("res://BasicScenes/Projectiles/Boolet/Boolet.tscn");
     
     [Export]
     public float muzzleVelocity = 10;//In meters per second I think?

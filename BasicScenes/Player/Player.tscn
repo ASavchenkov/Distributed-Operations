@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://BasicScenes/Player/Player.cs" type="Script" id=1]
-[ext_resource path="res://BasicScenes/BallisticCollider.cs" type="Script" id=2]
+[ext_resource path="res://BasicScenes/BallisticTargets/Torso/BallisticTorso.tscn" type="PackedScene" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -20,14 +20,7 @@ mode = 2
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
 shape = SubResource( 1 )
 
-[node name="BodyBallistics" type="Area" parent="Body"]
-collision_layer = 4
-collision_mask = 4
-script = ExtResource( 2 )
-
-[node name="Centercollider" type="CollisionShape" parent="Body/BodyBallistics"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
-shape = SubResource( 1 )
+[node name="BallisticTorso" parent="Body" instance=ExtResource( 2 )]
 
 [node name="BodyMesh" type="MeshInstance" parent="Body"]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
@@ -41,4 +34,3 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66799, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.539263, 0 )
 
 [node name="Camera" type="Camera" parent="Body/LookYaw/LookPitch"]
-[connection signal="Hit" from="Body/BodyBallistics" to="." method="HandleHit"]

@@ -17,7 +17,7 @@ also emits a signal for when the impact changes game state, eg:
 player hp
 spray location.
 */
-public class BallisticCollider : Area
+public class BallisticTarget : Area
 {
 
     public Dictionary<Type,Action<Projectile>> impactFunctions

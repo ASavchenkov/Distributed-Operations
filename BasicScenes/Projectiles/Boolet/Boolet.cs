@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class Boolet : Projectile
 {
 
-    public void hitBallisticCollider(BallisticCollider target)
+    public void hitBallisticTarget(BallisticTarget target)
     {
         target.EmitSignal("Hit");
         base.DefaultImpact();
@@ -14,7 +14,7 @@ public class Boolet : Projectile
 
     public Boolet()
     {
-        impactFunctions.Add(typeof(BallisticCollider), new ImpactFunction(hitBallisticCollider));
+        impactFunctions.Add(typeof(BallisticTarget), new ImpactFunction(hitBallisticTarget));
     }
 
     public void Init(Vector3 _velocity, Vector3 translation)

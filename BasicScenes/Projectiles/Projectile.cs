@@ -8,12 +8,12 @@ that do something when they hit something else.
 public class Projectile : RigidBody
 {
     
-    public delegate void ImpactFunction( BallisticCollider target);
+    public delegate void ImpactFunction( BallisticTarget target);
 
     public Dictionary<Type,ImpactFunction> impactFunctions
      = new Dictionary<Type,ImpactFunction>();
     //This looks super complicated, but it's only a little bit complicated.
-    //It's a dictionary that maps specific BallisticColliders 
+    //It's a dictionary that maps specific BallisticTargets 
     //to functions that compute interaction with them.
 
     public RayCast rayCast;
@@ -29,7 +29,7 @@ public class Projectile : RigidBody
         QueueFree();
     }
 
-    public void ComputeImpact(BallisticCollider target)
+    public void ComputeImpact(BallisticTarget target)
     {
         ImpactFunction matchedFunction;
         if(target is null)
@@ -54,8 +54,8 @@ public class Projectile : RigidBody
         {
 
             //GetCollider will never return null since IsColliding() returned true
-            BallisticCollider target = rayCast.GetCollider() as BallisticCollider;
-            //But target can be null if it's not a BallisticCollider
+            BallisticTarget target = rayCast.GetCollider() as BallisticTarget;
+            //But target can be null if it's not a BallisticTarget
             ComputeImpact(target);
         }
     }
