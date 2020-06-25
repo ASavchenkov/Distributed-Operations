@@ -1,6 +1,6 @@
 using Godot;
 using System;
-
+using System.Collections.Generic;
 /*
 Has information for bullets to compute their continued trajectory
 (or lack thereof)
@@ -20,21 +20,26 @@ spray location.
 public class BallisticCollider : Area
 {
 
-    [Export]
-    public float KEDensity = 10;
-    //how much energy does this object disappate per meter^3.
+    public Dictionary<Type,Action<Projectile>> impactFunctions
+     = new Dictionary<Type,Action<Projectile>>();
+    // Check "Projectile" for explanation as to what this does.
+    // This is essentially the mirror of that.
+
 
     [Signal]
     public delegate void Hit();
+    //The default signal that projectiles or BallisticColliders can trigger.
 
-    public override void _Ready()
+
+    public virtual bool ComputeImpact(Projectile projectile)
     {
-        
+       Action<Projectile> matchedAction;
+        if ( impactFunctions.TryGetValue(projectile.GetType(), out matchedAction))
+        {
+            matchedAction(projectile);
+            return true;
+        }
+        else return false;
+        //If even we don't know what to do with it, tell it to do its default.
     }
-
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
 }

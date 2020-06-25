@@ -61,6 +61,7 @@
     <Compile Include="addons\PurePeerSignaling\scripts\Networking.cs" />
     <Compile Include="BasicScenes\BallisticCollider.cs" />
     <Compile Include="BasicScenes\Items\Boolet\Boolet.cs" />
+    <Compile Include="BasicScenes\Items\Boolet\Projectile.cs" />
     <Compile Include="GameRoot.cs" />
     <Compile Include="BasicScenes\Items\Gun\Gun.cs" />
     <Compile Include="BasicScenes\Player\Player.cs" />
