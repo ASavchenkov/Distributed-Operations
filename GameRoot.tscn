@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://GameRoot.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/StaticCube.tscn" type="PackedScene" id=2]
 [ext_resource path="res://BasicScenes/Player/Player.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/PurePeerSignaling/Networking.tscn" type="PackedScene" id=4]
+[ext_resource path="res://BasicScenes/GUI/NetworkingTab.cs" type="Script" id=5]
 
 [node name="GameRoot" type="Spatial"]
 script = ExtResource( 1 )
@@ -40,6 +41,7 @@ margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+script = ExtResource( 5 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/TabContainer/NetworkingTab"]
 margin_left = 71.0
@@ -131,9 +133,29 @@ margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Stop"
 
+[node name="Refresh" type="Button" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer"]
+margin_top = 104.0
+margin_right = 450.0
+margin_bottom = 124.0
+text = "Refresh"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer"]
+margin_top = 128.0
+margin_right = 450.0
+margin_bottom = 300.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PeerList" type="ItemList" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ScrollContainer"]
+margin_right = 450.0
+margin_bottom = 172.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
 [node name="Networking" parent="." instance=ExtResource( 4 )]
 [connection signal="text_changed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Host URL/LineEdit" to="." method="_SetURL"]
 [connection signal="text_changed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Secret/LineEdit" to="Networking" method="_SetSecret"]
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Join" to="Networking" method="_JoinMesh"]
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled/Start" to="Networking" method="_StartServer"]
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled/Stop" to="Networking" method="_StopServer"]
+[connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Refresh" to="MainMenu/TabContainer/NetworkingTab" method="_DisplayPeers"]

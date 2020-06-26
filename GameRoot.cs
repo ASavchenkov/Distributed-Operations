@@ -10,11 +10,13 @@ public class GameRoot : Spatial
     private Godot.CanvasItem mainMenu;
     private Godot.CanvasItem currentMenuNode = null;
     private Player player;
+
     public override void _Ready()
     {
-        Input.SetMouseMode(Input.MouseMode.Captured);
+        Input.SetMouseMode(Input.MouseMode.Visible);
         mainMenu = (CanvasItem) GetNode("MainMenu");
         player = (Player) GetNode("Player");
+        
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)
@@ -32,6 +34,8 @@ public class GameRoot : Spatial
                     currentMenuNode.Visible = true;
                     Input.SetMouseMode(Input.MouseMode.Visible);
                     player.setInputEnabled(false);
+
+
                 }else{
                     currentMenuNode.Visible = false;
                     currentMenuNode = null;
