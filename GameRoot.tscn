@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://GameRoot.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/StaticCube.tscn" type="PackedScene" id=2]
 [ext_resource path="res://BasicScenes/Player/Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://addons/PurePeerSignaling/Networking.tscn" type="PackedScene" id=4]
 
 [node name="GameRoot" type="Spatial"]
 script = ExtResource( 1 )
@@ -16,7 +17,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66904, 4.30915 )
 [node name="Player" parent="." instance=ExtResource( 3 )]
 
 [node name="MainMenu" type="CenterContainer" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -48,47 +48,88 @@ margin_right = 521.0
 margin_bottom = 382.0
 rect_min_size = Vector2( 450, 300 )
 
-[node name="Secret" type="HBoxContainer" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer"]
+[node name="Host URL" type="HBoxContainer" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer"]
 margin_right = 450.0
-margin_bottom = 31.0
+margin_bottom = 24.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Host URL"]
+margin_right = 223.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Host URL"
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Host URL"]
+margin_left = 227.0
+margin_right = 450.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "ws://192.168.1.143:3476"
+
+[node name="Secret" type="HBoxContainer" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer"]
+margin_top = 28.0
+margin_right = 450.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Secret"]
 margin_right = 223.0
-margin_bottom = 31.0
+margin_bottom = 24.0
 size_flags_horizontal = 3
-size_flags_vertical = 0
-text = "Left Column
-"
+size_flags_vertical = 1
+text = "Password"
 valign = 1
 
 [node name="LineEdit" type="LineEdit" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Secret"]
 margin_left = 227.0
 margin_right = 450.0
-margin_bottom = 31.0
+margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "Secret"
 
-[node name="ServerEnabled" type="HBoxContainer" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer"]
-margin_top = 35.0
+[node name="Join" type="Button" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer"]
+margin_top = 56.0
 margin_right = 450.0
-margin_bottom = 59.0
+margin_bottom = 76.0
+text = "Join Game"
+
+[node name="ServerEnabled" type="HBoxContainer" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer"]
+margin_top = 80.0
+margin_right = 450.0
+margin_bottom = 100.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Label" type="Label" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled"]
-margin_right = 223.0
+margin_right = 221.0
 margin_bottom = 14.0
 size_flags_horizontal = 3
 size_flags_vertical = 0
-text = "Handshake Server Enabled"
+size_flags_stretch_ratio = 2.0
+text = "Handshake Server"
 valign = 1
 
-[node name="CheckBox" type="CheckBox" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled"]
-margin_left = 227.0
-margin_right = 450.0
-margin_bottom = 24.0
+[node name="Start" type="Button" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled"]
+margin_left = 225.0
+margin_right = 335.0
+margin_bottom = 20.0
 size_flags_horizontal = 3
+text = "Start"
+
+[node name="Stop" type="Button" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled"]
+margin_left = 339.0
+margin_right = 450.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Stop"
+
+[node name="Networking" parent="." instance=ExtResource( 4 )]
+[connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Join" to="Networking" method="_JoinMesh"]
