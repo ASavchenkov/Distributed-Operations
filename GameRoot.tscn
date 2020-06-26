@@ -92,7 +92,7 @@ margin_left = 227.0
 margin_right = 450.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
-text = "Secret"
+text = "secret"
 
 [node name="Join" type="Button" parent="MainMenu/TabContainer/NetworkingTab/VBoxContainer"]
 margin_top = 56.0
@@ -132,4 +132,8 @@ size_flags_horizontal = 3
 text = "Stop"
 
 [node name="Networking" parent="." instance=ExtResource( 4 )]
+[connection signal="text_changed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Host URL/LineEdit" to="." method="_SetURL"]
+[connection signal="text_changed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Secret/LineEdit" to="Networking" method="_SetSecret"]
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Join" to="Networking" method="_JoinMesh"]
+[connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled/Start" to="Networking" method="_StartServer"]
+[connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled/Stop" to="Networking" method="_StopServer"]
