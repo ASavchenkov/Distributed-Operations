@@ -61,6 +61,8 @@
     <Compile Include="addons\PurePeerSignaling\scripts\Networking.cs" />
     <Compile Include="BasicScenes\BallisticTargets\Torso\BallisticTorso.cs" />
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />
+    <Compile Include="BasicScenes\Player\LocalPlayer.cs" />
+    <Compile Include="BasicScenes\Player\RemotePlayer.cs" />
     <Compile Include="BasicScenes\Projectiles\Boolet\Boolet.cs" />
     <Compile Include="BasicScenes\Projectiles\Projectile.cs" />
     <Compile Include="BasicScenes\BallisticTargets\BallisticTarget.cs" />

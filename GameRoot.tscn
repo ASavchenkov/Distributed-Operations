@@ -15,19 +15,21 @@ transform = Transform( 5, 0, 0, 0, 0.1, 0, 0, 0, 5, 0, 0, 0 )
 [node name="Cube" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66904, 4.30915 )
 
-[node name="Player" parent="." instance=ExtResource( 3 )]
-
 [node name="MainMenu" type="CenterContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 5.70001
+margin_top = 0.950012
+margin_right = 5.69995
+margin_bottom = 0.950012
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TabContainer" type="TabContainer" parent="MainMenu"]
-margin_left = 212.0
+margin_left = 211.0
 margin_top = 50.0
-margin_right = 812.0
+margin_right = 811.0
 margin_bottom = 550.0
 rect_min_size = Vector2( 600, 500 )
 __meta__ = {
@@ -153,9 +155,22 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Networking" parent="." instance=ExtResource( 4 )]
+
+[node name="Players" type="Node" parent="."]
+__meta__ = {
+"_editor_description_": "A place to organize all the players."
+}
+
+[node name="1" parent="Players" instance=ExtResource( 3 )]
+
+[node name="Projectiles" type="Node" parent="."]
+__meta__ = {
+"_editor_description_": "Just a place to organize all projectiles if we want to look at them when debugging."
+}
 [connection signal="text_changed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Host URL/LineEdit" to="." method="_SetURL"]
 [connection signal="text_changed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Secret/LineEdit" to="Networking" method="_SetSecret"]
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Join" to="Networking" method="_JoinMesh"]
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled/Start" to="Networking" method="_StartServer"]
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled/Stop" to="Networking" method="_StopServer"]
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Refresh" to="MainMenu/TabContainer/NetworkingTab" method="_DisplayPeers"]
+[connection signal="UIDChanged" from="Networking" to="." method="_OnUIDChanged"]
