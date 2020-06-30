@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 
 
-public class Boolet : Projectile
+public class Boolet : LocalProjectile
 {
 
     public void hitBallisticTarget(BallisticTarget target)
     {
-        target.EmitSignal("Hit");
+        target.Rpc("Hit");
         base.DefaultImpact();
     }
 

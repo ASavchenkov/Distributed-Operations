@@ -25,12 +25,6 @@ public class BallisticTarget : Area
     // Check "Projectile" for explanation as to what this does.
     // This is essentially the mirror of that.
 
-
-    [Signal]
-    public delegate void Hit();
-    //The default signal that projectiles or BallisticColliders can trigger.
-
-
     public virtual bool ComputeImpact(Projectile projectile)
     {
        Action<Projectile> matchedAction;

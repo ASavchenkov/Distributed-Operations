@@ -27,10 +27,4 @@ public class Player : Node
         var gunNode = gunScene.Instance();
         GetNode("Body/LookYaw/LookPitch").AddChild(gunNode);
     }
-
-    [Remote]
-    public void Hit()
-    {
-        GD.Print("Received Hit call");
-    }
 }

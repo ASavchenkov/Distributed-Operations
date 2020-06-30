@@ -1,19 +1,16 @@
 using Godot;
 using System;
 
-public class BallisticTorso : BallisticTarget
+public class RemoteBoolet : Node
 {
-    
+    // Declare member variables here. Examples:
+    // private int a = 2;
+    // private string b = "text";
+
+    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         
-    }
-
-    //RPC for projectiles to call.
-    [Master]
-    public void Hit()
-    {
-        GD.Print("GOT HIT CALL");
     }
 
 //  // Called every frame. 'delta' is the elapsed time since the previous frame.

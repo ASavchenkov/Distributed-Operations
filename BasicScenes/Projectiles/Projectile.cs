@@ -5,7 +5,8 @@ using System.Collections.Generic;
 Base class for small fast moving objects
 that do something when they hit something else.
 */
-public class Projectile : RigidBody
+
+public class LocalProjectile : RigidBody
 {
     
     public delegate void ImpactFunction( BallisticTarget target);
