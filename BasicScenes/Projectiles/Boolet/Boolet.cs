@@ -14,13 +14,14 @@ public class Boolet : Projectile
 
     public void hitBallisticTarget(BallisticTarget target)
     {
+        GD.Print("Specific version called");
         target.Rpc("Hit");
         base.DefaultImpact();
     }
 
     public Boolet()
     {
-        impactFunctions.Add(typeof(BallisticTarget), new ImpactFunction(hitBallisticTarget));
+        impactFunctions.Add(typeof(BallisticTorso), new ImpactFunction(hitBallisticTarget));
     }
 
     //This function might have something more,

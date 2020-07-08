@@ -50,9 +50,6 @@ public class SpawnManager : Node
         foreach( Node child in children)
             child.QueueFree();
 
-        forwardMap.Clear();
-        forwardSceneMap.Clear();
-        backwardMap.Clear();
         EmitSignal("Cleared");
         
     }
@@ -67,22 +64,37 @@ public class SpawnManager : Node
         instance.Name = name;
         instance.SetNetworkMaster(spawnerUID);
         AddChild(instance);
+        
         return instance; 
     }
 
     [Remote]
     public void Replicate(string scenePath, int spawnerUID, int nodeID)
     {
-        GD.Print("Replicate: ", spawnerUID);
         Insert(scenePath, spawnerUID, nodeID);
-    }   
+    }
 
-    public void Spawn(string scenePath)
+    private void PrintDictionary(Dictionary<int, Node> dict)
+    {
+        foreach( KeyValuePair<int,Node> kvp in dict)
+        {
+            GD.Print("Key: ", kvp.Key);
+        }
+    }
+
+    public void Remove(int nodeID)
+    {
+        Node node = forwardMap[nodeID];
+        forwardMap.Remove(nodeID);
+        forwardSceneMap.Remove(nodeID);
+        backwardMap.Remove(node);
+    }
+
+    public Node Spawn(string scenePath)
     {
         int spawnerUID = GetTree().GetNetworkUniqueId();
-        GD.Print("SpawnerUID: ", spawnerUID);
         int nodeID = GenUniqueID();
-
+        
         //Create the node both locally and remotely
         Node instance = Insert(scenePath, spawnerUID, nodeID);
         Rpc("Replicate",scenePath, spawnerUID, nodeID);
@@ -91,6 +103,9 @@ public class SpawnManager : Node
         forwardMap.Add(nodeID, instance);
         forwardSceneMap.Add(nodeID, scenePath);
         backwardMap.Add(instance, nodeID);
+        instance.Connect("tree_exiting", this, "Remove",
+            new Godot.Collections.Array(new int[] {nodeID}));
+        return instance;
 
     }
 

@@ -6,9 +6,10 @@ using System;
 //Items can be picked up and used.
 public class Gun : Spatial
 {
-    protected Spatial GameRoot;
-    protected Spatial BooletSpawn;
-    PackedScene booletScene = (PackedScene) GD.Load("res://BasicScenes/Projectiles/Boolet/Boolet.tscn");
+    Spatial GameRoot;
+    Spatial BooletSpawn;
+    SpawnManager ProjectileManager;
+    string booletScene = "res://BasicScenes/Projectiles/Boolet/Boolet.tscn";
     
     [Export]
     public float muzzleVelocity = 10;//In meters per second I think?
@@ -17,25 +18,15 @@ public class Gun : Spatial
     {
         GameRoot = (Spatial) GetTree().Root.GetNode("GameRoot");
         BooletSpawn = (Spatial) GetNode("BooletSpawn");
+        ProjectileManager = (SpawnManager) GameRoot.GetNode("Projectiles");
     }
 
-    
-
-    [PuppetSync]
-    public void SpawnBoolet(Vector3 Translation, Vector3 LinearVelocity, int master)
-    {
-        Boolet boolet = (Boolet) booletScene.Instance();
-
-        boolet.Init(BooletSpawn.GlobalTransform.origin, LinearVelocity);
-        boolet.SetNetworkMaster(master);
-        GameRoot.AddChild(boolet);
-    }
     public virtual void Fire()
     {
-        GD.Print("Fire pressed: ", GetTree().NetworkPeer.GetUniqueId());
-        
         Vector3 velocity = BooletSpawn.GlobalTransform.basis.Xform(-Vector3.Back) * muzzleVelocity;
-        Rpc("SpawnBoolet", BooletSpawn.GlobalTransform.origin, velocity, GetTree().NetworkPeer.GetUniqueId());
+        
+        Boolet boolet = (Boolet) ProjectileManager.Spawn(booletScene);
+        boolet.Rpc("Init",BooletSpawn.GlobalTransform.origin, velocity);
         
     }
     

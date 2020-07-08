@@ -5,6 +5,8 @@
 [sub_resource type="SphereMesh" id=1]
 
 [node name="Boolet" type="RigidBody"]
+collision_layer = 4
+collision_mask = 5
 gravity_scale = 0.1
 axis_lock_angular_x = true
 axis_lock_angular_y = true

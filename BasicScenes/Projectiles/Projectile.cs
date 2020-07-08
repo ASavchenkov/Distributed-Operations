@@ -4,6 +4,8 @@ using System.Collections.Generic;
 /*
 Base class for small fast moving objects
 that do something when they hit something else.
+
+These never change masters.
 */
 
 public class Projectile : RigidBody
@@ -19,6 +21,7 @@ public class Projectile : RigidBody
 
     public RayCast rayCast;
 
+    [PuppetSync]
     public void Init(Vector3 Translation, Vector3 LinearVelocity)
     {
         this.Translation = Translation;
@@ -32,11 +35,20 @@ public class Projectile : RigidBody
             Mode = ModeEnum.Kinematic;
     }
 
+    [PuppetSync]
+    public void Despawn()
+    {
+        QueueFree();
+    }
+
     public virtual void DefaultImpact()
     {
         //default functionality is to simply delete self
-        QueueFree();
+        //We need to make sure this deletion happens on all peers.
+        Rpc("Despawn");
     }
+
+
 
     public void ComputeImpact(BallisticTarget target)
     {
@@ -54,6 +66,8 @@ public class Projectile : RigidBody
     {
         Translation = translation;
         LinearVelocity = velocity;
+        rayCast.CastTo = LinearVelocity /60 * 20.0F;
+            
     }
 
     //The base function handles hit detection
@@ -74,10 +88,11 @@ public class Projectile : RigidBody
 
                 //GetCollider will never return null since IsColliding() returned true
                 BallisticTarget target = rayCast.GetCollider() as BallisticTarget;
+                GD.Print(rayCast.GetCollider().GetType());
                 //But target can be null if it's not a BallisticTarget
                 ComputeImpact(target);
             }
-            //Rpc("UpdateTrajectory", Translation, state.LinearVelocity);
+            Rpc("UpdateTrajectory", Translation, state.LinearVelocity);
         }
     }
 
