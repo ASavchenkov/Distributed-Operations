@@ -61,19 +61,14 @@
     <Compile Include="addons\PurePeerSignaling\scripts\Networking.cs" />
     <Compile Include="BasicScenes\BallisticTargets\Torso\BallisticTorso.cs" />
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />
-    <Compile Include="BasicScenes\Items\Gun\LocalGun.cs" />
-    <Compile Include="BasicScenes\Player\LocalPlayer.cs" />
-    <Compile Include="BasicScenes\Player\RemotePlayer.cs" />
     <Compile Include="BasicScenes\Projectiles\Boolet\Boolet.cs" />
-    <Compile Include="BasicScenes\Projectiles\Boolet\RemoteBoolet.cs" />
-    <Compile Include="BasicScenes\Projectiles\LocalProjectile.cs" />
+    <Compile Include="BasicScenes\Projectiles\Projectile.cs" />
     <Compile Include="BasicScenes\BallisticTargets\BallisticTarget.cs" />
-    <Compile Include="BasicScenes\Projectiles\RemoteProjectile.cs" />
     <Compile Include="GameRoot.cs" />
     <Compile Include="BasicScenes\Items\Gun\Gun.cs" />
     <Compile Include="BasicScenes\Player\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StaticClasses\ImpactHandlers.cs" />
+    <Compile Include="SpawnManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MessagePack">

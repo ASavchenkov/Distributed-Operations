@@ -9,17 +9,24 @@ public class GameRoot : Spatial
 
     private Godot.CanvasItem mainMenu;
     private Godot.CanvasItem currentMenuNode = null;
-    private LocalPlayer player;
+    private SpawnManager players;
+
+    [Signal]
+    public delegate void SetInputEnabled(bool enabled);
 
     public override void _Ready()
     {
         Input.SetMouseMode(Input.MouseMode.Visible);
         mainMenu = (CanvasItem) GetNode("MainMenu");
-        player = (LocalPlayer) GetNode("Players/1");
+        players = (SpawnManager) GetNode("Players");
+        SpawnNewPlayer();
 
-        //for deciding who the new master of objects might be.
-        GetTree().Connect("network_peer_connected", this, "PeerConnected");
-        GetTree().Connect("network_peer_disconnected", this, "PeerDisconnected");
+        players.Connect("Cleared",this, "SpawnNewPlayer");
+    }
+
+    public void SpawnNewPlayer()
+    {
+        players.Spawn("res://BasicScenes/Player/Player.tscn");
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)
@@ -36,53 +43,15 @@ public class GameRoot : Spatial
                     currentMenuNode = mainMenu;
                     currentMenuNode.Visible = true;
                     Input.SetMouseMode(Input.MouseMode.Visible);
-                    player.setInputEnabled(false);
+                    EmitSignal("SetInputEnabled", false);
                 }
                 else{
                     currentMenuNode.Visible = false;
                     currentMenuNode = null;
                     Input.SetMouseMode(Input.MouseMode.Captured);
-                    player.setInputEnabled(true);
+                    EmitSignal("SetInputEnabled", true);
                 }
             }
         }
     }
-
-    public void PeerConnected(int uid)
-    {
-        //Tell the other peer that we want them to create a representation
-        //of our player.
-        GD.Print("Calling AddRemotePlayer");
-        Rpc("AddRemotePlayer",GetTree().NetworkPeer.GetUniqueId());
-    }
-
-    [Remote]
-    public void AddRemotePlayer(int uid)
-    {
-        var playerScene = GD.Load<PackedScene>("res://BasicScenes/Player/RemotePlayer.tscn");
-        var playerNode = playerScene.Instance();
-        playerNode.Name = uid.ToString();
-        playerNode.SetNetworkMaster(uid);
-        GetNode("Players").AddChild(playerNode);
-    }
-
-    //Make sure our peer has the right name
-    public void _OnUIDChanged(int uid)
-    {
-        player.Name = uid.ToString();
-        player.SetNetworkMaster(uid);
-    }
-
-    //Every N seconds, each GameRoot will ping the rest to show they're still connected.
-    [Remote]
-    public void Ping()
-    {
-
-    }
-
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
 }

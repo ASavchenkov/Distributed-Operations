@@ -1,12 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://BasicScenes/BallisticTargets/Torso/BallisticTorso.cs" type="Script" id=1]
+[ext_resource path="res://BasicScenes/Player/Player.cs" type="Script" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
 
 [sub_resource type="CapsuleMesh" id=2]
 
 [node name="Player" type="Node"]
+script = ExtResource( 2 )
 
 [node name="Body" type="RigidBody" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.50194, 0 )
@@ -28,6 +30,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66799, 0 )
 
 [node name="LookPitch" type="Spatial" parent="Body/LookYaw"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.539263, 0 )
+
+[node name="Camera" type="Camera" parent="Body/LookYaw/LookPitch"]
 
 [node name="BallisticTorso" type="Area" parent="Body"]
 script = ExtResource( 1 )

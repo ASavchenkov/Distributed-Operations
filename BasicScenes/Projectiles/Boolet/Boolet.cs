@@ -3,8 +3,14 @@ using System;
 using System.Collections.Generic;
 
 
-public class Boolet : LocalProjectile
+public class Boolet : Projectile
 {
+
+    [Puppet]
+    public void Hit()
+    {
+        GD.Print("Got Hit RPC");
+    }
 
     public void hitBallisticTarget(BallisticTarget target)
     {
@@ -17,21 +23,6 @@ public class Boolet : LocalProjectile
         impactFunctions.Add(typeof(BallisticTarget), new ImpactFunction(hitBallisticTarget));
     }
 
-    public void Init(Vector3 _velocity, Vector3 translation)
-    {
-        this.LinearVelocity = _velocity;
-        this.Translation = translation;
-        
-    }
-
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-        base._Ready();
-    }
-
-
-
     //This function might have something more,
     //like an explosion, but for now it just deletes itself.
     public override void DefaultImpact()
@@ -39,9 +30,6 @@ public class Boolet : LocalProjectile
         GD.Print("Terminal Effect");
         base.DefaultImpact();
     }
-
-
-
 
     public override void _IntegrateForces(PhysicsDirectBodyState state)
     {

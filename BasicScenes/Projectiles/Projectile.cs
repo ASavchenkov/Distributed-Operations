@@ -6,7 +6,7 @@ Base class for small fast moving objects
 that do something when they hit something else.
 */
 
-public class LocalProjectile : RigidBody
+public class Projectile : RigidBody
 {
     
     public delegate void ImpactFunction( BallisticTarget target);
@@ -19,9 +19,17 @@ public class LocalProjectile : RigidBody
 
     public RayCast rayCast;
 
+    public void Init(Vector3 Translation, Vector3 LinearVelocity)
+    {
+        this.Translation = Translation;
+        this.LinearVelocity = LinearVelocity;
+    }
+
     public override void _Ready()
     {
         rayCast = (RayCast) GetNode("RayCast");
+        if(! IsNetworkMaster())
+            Mode = ModeEnum.Kinematic;
     }
 
     public virtual void DefaultImpact()
@@ -41,23 +49,35 @@ public class LocalProjectile : RigidBody
             DefaultImpact();
     }
 
+    [Puppet]
+    public void UpdateTrajectory(Vector3 translation, Vector3 velocity)
+    {
+        Translation = translation;
+        LinearVelocity = velocity;
+    }
+
     //The base function handles hit detection
     //Additional ballistics are left to the engine
     //as well as the deriving class.
     public override void _IntegrateForces(PhysicsDirectBodyState state)
     {
-        float timeLeft = state.Step;
-        
-        rayCast.CastTo = state.LinearVelocity * timeLeft * 20.0F;
-        rayCast.ForceRaycastUpdate();
-        
-        if(rayCast.IsColliding())
-        {
+        //If we're in control of the projectile, do all the ballistics
+        if(IsNetworkMaster())
+        {     
+            float timeLeft = state.Step;
+            
+            rayCast.CastTo = state.LinearVelocity * timeLeft * 20.0F;
+            rayCast.ForceRaycastUpdate();
+            
+            if(rayCast.IsColliding())
+            {
 
-            //GetCollider will never return null since IsColliding() returned true
-            BallisticTarget target = rayCast.GetCollider() as BallisticTarget;
-            //But target can be null if it's not a BallisticTarget
-            ComputeImpact(target);
+                //GetCollider will never return null since IsColliding() returned true
+                BallisticTarget target = rayCast.GetCollider() as BallisticTarget;
+                //But target can be null if it's not a BallisticTarget
+                ComputeImpact(target);
+            }
+            //Rpc("UpdateTrajectory", Translation, state.LinearVelocity);
         }
     }
 

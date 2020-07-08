@@ -2,9 +2,9 @@
 
 [ext_resource path="res://GameRoot.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/StaticCube.tscn" type="PackedScene" id=2]
-[ext_resource path="res://BasicScenes/Player/LocalPlayer.tscn" type="PackedScene" id=3]
 [ext_resource path="res://addons/PurePeerSignaling/Networking.tscn" type="PackedScene" id=4]
 [ext_resource path="res://BasicScenes/GUI/NetworkingTab.cs" type="Script" id=5]
+[ext_resource path="res://SpawnManager.cs" type="Script" id=6]
 
 [node name="GameRoot" type="Spatial"]
 script = ExtResource( 1 )
@@ -160,11 +160,10 @@ size_flags_vertical = 3
 [node name="Networking" parent="." instance=ExtResource( 4 )]
 
 [node name="Players" type="Node" parent="."]
+script = ExtResource( 6 )
 __meta__ = {
 "_editor_description_": "A place to organize all the players."
 }
-
-[node name="1" parent="Players" instance=ExtResource( 3 )]
 
 [node name="Projectiles" type="Node" parent="."]
 __meta__ = {
@@ -176,4 +175,3 @@ __meta__ = {
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled/Start" to="Networking" method="_StartServer"]
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/ServerEnabled/Stop" to="Networking" method="_StopServer"]
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Refresh" to="MainMenu/TabContainer/NetworkingTab" method="_DisplayPeers"]
-[connection signal="UIDChanged" from="Networking" to="." method="_OnUIDChanged"]
