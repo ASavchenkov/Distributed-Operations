@@ -1,6 +1,7 @@
 # Overview
 
 - Open source.
+- Fully Peer to Peer. No servers required whatsoever.
 - Realistic mechanics.
 - Clever spawn system for high speed and predictability.
 
