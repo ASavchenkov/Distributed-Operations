@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combined- Harms", "Combined- Harms.csproj", "{D1BCCFBC-716B-44D2-8688-5C2151D4D73F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Combined-Harms", "Combined-Harms.csproj", "{D1BCCFBC-716B-44D2-8688-5C2151D4D73F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
