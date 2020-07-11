@@ -1,22 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://GameRoot.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/StaticCube.tscn" type="PackedScene" id=2]
+[ext_resource path="res://BasicScenes/MapObjects/Paintball/Tetra.glb" type="PackedScene" id=3]
 [ext_resource path="res://addons/PurePeerSignaling/Networking.tscn" type="PackedScene" id=4]
 [ext_resource path="res://BasicScenes/GUI/NetworkingTab.cs" type="Script" id=5]
 [ext_resource path="res://SpawnManager.cs" type="Script" id=6]
+[ext_resource path="res://BasicScenes/MapObjects/Paintball/Obelisk.glb" type="PackedScene" id=7]
 
 [node name="GameRoot" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.85941 )
 script = ExtResource( 1 )
-
-[node name="Floor" parent="." instance=ExtResource( 2 )]
-transform = Transform( 10, 0, 0, 0, 0.1, 0, 0, 0, 10, 0, 0, 0 )
-
-[node name="Cube" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6.10309, 1.66904, 4.37041 )
-
-[node name="Cube2" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.05403, 1.66904, -6.33598 )
 
 [node name="MainMenu" type="CenterContainer" parent="."]
 anchor_right = 1.0
@@ -170,6 +164,20 @@ script = ExtResource( 6 )
 __meta__ = {
 "_editor_description_": "Just a place to organize all projectiles if we want to look at them when debugging."
 }
+
+[node name="Map" type="Spatial" parent="."]
+
+[node name="Floor" parent="Map" instance=ExtResource( 2 )]
+transform = Transform( 10, 0, 0, 0, 0.1, 0, 0, 0, 10, 0, 0, 0 )
+
+[node name="Tetra" parent="Map" instance=ExtResource( 3 )]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, -4.38383 )
+
+[node name="Obelisk" parent="Map" instance=ExtResource( 7 )]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 5.14684, 0, 0 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Map"]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4.60879, 0 )
 [connection signal="text_changed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Host URL/LineEdit" to="." method="_SetURL"]
 [connection signal="text_changed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Secret/LineEdit" to="Networking" method="_SetSecret"]
 [connection signal="pressed" from="MainMenu/TabContainer/NetworkingTab/VBoxContainer/Join" to="Networking" method="_JoinMesh"]
