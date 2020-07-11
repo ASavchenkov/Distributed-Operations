@@ -60,6 +60,7 @@
     <Compile Include="addons\PurePeerSignaling\scripts\HandshakeServer.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\Networking.cs" />
     <Compile Include="BasicScenes\BallisticTargets\Torso\BallisticTorso.cs" />
+    <Compile Include="BasicScenes\GameModes\TDM.cs" />
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />
     <Compile Include="BasicScenes\Projectiles\Boolet\Boolet.cs" />
     <Compile Include="BasicScenes\Projectiles\Projectile.cs" />
