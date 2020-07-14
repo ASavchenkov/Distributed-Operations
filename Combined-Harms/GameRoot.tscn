@@ -37,7 +37,6 @@ __meta__ = {
 }
 
 [node name="Networking" type="CenterContainer" parent="MainMenu/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -156,13 +155,13 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="TDM" type="CenterContainer" parent="MainMenu/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
-script = ExtResource( 5 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/TabContainer/TDM"]
 margin_left = 71.0
@@ -183,7 +182,7 @@ margin_right = 223.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
 size_flags_vertical = 1
-text = "Host URL"
+text = "Team Selection:"
 valign = 1
 
 [node name="Option" type="OptionButton" parent="MainMenu/TabContainer/TDM/VBoxContainer/Team choice"]
@@ -191,85 +190,91 @@ margin_left = 227.0
 margin_right = 450.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
-text = "Test button"
+text = "Spectator"
+items = [ "Spectator", null, false, 0, null, "Red", null, false, 1, null, "Blue", null, false, 2, null ]
+selected = 0
 
-[node name="Secret" type="HBoxContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer"]
+[node name="Red2" type="VBoxContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer"]
 margin_top = 24.0
 margin_right = 450.0
-margin_bottom = 48.0
+margin_bottom = 114.0
 size_flags_horizontal = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
 
-[node name="Label" type="Label" parent="MainMenu/TabContainer/TDM/VBoxContainer/Secret"]
-margin_right = 223.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-text = "Password"
-valign = 1
-
-[node name="LineEdit" type="LineEdit" parent="MainMenu/TabContainer/TDM/VBoxContainer/Secret"]
-margin_left = 227.0
+[node name="Label" type="Label" parent="MainMenu/TabContainer/TDM/VBoxContainer/Red2"]
 margin_right = 450.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-text = "secret"
-
-[node name="Join" type="Button" parent="MainMenu/TabContainer/TDM/VBoxContainer"]
-margin_top = 52.0
-margin_right = 450.0
-margin_bottom = 72.0
-text = "Join Game"
-
-[node name="ServerEnabled" type="HBoxContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer"]
-margin_top = 76.0
-margin_right = 450.0
-margin_bottom = 96.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="MainMenu/TabContainer/TDM/VBoxContainer/ServerEnabled"]
-margin_right = 221.0
 margin_bottom = 14.0
-size_flags_horizontal = 3
-size_flags_vertical = 0
-size_flags_stretch_ratio = 2.0
-text = "Handshake Server"
-valign = 1
+text = "Spectators"
+align = 1
 
-[node name="Start" type="Button" parent="MainMenu/TabContainer/TDM/VBoxContainer/ServerEnabled"]
-margin_left = 225.0
-margin_right = 335.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
-text = "Start"
-
-[node name="Stop" type="Button" parent="MainMenu/TabContainer/TDM/VBoxContainer/ServerEnabled"]
-margin_left = 339.0
+[node name="ScrollContainer" type="ScrollContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer/Red2"]
+margin_top = 18.0
 margin_right = 450.0
-margin_bottom = 20.0
-size_flags_horizontal = 3
-text = "Stop"
-
-[node name="Refresh" type="Button" parent="MainMenu/TabContainer/TDM/VBoxContainer"]
-margin_top = 100.0
-margin_right = 450.0
-margin_bottom = 120.0
-text = "Refresh"
-
-[node name="ScrollContainer" type="ScrollContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer"]
-margin_top = 124.0
-margin_right = 450.0
-margin_bottom = 300.0
+margin_bottom = 90.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PeerList" type="ItemList" parent="MainMenu/TabContainer/TDM/VBoxContainer/ScrollContainer"]
+[node name="PeerList" type="ItemList" parent="MainMenu/TabContainer/TDM/VBoxContainer/Red2/ScrollContainer"]
 margin_right = 450.0
-margin_bottom = 176.0
+margin_bottom = 72.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer"]
+margin_top = 118.0
+margin_right = 450.0
+margin_bottom = 300.0
+size_flags_vertical = 3
+
+[node name="Red" type="VBoxContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer/HBoxContainer"]
+margin_right = 223.0
+margin_bottom = 182.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MainMenu/TabContainer/TDM/VBoxContainer/HBoxContainer/Red"]
+margin_right = 223.0
+margin_bottom = 14.0
+text = "Red Team"
+align = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer/HBoxContainer/Red"]
+margin_top = 18.0
+margin_right = 223.0
+margin_bottom = 182.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PeerList" type="ItemList" parent="MainMenu/TabContainer/TDM/VBoxContainer/HBoxContainer/Red/ScrollContainer"]
+margin_right = 223.0
+margin_bottom = 164.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Blue" type="VBoxContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer/HBoxContainer"]
+margin_left = 227.0
+margin_right = 450.0
+margin_bottom = 182.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="MainMenu/TabContainer/TDM/VBoxContainer/HBoxContainer/Blue"]
+margin_right = 223.0
+margin_bottom = 14.0
+text = "Blue Team"
+align = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer/HBoxContainer/Blue"]
+margin_top = 18.0
+margin_right = 223.0
+margin_bottom = 182.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PeerList" type="ItemList" parent="MainMenu/TabContainer/TDM/VBoxContainer/HBoxContainer/Blue/ScrollContainer"]
+margin_right = 223.0
+margin_bottom = 164.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -306,8 +311,3 @@ transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0
 [connection signal="pressed" from="MainMenu/TabContainer/Networking/VBoxContainer/ServerEnabled/Start" to="Networking" method="_StartServer"]
 [connection signal="pressed" from="MainMenu/TabContainer/Networking/VBoxContainer/ServerEnabled/Stop" to="Networking" method="_StopServer"]
 [connection signal="pressed" from="MainMenu/TabContainer/Networking/VBoxContainer/Refresh" to="MainMenu/TabContainer/Networking" method="_DisplayPeers"]
-[connection signal="text_changed" from="MainMenu/TabContainer/TDM/VBoxContainer/Secret/LineEdit" to="Networking" method="_SetSecret"]
-[connection signal="pressed" from="MainMenu/TabContainer/TDM/VBoxContainer/Join" to="Networking" method="_JoinMesh"]
-[connection signal="pressed" from="MainMenu/TabContainer/TDM/VBoxContainer/ServerEnabled/Start" to="Networking" method="_StartServer"]
-[connection signal="pressed" from="MainMenu/TabContainer/TDM/VBoxContainer/ServerEnabled/Stop" to="Networking" method="_StopServer"]
-[connection signal="pressed" from="MainMenu/TabContainer/TDM/VBoxContainer/Refresh" to="MainMenu/TabContainer/TDM" method="_DisplayPeers"]
