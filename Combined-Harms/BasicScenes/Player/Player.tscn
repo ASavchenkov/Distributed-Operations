@@ -2,10 +2,9 @@
 
 [ext_resource path="res://BasicScenes/BallisticTargets/Torso/BallisticTorso.tscn" type="PackedScene" id=1]
 [ext_resource path="res://BasicScenes/Player/Player.cs" type="Script" id=2]
+[ext_resource path="res://BasicScenes/Player/SoldierRigify.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
-
-[sub_resource type="CapsuleMesh" id=2]
 
 [node name="Player" type="Node"]
 script = ExtResource( 2 )
@@ -20,11 +19,6 @@ mode = 2
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
 shape = SubResource( 1 )
 
-[node name="BodyMesh" type="MeshInstance" parent="Body"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
-mesh = SubResource( 2 )
-material/0 = null
-
 [node name="LookYaw" type="Spatial" parent="Body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66799, 0 )
 
@@ -32,5 +26,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.66799, 0 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.539263, 0 )
 
 [node name="Camera" type="Camera" parent="Body/LookYaw/LookPitch"]
+near = 0.5
+
+[node name="SoldierRigify" parent="Body/LookYaw" instance=ExtResource( 3 )]
+transform = Transform( -1.35, 0, -4.39886e-07, 0, 1.35, 0, 4.39886e-07, 0, -1.35, 0, -3.08994, 0 )
 
 [node name="BallisticTorso" parent="Body" instance=ExtResource( 1 )]
