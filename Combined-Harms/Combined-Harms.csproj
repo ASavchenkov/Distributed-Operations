@@ -62,6 +62,7 @@
     <Compile Include="BasicScenes\BallisticTargets\Torso\BallisticTorso.cs" />
     <Compile Include="BasicScenes\GameModes\TDM.cs" />
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />
+    <Compile Include="BasicScenes\Player\AnimTree.cs" />
     <Compile Include="BasicScenes\Projectiles\Boolet\Boolet.cs" />
     <Compile Include="BasicScenes\Projectiles\Projectile.cs" />
     <Compile Include="BasicScenes\BallisticTargets\BallisticTarget.cs" />
