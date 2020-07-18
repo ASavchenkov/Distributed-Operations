@@ -17,7 +17,7 @@ collision_mask = 3
 mode = 2
 
 [node name="BodyCollider" type="CollisionShape" parent="Body"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
+transform = Transform( 0.75, 0, 0, 0, -3.27835e-08, -0.75, 0, 0.75, -3.27835e-08, 0, 0.138885, 0 )
 shape = SubResource( 1 )
 
 [node name="LookYaw" type="Spatial" parent="Body"]
@@ -26,26 +26,17 @@ shape = SubResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0 )
 
 [node name="Camera" type="Camera" parent="Body/LookYaw/LookPitch"]
-near = 0.5
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0723355, -0.122179 )
+near = 0.1
 
 [node name="M4A1" parent="Body/LookYaw/LookPitch" instance=ExtResource( 4 )]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0.170862, -0.230978, 0.0142738 )
-
-[node name="FrontGrip" type="Position3D" parent="Body/LookYaw/LookPitch/M4A1"]
-transform = Transform( 0.176231, 0.976808, -0.12161, -0.984112, 0.177548, -1.60333e-07, 0.0215914, 0.119678, 0.992578, 0.515439, 0.122497, -0.0377534 )
-
-[node name="RearGrip" type="Position3D" parent="Body/LookYaw/LookPitch/M4A1"]
-transform = Transform( -0.515939, 0.85659, -0.00780889, 0.855846, 0.515837, 0.0379427, 0.0365294, 0.0128929, -0.999249, 0.178457, -0.0498887, 0.0179613 )
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0.186469, -0.120307, -0.671967 )
 
 [node name="Soldier" parent="Body/LookYaw" instance=ExtResource( 3 )]
 transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, -1, 0.0989335 )
 
-[node name="LeftHand" parent="Body/LookYaw/Soldier/Armature/Skeleton" index="1"]
-target_node = NodePath("../../../../LookPitch/M4A1/FrontGrip")
-
-[node name="RightHand" parent="Body/LookYaw/Soldier/Armature/Skeleton" index="2"]
-target_node = NodePath("../../../../LookPitch/M4A1/RearGrip")
-
 [node name="BallisticTorso" parent="Body" instance=ExtResource( 1 )]
+
+[editable path="Body/LookYaw/LookPitch/M4A1"]
 
 [editable path="Body/LookYaw/Soldier"]
