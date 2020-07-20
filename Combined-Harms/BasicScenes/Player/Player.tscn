@@ -1,9 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://BasicScenes/BallisticTargets/Torso/BallisticTorso.tscn" type="PackedScene" id=1]
 [ext_resource path="res://BasicScenes/Player/Player.cs" type="Script" id=2]
-[ext_resource path="res://BasicScenes/Player/Soldier.tscn" type="PackedScene" id=3]
-[ext_resource path="res://BasicScenes/Items/Gun/M4A1/M4A1.tscn" type="PackedScene" id=4]
+[ext_resource path="res://BasicScenes/Items/Gun/SelectFireRifle.tscn" type="PackedScene" id=3]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -17,26 +16,20 @@ collision_mask = 3
 mode = 2
 
 [node name="BodyCollider" type="CollisionShape" parent="Body"]
-transform = Transform( 0.75, 0, 0, 0, -3.27835e-08, -0.75, 0, 0.75, -3.27835e-08, 0, 0.138885, 0 )
+transform = Transform( 0.5, 0, 0, 0, -2.18557e-08, -0.6, 0, 0.5, -2.62268e-08, 0, -0.094, 0 )
 shape = SubResource( 1 )
 
 [node name="LookYaw" type="Spatial" parent="Body"]
 
 [node name="LookPitch" type="Spatial" parent="Body/LookYaw"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
 
 [node name="Camera" type="Camera" parent="Body/LookYaw/LookPitch"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0723355, -0.122179 )
+fov = 90.0
 near = 0.1
 
-[node name="M4A1" parent="Body/LookYaw/LookPitch" instance=ExtResource( 4 )]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0.186469, -0.120307, -0.671967 )
-
-[node name="Soldier" parent="Body/LookYaw" instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, -1, 0.0989335 )
+[node name="SelectFireRifle" parent="Body/LookYaw/LookPitch" instance=ExtResource( 3 )]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0.0901469, -0.0725946, -0.686999 )
 
 [node name="BallisticTorso" parent="Body" instance=ExtResource( 1 )]
-
-[editable path="Body/LookYaw/LookPitch/M4A1"]
-
-[editable path="Body/LookYaw/Soldier"]

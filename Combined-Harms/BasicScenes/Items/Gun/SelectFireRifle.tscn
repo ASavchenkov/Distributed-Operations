@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://BasicScenes/Items/Gun/M4A1/Ironsights.tscn" type="PackedScene" id=1]
+[ext_resource path="res://BasicScenes/Items/Gun/M4A1/M4A1.tscn" type="PackedScene" id=2]
+[ext_resource path="res://BasicScenes/Items/Gun/SelectFireRifle.cs" type="Script" id=3]
+[ext_resource path="res://BasicScenes/Items/Gun/Magazine.cs" type="Script" id=4]
+
+[node name="SelectFireRifle" type="Spatial"]
+script = ExtResource( 3 )
+
+[node name="Ironsights" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152142, 0.107341, 0 )
+
+[node name="M4A1" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0354596, 0 )
+
+[node name="Magazine" type="Node" parent="."]
+script = ExtResource( 4 )
+
+[node name="Position3D" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 )

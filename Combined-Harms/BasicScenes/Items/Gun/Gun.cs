@@ -2,31 +2,37 @@ using Godot;
 using System;
 
 
-
-//Items can be picked up and used.
-public class Gun : Spatial
+//Base class for the "receiver" of the gun.
+//"Root" of the tree as far as mods go.
+public abstract class Gun : Spatial
 {
-    Spatial GameRoot;
-    Spatial BooletSpawn;
     SpawnManager ProjectileManager;
-    string booletScene = "res://BasicScenes/Projectiles/Boolet/Boolet.tscn";
+
+    //These need to be assigned for the gun to function correctly.
+    protected Spatial ProjectileSpawn;
+    protected IMunitionSource source;
     
     [Export]
     public float muzzleVelocity = 10;//In meters per second I think?
-    // Called when the node enters the scene tree for the first time.
+
     public override void _Ready()
     {
-        GameRoot = (Spatial) GetTree().Root.GetNode("GameRoot");
-        BooletSpawn = (Spatial) GetNode("BooletSpawn");
-        ProjectileManager = (SpawnManager) GameRoot.GetNode("Projectiles");
+        ProjectileManager = (SpawnManager) GetNode("/root/GameNode/Projectiles");
     }
 
+    //Default code for firing a projectile.
+    //Unlikely anyone will need to modify this very much.
     public virtual void Fire()
     {
-        Vector3 velocity = BooletSpawn.GlobalTransform.basis.Xform(-Vector3.Back) * muzzleVelocity;
-        
-        Boolet boolet = (Boolet) ProjectileManager.Spawn(booletScene);
-        boolet.Rpc("Init",BooletSpawn.GlobalTransform.origin, velocity);
+        string projectileScene = source.DequeueMunition();
+        if(!(projectileScene is null))
+        {
+            Vector3 velocity = ProjectileSpawn.GlobalTransform.basis.Xform(-Vector3.Back) * muzzleVelocity;
+            
+            Projectile p = (Projectile) ProjectileManager.Spawn(projectileScene);
+            p.Rpc("Init",ProjectileSpawn.GlobalTransform.origin, velocity);
+        }
+
         
     }
     
