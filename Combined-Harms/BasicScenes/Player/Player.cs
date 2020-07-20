@@ -32,12 +32,6 @@ public class Player : Node
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
 
-        //for now we're going to manually add the gun item
-        //but in the future this happens outside the _Ready() function
-        var gunScene = GD.Load<PackedScene>("res://BasicScenes/Items/Gun/Gun.tscn");
-        var gunNode = gunScene.Instance();
-        gunNode.SetNetworkMaster(GetNetworkMaster());
-        GetNode("Body/LookYaw/LookPitch").AddChild(gunNode);
 
         if(!IsNetworkMaster())
         {

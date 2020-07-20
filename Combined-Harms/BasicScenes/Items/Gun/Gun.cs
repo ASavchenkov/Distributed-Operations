@@ -17,13 +17,14 @@ public abstract class Gun : Spatial
 
     public override void _Ready()
     {
-        ProjectileManager = (SpawnManager) GetNode("/root/GameNode/Projectiles");
+        ProjectileManager = (SpawnManager) GetNode("/root/GameRoot/Projectiles");
     }
 
     //Default code for firing a projectile.
     //Unlikely anyone will need to modify this very much.
     public virtual void Fire()
     {
+        
         string projectileScene = source.DequeueMunition();
         if(!(projectileScene is null))
         {

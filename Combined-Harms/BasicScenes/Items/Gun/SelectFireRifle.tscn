@@ -9,13 +9,13 @@
 script = ExtResource( 3 )
 
 [node name="Ironsights" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152142, 0.107341, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152142, 0.0558027, 0 )
 
 [node name="M4A1" parent="." instance=ExtResource( 2 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0354596, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.016079, 0 )
 
 [node name="Magazine" type="Node" parent="."]
 script = ExtResource( 4 )
 
-[node name="Position3D" type="Position3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0 )
+[node name="Muzzle" type="Position3D" parent="."]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0.271643, 0, 0 )

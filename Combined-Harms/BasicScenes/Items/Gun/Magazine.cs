@@ -9,6 +9,7 @@ public class Magazine : Node, IMunitionSource
 
     public string DequeueMunition()
     {
+        GD.Print(currentAmount);
         if(currentAmount == 0)
         {
             return null;
