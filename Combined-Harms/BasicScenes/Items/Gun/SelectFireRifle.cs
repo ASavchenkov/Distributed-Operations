@@ -12,7 +12,7 @@ public class SelectFireRifle : Gun
         ProjectileSpawn = (Spatial) GetNode("Origin/Muzzle");
         source = (IMunitionSource) GetNode("Origin/Magazine");
         MainSight = (Sight) GetNode("Origin/IronSights");
-        HipFireTransform = (Position3D) GetNode("HipFireTransform");
+        HipFireTransform = (Position3D) GetNode("Origin/HipFireTransform");
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)
@@ -26,7 +26,7 @@ public class SelectFireRifle : Gun
             }
             else if(inputEvent.IsActionReleased("ItemSecondary"))
             {
-                Origin.Transform = Transform.Identity;
+                Origin.Transform = HipFireTransform.Transform.Inverse();
             }
         }
     }

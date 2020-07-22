@@ -8,17 +8,20 @@
 [node name="SelectFireRifle" type="Spatial"]
 script = ExtResource( 3 )
 
-[node name="EyeReliefTransform" type="Position3D" parent="."]
-transform = Transform( 0.99999, 0.00436331, 0, -0.00436331, 0.999991, 0, 0, 0, 1, -0.305095, 0.0573129, 0 )
-
 [node name="Origin" type="Spatial" parent="."]
+
+[node name="EyeReliefTransform" type="Position3D" parent="Origin"]
+transform = Transform( 0.99999, 0.00436331, 0, -0.00436331, 0.99999, 0, 0, 0, 1, -0.305095, 0.0573129, 0 )
+
+[node name="HipFireTransform" type="Position3D" parent="Origin"]
+transform = Transform( 0.99999, 0.00436331, 0, -0.00436331, 0.99999, 0, 0, 0, 1, -0.374436, 0.107702, -0.116632 )
 
 [node name="IronSights" parent="Origin" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.152142, 0.0558027, 0 )
 EyeReliefPath = NodePath("../IronSights/FrontPost/EyeRelief")
 
 [node name="EyeRelief" parent="Origin/IronSights/FrontPost" index="0"]
-remote_path = NodePath("../../../../EyeReliefTransform")
+remote_path = NodePath("../../../EyeReliefTransform")
 
 [node name="M4A1" parent="Origin" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.016079, 0 )
