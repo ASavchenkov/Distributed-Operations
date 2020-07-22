@@ -31,6 +31,9 @@ near = 0.1
 [node name="SelectFireRifle" parent="Body/LookYaw/LookPitch/Camera" instance=ExtResource( 3 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 0 )
 
+[node name="EyeReliefTransform" parent="Body/LookYaw/LookPitch/Camera/SelectFireRifle" index="0"]
+transform = Transform( 0.99999, 0.00436331, 0, -0.00436331, 0.999991, 0, 0, 5.55112e-17, 1, -0.305095, 0.0573128, 7.10543e-15 )
+
 [node name="BallisticTorso" parent="Body" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0896798, 0 )
 
