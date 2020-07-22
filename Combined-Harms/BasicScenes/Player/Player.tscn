@@ -25,11 +25,15 @@ shape = SubResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
 
 [node name="Camera" type="Camera" parent="Body/LookYaw/LookPitch"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0723355, -0.122179 )
 fov = 90.0
 near = 0.1
 
-[node name="SelectFireRifle" parent="Body/LookYaw/LookPitch" instance=ExtResource( 3 )]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0.0901469, -0.0725946, -0.554731 )
+[node name="SelectFireRifle" parent="Body/LookYaw/LookPitch/Camera" instance=ExtResource( 3 )]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 0 )
 
 [node name="BallisticTorso" parent="Body" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0896798, 0 )
+
+[editable path="Body/LookYaw/LookPitch/Camera/SelectFireRifle"]
+
+[editable path="Body/BallisticTorso"]

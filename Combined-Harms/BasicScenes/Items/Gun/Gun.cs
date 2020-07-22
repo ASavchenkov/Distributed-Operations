@@ -11,6 +11,8 @@ public abstract class Gun : Spatial
     //These need to be assigned for the gun to function correctly.
     protected Spatial ProjectileSpawn;
     protected IMunitionSource source;
+    protected Spatial Origin;
+    protected Sight MainSight;
     
     [Export]
     public float muzzleVelocity = 10;//In meters per second I think?
@@ -18,6 +20,7 @@ public abstract class Gun : Spatial
     public override void _Ready()
     {
         ProjectileManager = (SpawnManager) GetNode("/root/GameRoot/Projectiles");
+        Origin = (Spatial) GetNode("Origin");
     }
 
     //Default code for firing a projectile.
@@ -37,6 +40,12 @@ public abstract class Gun : Spatial
         
     }
     
+    public void SetOriginToSight(Sight sight)
+    {
+        Origin.Transform = sight.RemoteEyeRelief.Transform.Inverse();
+        //this will also naturally update the sights global transform.
+    }
+
     public override void _UnhandledInput(InputEvent inputEvent)
     {
         if(IsNetworkMaster())

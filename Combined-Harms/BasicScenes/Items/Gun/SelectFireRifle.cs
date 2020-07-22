@@ -6,7 +6,20 @@ public class SelectFireRifle : Gun
     public override void _Ready()
     {
         base._Ready();
-        ProjectileSpawn = (Spatial) GetNode("Muzzle");
-        source = (IMunitionSource) GetNode("Magazine");
+        ProjectileSpawn = (Spatial) GetNode("Origin/Muzzle");
+        source = (IMunitionSource) GetNode("Origin/Magazine");
+        MainSight = (Sight) GetNode("Origin/IronSights");
+    }
+
+    public override void _UnhandledInput(InputEvent inputEvent)
+    {
+        base._UnhandledInput(inputEvent);
+        if(IsNetworkMaster())
+        {
+            if(inputEvent.IsActionPressed("ItemSecondary"))
+            {
+                SetOriginToSight(MainSight);
+            }
+        }
     }
 }
