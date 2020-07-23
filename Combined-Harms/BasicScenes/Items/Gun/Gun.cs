@@ -42,7 +42,6 @@ public abstract class Gun : Spatial
     
     public void SetOriginToSight(Sight sight)
     {
-        GD.Print(sight.RemoteEyeRelief.Transform.Inverse());
         Origin.Transform = sight.RemoteEyeRelief.Transform.Inverse();
         //this will also naturally update the sights global transform.
     }

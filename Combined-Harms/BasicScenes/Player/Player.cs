@@ -82,6 +82,10 @@ public class Player : Node
         }
     }
 
+    public void SetFOV(int degrees)
+    {
+        camera.Fov = degrees;
+    }
 
     private void handleStrafing()
     {

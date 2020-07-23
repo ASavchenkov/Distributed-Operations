@@ -14,6 +14,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -4.85941 )
 script = ExtResource( 1 )
 
 [node name="TDMManager" parent="." instance=ExtResource( 8 )]
+TeamSelPath = NodePath("../MainMenu/TabContainer/TDM/VBoxContainer/TeamChoice/Option")
+SpectatorPath = NodePath("../MainMenu/TabContainer/TDM/VBoxContainer/Spectators/ScrollContainer/PeerList")
+RedPath = NodePath("../MainMenu/TabContainer/TDM/VBoxContainer/HBoxContainer/Red/ScrollContainer/PeerList")
+BluePath = NodePath("../MainMenu/TabContainer/TDM/VBoxContainer/HBoxContainer/Blue/ScrollContainer/PeerList")
 
 [node name="MainMenu" type="CenterContainer" parent="."]
 anchor_right = 1.0
@@ -37,6 +41,7 @@ __meta__ = {
 }
 
 [node name="Networking" type="CenterContainer" parent="MainMenu/TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -155,7 +160,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="TDM" type="CenterContainer" parent="MainMenu/TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -170,14 +174,14 @@ margin_right = 521.0
 margin_bottom = 382.0
 rect_min_size = Vector2( 450, 300 )
 
-[node name="Team choice" type="HBoxContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer"]
+[node name="TeamChoice" type="HBoxContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer"]
 margin_right = 450.0
 margin_bottom = 20.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="MainMenu/TabContainer/TDM/VBoxContainer/Team choice"]
+[node name="Label" type="Label" parent="MainMenu/TabContainer/TDM/VBoxContainer/TeamChoice"]
 margin_right = 223.0
 margin_bottom = 20.0
 size_flags_horizontal = 3
@@ -185,7 +189,7 @@ size_flags_vertical = 1
 text = "Team Selection:"
 valign = 1
 
-[node name="Option" type="OptionButton" parent="MainMenu/TabContainer/TDM/VBoxContainer/Team choice"]
+[node name="Option" type="OptionButton" parent="MainMenu/TabContainer/TDM/VBoxContainer/TeamChoice"]
 margin_left = 227.0
 margin_right = 450.0
 margin_bottom = 20.0
@@ -194,7 +198,7 @@ text = "Spectator"
 items = [ "Spectator", null, false, 0, null, "Red", null, false, 1, null, "Blue", null, false, 2, null ]
 selected = 0
 
-[node name="Red2" type="VBoxContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer"]
+[node name="Spectators" type="VBoxContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer"]
 margin_top = 24.0
 margin_right = 450.0
 margin_bottom = 114.0
@@ -202,20 +206,20 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 0.5
 
-[node name="Label" type="Label" parent="MainMenu/TabContainer/TDM/VBoxContainer/Red2"]
+[node name="Label" type="Label" parent="MainMenu/TabContainer/TDM/VBoxContainer/Spectators"]
 margin_right = 450.0
 margin_bottom = 14.0
 text = "Spectators"
 align = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer/Red2"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MainMenu/TabContainer/TDM/VBoxContainer/Spectators"]
 margin_top = 18.0
 margin_right = 450.0
 margin_bottom = 90.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PeerList" type="ItemList" parent="MainMenu/TabContainer/TDM/VBoxContainer/Red2/ScrollContainer"]
+[node name="PeerList" type="ItemList" parent="MainMenu/TabContainer/TDM/VBoxContainer/Spectators/ScrollContainer"]
 margin_right = 450.0
 margin_bottom = 72.0
 size_flags_horizontal = 3
@@ -311,3 +315,7 @@ transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0
 [connection signal="pressed" from="MainMenu/TabContainer/Networking/VBoxContainer/ServerEnabled/Start" to="Networking" method="_StartServer"]
 [connection signal="pressed" from="MainMenu/TabContainer/Networking/VBoxContainer/ServerEnabled/Stop" to="Networking" method="_StopServer"]
 [connection signal="pressed" from="MainMenu/TabContainer/Networking/VBoxContainer/Refresh" to="MainMenu/TabContainer/Networking" method="_DisplayPeers"]
+[connection signal="item_selected" from="MainMenu/TabContainer/TDM/VBoxContainer/TeamChoice/Option" to="TDMManager" method="OnTeamSelected"]
+[connection signal="ConnectedToSession" from="Networking" to="TDMManager" method="OnConnectedToSession"]
+
+[editable path="Networking"]
