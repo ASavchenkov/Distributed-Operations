@@ -13,6 +13,7 @@ public class SelectFireRifle : Gun
         source = (IMunitionSource) GetNode("Origin/Magazine");
         MainSight = (Sight) GetNode("Origin/IronSights");
         HipFireTransform = (Position3D) GetNode("Origin/HipFireTransform");
+        Origin.Transform = HipFireTransform.Transform.Inverse();
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)

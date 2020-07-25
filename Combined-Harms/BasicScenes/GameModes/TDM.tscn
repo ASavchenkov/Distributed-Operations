@@ -1,6 +1,29 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://BasicScenes/GameModes/TDM.cs" type="Script" id=1]
+[sub_resource type="CSharpScript" id=1]
+resource_name = "TDM"
+script/source = "using Godot;
+using System;
+
+public class TDM : Node
+{
+    // Declare member variables here. Examples:
+    // private int a = 2;
+    // private string b = \"text\";
+
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
+    {
+        
+    }
+
+//  // Called every frame. 'delta' is the elapsed time since the previous frame.
+//  public override void _Process(float delta)
+//  {
+//      
+//  }
+}
+"
 
 [node name="TDM" type="Node"]
-script = ExtResource( 1 )
+script = SubResource( 1 )
