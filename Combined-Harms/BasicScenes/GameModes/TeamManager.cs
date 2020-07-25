@@ -18,15 +18,23 @@ public class TeamManager : Node
     NodePath BluePath;
     ItemList BlueTeam;
 
-    enum Team { Spectator, Red, Blue};
+    [Export]
+    NodePath VoteRestartLabelPath;
+    Label VoteRestartLabel;
+
+    public enum Team { Spectator, Red, Blue};
+    int BlueScore = 0;
+    int RedScore = 0;
 
     int thisUID = 1;
-
+    
     private class PlayerStat
     {
         public Team team;
         public int score;
         public bool voteRestart;
+        
+
         public PlayerStat(Team team)
         {
             this.team = team;
@@ -35,6 +43,8 @@ public class TeamManager : Node
         }
     }
     Dictionary<int, PlayerStat> playerStats = new Dictionary<int, PlayerStat>();
+    int totalVotes = 0;
+    [Export] float Quorum = 2/3;
 
     public override void _Ready()
     {
@@ -101,9 +111,28 @@ public class TeamManager : Node
         UpdateLists();
     }
 
- // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(float delta)
+    public void OnToggleVoteRestart( bool vote)
     {
-     
+        Rpc("UpdateRestartVote", vote);
+    }
+
+    [RemoteSync]
+    public void UpdateRestartVote(bool vote)
+    {
+        int sender = GetTree().GetRpcSenderId();
+        if(playerStats[sender].voteRestart != vote)
+        {
+            if(vote) totalVotes++;
+            else totalVotes--;
+        }
+
+        playerStats[sender].voteRestart = vote;
+        if( (float)totalVotes * Quorum > (float)playerStats.Count)
+        {
+            RedScore = 0;
+            BlueScore = 0;
+        }
+
+        
     }
 }
