@@ -37,7 +37,7 @@ public class PlayerController : Node
         if(!IsNetworkMaster())
         {
             Body.Mode = RigidBody.ModeEnum.Kinematic;
-            GetNode("/root/GameRoot").Connect("SetInputEnabled", this, "SetInputEnabled");
+            GetNode("..").Connect("SetInputEnabled", this, "SetInputEnabled");
         }
     }
 

@@ -5,10 +5,28 @@ public class NetworkingTab : CenterContainer
 {
     private ItemList peerList;
     private Networking networking;
+
     public override void _Ready()
     {
         peerList = (ItemList) GetNode("VBoxContainer/ScrollContainer/PeerList");
         networking = (Networking) GetNode("/root/GameRoot/Networking");
+
+        //connect all the signals to Networking.
+        LineEdit HostURL = (LineEdit) GetNode("VBoxContainer/HostURL/LineEdit");
+        HostURL.Connect("text_changed", networking, "_SetURL");
+
+        LineEdit Secret = (LineEdit) GetNode("VBoxContainer/Secret/LineEdit");
+        Secret.Connect("text_changed", networking, "_SetSecret");
+
+        Button JoinSession = (Button) GetNode("VBoxContainer/Join");
+        JoinSession.Connect("pressed", networking, "_JoinMesh");
+        
+        Button StartServer = (Button) GetNode("VBoxContainer/ServerEnabled/Start");
+        StartServer.Connect("pressed", networking, "_StartServer");
+
+        Button StopServer = (Button) GetNode("VBoxContainer/ServerEnabled/Stop");
+        StopServer.Connect("pressed", networking, "_StopServer");
+        
     }
 
     public void _DisplayPeers()

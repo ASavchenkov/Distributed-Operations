@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://BasicScenes/Player/PlayerController.cs" type="Script" id=2]
+[ext_resource path="res://BasicScenes/Items/Gun/SelectFireRifle.tscn" type="PackedScene" id=4]
+[ext_resource path="res://BasicScenes/BallisticTargets/Torso/BallisticTorso.tscn" type="PackedScene" id=5]
+
+[sub_resource type="CapsuleShape" id=1]
+
+[node name="PlayerController" type="Node"]
+script = ExtResource( 2 )
+
+[node name="Body" type="RigidBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+collision_layer = 2
+collision_mask = 3
+mode = 2
+
+[node name="BodyCollider" type="CollisionShape" parent="Body"]
+transform = Transform( 0.5, 0, 0, 0, -2.18557e-08, -0.6, 0, 0.5, -2.62268e-08, 0, -0.094, 0 )
+shape = SubResource( 1 )
+
+[node name="LookYaw" type="Spatial" parent="Body"]
+
+[node name="LookPitch" type="Spatial" parent="Body/LookYaw"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
+
+[node name="Camera" type="Camera" parent="Body/LookYaw/LookPitch"]
+fov = 90.0
+near = 0.1
+
+[node name="SelectFireRifle" parent="Body/LookYaw/LookPitch/Camera" instance=ExtResource( 4 )]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 0 )
+
+[node name="BallisticTorso" parent="Body" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0896798, 0 )
+[connection signal="TorsoHit" from="Body/BallisticTorso" to="." method="OnTorsoHit"]

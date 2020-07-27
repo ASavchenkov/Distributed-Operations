@@ -42,7 +42,6 @@ public class TeamManager : Node
             voteRestart = false;
         }
     }
-    Dictionary<int, PlayerStat> playerStats = new Dictionary<int, PlayerStat>();
     int totalVotes = 0;
     [Export] float Quorum = 2/3;
 
@@ -53,7 +52,6 @@ public class TeamManager : Node
         BlueTeam = (ItemList) GetNode(BluePath);
         GetTree().Connect("network_peer_connected",this, "OnPeerConnected");
 
-        playerStats.Add(1,new PlayerStat(Team.Spectator));
         UpdateLists();
     }
 

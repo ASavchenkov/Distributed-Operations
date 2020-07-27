@@ -8,7 +8,7 @@ public class SpawnManager : Node
 {
 
     //Makeshift bidirectional dictionary for insertion and deletion from tree.
-    Dictionary<int,Node> forwardMap = new Dictionary<int, Node>();
+    public Dictionary<int,Node> forwardMap = new Dictionary<int, Node>();
     Dictionary<int,string> forwardSceneMap = new Dictionary<int,string>();
     Dictionary<Node,int> backwardMap = new Dictionary<Node, int>();
 

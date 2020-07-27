@@ -1,0 +1,268 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://BasicScenes/GUI/NetworkingTab.cs" type="Script" id=2]
+
+[node name="MainMenu" type="CenterContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.70001
+margin_top = 0.950012
+margin_right = 5.69995
+margin_bottom = 0.950012
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TabContainer" type="TabContainer" parent="."]
+margin_left = 211.0
+margin_top = 50.0
+margin_right = 811.0
+margin_bottom = 550.0
+rect_min_size = Vector2( 600, 500 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Networking" type="CenterContainer" parent="TabContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+script = ExtResource( 2 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/Networking"]
+margin_left = 71.0
+margin_top = 82.0
+margin_right = 521.0
+margin_bottom = 382.0
+rect_min_size = Vector2( 450, 300 )
+
+[node name="HostURL" type="HBoxContainer" parent="TabContainer/Networking/VBoxContainer"]
+margin_right = 450.0
+margin_bottom = 24.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="TabContainer/Networking/VBoxContainer/HostURL"]
+margin_right = 223.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Host URL"
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Networking/VBoxContainer/HostURL"]
+margin_left = 227.0
+margin_right = 450.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "ws://192.168.1.143:3476"
+
+[node name="Secret" type="HBoxContainer" parent="TabContainer/Networking/VBoxContainer"]
+margin_top = 28.0
+margin_right = 450.0
+margin_bottom = 52.0
+size_flags_horizontal = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="TabContainer/Networking/VBoxContainer/Secret"]
+margin_right = 223.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Secret Password"
+valign = 1
+
+[node name="LineEdit" type="LineEdit" parent="TabContainer/Networking/VBoxContainer/Secret"]
+margin_left = 227.0
+margin_right = 450.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "secret"
+
+[node name="Join" type="Button" parent="TabContainer/Networking/VBoxContainer"]
+margin_top = 56.0
+margin_right = 450.0
+margin_bottom = 76.0
+text = "Join Game"
+
+[node name="ServerEnabled" type="HBoxContainer" parent="TabContainer/Networking/VBoxContainer"]
+margin_top = 80.0
+margin_right = 450.0
+margin_bottom = 100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="TabContainer/Networking/VBoxContainer/ServerEnabled"]
+margin_right = 221.0
+margin_bottom = 14.0
+size_flags_horizontal = 3
+size_flags_vertical = 0
+size_flags_stretch_ratio = 2.0
+text = "Handshake Server"
+valign = 1
+
+[node name="Start" type="Button" parent="TabContainer/Networking/VBoxContainer/ServerEnabled"]
+margin_left = 225.0
+margin_right = 335.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Start"
+
+[node name="Stop" type="Button" parent="TabContainer/Networking/VBoxContainer/ServerEnabled"]
+margin_left = 339.0
+margin_right = 450.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Stop"
+
+[node name="Refresh" type="Button" parent="TabContainer/Networking/VBoxContainer"]
+margin_top = 104.0
+margin_right = 450.0
+margin_bottom = 124.0
+text = "Refresh"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/Networking/VBoxContainer"]
+margin_top = 128.0
+margin_right = 450.0
+margin_bottom = 300.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PeerList" type="ItemList" parent="TabContainer/Networking/VBoxContainer/ScrollContainer"]
+margin_right = 450.0
+margin_bottom = 172.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TDM" type="CenterContainer" parent="TabContainer"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/TDM"]
+margin_left = 71.0
+margin_top = 82.0
+margin_right = 521.0
+margin_bottom = 382.0
+rect_min_size = Vector2( 450, 300 )
+
+[node name="TeamChoice" type="HBoxContainer" parent="TabContainer/TDM/VBoxContainer"]
+margin_right = 450.0
+margin_bottom = 20.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="TabContainer/TDM/VBoxContainer/TeamChoice"]
+margin_right = 223.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "Team Selection:"
+valign = 1
+
+[node name="Option" type="OptionButton" parent="TabContainer/TDM/VBoxContainer/TeamChoice"]
+margin_left = 227.0
+margin_right = 450.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Spectator"
+items = [ "Spectator", null, false, 0, null, "Red", null, false, 1, null, "Blue", null, false, 2, null ]
+selected = 0
+
+[node name="Spectators" type="VBoxContainer" parent="TabContainer/TDM/VBoxContainer"]
+margin_top = 24.0
+margin_right = 450.0
+margin_bottom = 114.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.5
+
+[node name="Label" type="Label" parent="TabContainer/TDM/VBoxContainer/Spectators"]
+margin_right = 450.0
+margin_bottom = 14.0
+text = "Spectators"
+align = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/TDM/VBoxContainer/Spectators"]
+margin_top = 18.0
+margin_right = 450.0
+margin_bottom = 90.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PeerList" type="ItemList" parent="TabContainer/TDM/VBoxContainer/Spectators/ScrollContainer"]
+margin_right = 450.0
+margin_bottom = 72.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="TabContainer/TDM/VBoxContainer"]
+margin_top = 118.0
+margin_right = 450.0
+margin_bottom = 300.0
+size_flags_vertical = 3
+
+[node name="Red" type="VBoxContainer" parent="TabContainer/TDM/VBoxContainer/HBoxContainer"]
+margin_right = 223.0
+margin_bottom = 182.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="TabContainer/TDM/VBoxContainer/HBoxContainer/Red"]
+margin_right = 223.0
+margin_bottom = 14.0
+text = "Red Team"
+align = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/TDM/VBoxContainer/HBoxContainer/Red"]
+margin_top = 18.0
+margin_right = 223.0
+margin_bottom = 182.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PeerList" type="ItemList" parent="TabContainer/TDM/VBoxContainer/HBoxContainer/Red/ScrollContainer"]
+margin_right = 223.0
+margin_bottom = 164.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Blue" type="VBoxContainer" parent="TabContainer/TDM/VBoxContainer/HBoxContainer"]
+margin_left = 227.0
+margin_right = 450.0
+margin_bottom = 182.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="TabContainer/TDM/VBoxContainer/HBoxContainer/Blue"]
+margin_right = 223.0
+margin_bottom = 14.0
+text = "Blue Team"
+align = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TabContainer/TDM/VBoxContainer/HBoxContainer/Blue"]
+margin_top = 18.0
+margin_right = 223.0
+margin_bottom = 182.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PeerList" type="ItemList" parent="TabContainer/TDM/VBoxContainer/HBoxContainer/Blue/ScrollContainer"]
+margin_right = 223.0
+margin_bottom = 164.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+[connection signal="pressed" from="TabContainer/Networking/VBoxContainer/Refresh" to="TabContainer/Networking" method="_DisplayPeers"]
+[connection signal="item_selected" from="TabContainer/TDM/VBoxContainer/TeamChoice/Option" to="TabContainer/TDM" method="OnTeamSelected"]
