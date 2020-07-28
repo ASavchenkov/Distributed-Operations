@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://GameRoot.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/StaticCube.tscn" type="PackedScene" id=2]
 [ext_resource path="res://BasicScenes/MapObjects/Paintball/Tetra.glb" type="PackedScene" id=3]
 [ext_resource path="res://addons/PurePeerSignaling/Networking.tscn" type="PackedScene" id=4]
+[ext_resource path="res://BasicScenes/GameModes/TDM.tscn" type="PackedScene" id=5]
 [ext_resource path="res://SpawnManager.cs" type="Script" id=6]
 [ext_resource path="res://BasicScenes/MapObjects/Paintball/Obelisk.glb" type="PackedScene" id=7]
 
@@ -24,6 +25,8 @@ script = ExtResource( 6 )
 __meta__ = {
 "_editor_description_": "Just a place to organize all projectiles if we want to look at them when debugging."
 }
+
+[node name="TDM" parent="." instance=ExtResource( 5 )]
 
 [node name="Map" type="Spatial" parent="."]
 

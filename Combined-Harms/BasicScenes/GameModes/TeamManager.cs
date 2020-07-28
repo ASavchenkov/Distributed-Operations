@@ -19,118 +19,76 @@ public class TeamManager : Node
     ItemList BlueTeam;
 
     [Export]
-    NodePath VoteRestartLabelPath;
-    Label VoteRestartLabel;
+    NodePath VoteCounterPath;
+    Label VoteCounter;
 
-    public enum Team { Spectator, Red, Blue};
-    int BlueScore = 0;
-    int RedScore = 0;
+    [Export]
+    NodePath VotePath;
 
-    int thisUID = 1;
-    
-    private class PlayerStat
-    {
-        public Team team;
-        public int score;
-        public bool voteRestart;
-        
-
-        public PlayerStat(Team team)
-        {
-            this.team = team;
-            score = 0;
-            voteRestart = false;
-        }
-    }
-    int totalVotes = 0;
-    [Export] float Quorum = 2/3;
+    Player ThisPlayer;
+    private Node PlayerSpawnManager;
 
     public override void _Ready()
     {
         Spectators = (ItemList) GetNode(SpectatorPath);
         RedTeam = (ItemList) GetNode(RedPath);
         BlueTeam = (ItemList) GetNode(BluePath);
-        GetTree().Connect("network_peer_connected",this, "OnPeerConnected");
+        VoteCounter = (Label) GetNode(VoteCounterPath);
+
+        ThisPlayer = (Player) GetNode("../../..");
+        PlayerSpawnManager = GetNode("/root/GameRoot/Players");
+
+        GetNode("/root/GameRoot/TDM").Connect("UpdateTDMLists",this,"UpdateLists");
+        GetNode("/root/GameRoot/TDM").Connect("UpdateVotes",this,"UpdateVotes");
+        GetNode(VotePath).Connect("toggled", this, "VoteToggled");
 
         UpdateLists();
     }
 
-    private void UpdateLists()
+    public void UpdateLists()
     {
         Spectators.Clear();
         RedTeam.Clear();
         BlueTeam.Clear();
-        foreach(KeyValuePair<int, PlayerStat> kvp in playerStats )
+
+        Godot.Collections.Array players = PlayerSpawnManager.GetChildren();
+
+        foreach( Node p in players)
         {
-            switch(kvp.Value.team)
+            Player player = (Player) p;
+            switch(player.ThisTeam)
             {
-                case Team.Spectator:
-                    Spectators.AddItem(kvp.Key.ToString());
+                case Player.Team.Spectator:
+                    Spectators.AddItem(player.Name);
                     break;
-                case Team.Red:
-                    RedTeam.AddItem(kvp.Key.ToString());
+                case Player.Team.Red:
+                    RedTeam.AddItem(player.Name);
                     break;
-                case Team.Blue:
-                    BlueTeam.AddItem(kvp.Key.ToString());
+                case Player.Team.Blue:
+                    BlueTeam.AddItem(player.Name);
                     break;
             }
         }
     }
 
-    //we just joined a new session, so we clear everything.
-    public void OnConnectedToSession(int uid)
+    public void VoteToggled(bool vote)
     {
-        thisUID = uid;
-        playerStats.Clear();
-        playerStats.Add(uid, new PlayerStat(Team.Spectator));
-        UpdateLists();
+        ThisPlayer.Rpc("UpdateVote", vote);
     }
 
-    public void OnPeerConnected( int uid)
+    public void UpdateVotes(int votes, float needed, int total)
     {
-        playerStats.Add(uid, new PlayerStat(Team.Spectator));
-        RpcId(uid, "UpdateTeam", (int) playerStats[thisUID].team);
+        VoteCounter.Text = $"{votes}/{total}, {needed} votes needed.";
     }
 
     // when WE select a team.
     public void OnTeamSelected(int team)
     {
-        playerStats[thisUID].team = (Team) team;
-        UpdateLists();
-        Rpc("UpdateTeam",team);
-    }
-
-    //When someone else selects a team.
-    [Remote]
-    public void UpdateTeam(int team)
-    {
-        int sender = GetTree().GetRpcSenderId();
-        playerStats[sender].team = (Team) team;
-        UpdateLists();
+        ThisPlayer.Rpc("UpdateTeam",team);
     }
 
     public void OnToggleVoteRestart( bool vote)
     {
-        Rpc("UpdateRestartVote", vote);
-    }
-
-    [RemoteSync]
-    public void UpdateRestartVote(bool vote)
-    {
-        int sender = GetTree().GetRpcSenderId();
-        if(playerStats[sender].voteRestart != vote)
-        {
-            if(vote) totalVotes++;
-            else totalVotes--;
-        }
-
-        playerStats[sender].voteRestart = vote;
-        if( (float)totalVotes * Quorum > (float)playerStats.Count)
-        {
-            RedScore = 0;
-            BlueScore = 0;
-        }
-
-        
+        ThisPlayer.Rpc("UpdateVote", vote);
     }
 }

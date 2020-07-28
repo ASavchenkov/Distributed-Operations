@@ -61,7 +61,7 @@
     <Compile Include="addons\PurePeerSignaling\scripts\Networking.cs" />
     <Compile Include="BasicScenes\BallisticTargets\Torso\BallisticTorso.cs" />
     <Compile Include="BasicScenes\GameModes\TDM.cs" />
-    <!--<Compile Include="BasicScenes\GameModes\TeamManager.cs" /> -->
+    <Compile Include="BasicScenes\GameModes\TeamManager.cs" />
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />
     <Compile Include="BasicScenes\Items\Gun\IronSights.cs" />
     <Compile Include="BasicScenes\Items\Gun\Magazine.cs" />
