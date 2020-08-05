@@ -29,13 +29,17 @@ public class Player : Node
             mainMenu = (CanvasItem) menuScene.Instance();
             mainMenu.Name = "MainMenu";
             AddChild(mainMenu);
+            Input.SetMouseMode(Input.MouseMode.Visible);
         }
 
         Alias = this.Name;
-        Input.SetMouseMode(Input.MouseMode.Visible);
         tdm = (TDM) GetNode("/root/GameRoot/TDM");
         if(!IsNetworkMaster())
-            Rpc("RequestInit");
+        {
+            GD.Print("Network Master is: ", GetNetworkMaster());
+            RpcId(GetNetworkMaster(),"RequestInit");
+        }
+
     }
 
     [Remote]
