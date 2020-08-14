@@ -23,7 +23,8 @@ public class PlayerController : Node
     float acceleration = 10;
     [Export]
     float maxPitch = 80; //degrees
-
+    int ticker = 0;
+    int sendticker= 0;
     
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -44,6 +45,8 @@ public class PlayerController : Node
     [Puppet]
     public void UpdateTrajectory(Vector3 translation, Vector3 yaw, Vector3 pitch)
     {
+
+        GD.Print("UPDATING TRAJECTORY:", GetPath());
         Body.Translation = translation;
         LookYaw.Rotation = yaw;
         LookPitch.Rotation = pitch;
@@ -79,7 +82,12 @@ public class PlayerController : Node
         if(IsNetworkMaster())
         {
             handleStrafing();
-            Rpc("UpdateTrajectory", Body.Translation, LookYaw.Rotation, LookPitch.Rotation);
+            if(sendticker++ >60)
+            {
+                sendticker=0;
+                Rpc("UpdateTrajectory", Body.Translation, LookYaw.Rotation, LookPitch.Rotation);
+                GD.Print("SENDING UPDATE TRAJECTORY: ", GetPath());
+            }
         }
     }
 
@@ -88,7 +96,7 @@ public class PlayerController : Node
         Vector3 desiredMove = new Vector3();
 
         //Add all the WASD controls to get a vector.
-        
+        GD.Print(inputEnabled);
         if(inputEnabled)
         {
             if(Input.IsActionPressed("MoveForward"))
@@ -103,7 +111,6 @@ public class PlayerController : Node
         //what's the behavior of Normalized() when desiredMove is zero?
         //I guess it's still zero?
         desiredMove = desiredMove.Normalized()*maxSpeed;
-
         //desiredMove is still in local space.
         //We want to convert it to global space.
         //but we still want it to not have any y component.
