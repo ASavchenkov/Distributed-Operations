@@ -46,7 +46,7 @@ public class PlayerController : Node
     public void UpdateTrajectory(Vector3 translation, Vector3 yaw, Vector3 pitch)
     {
 
-        GD.Print("UPDATING TRAJECTORY:", GetPath());
+        //GD.Print("UPDATING TRAJECTORY:", GetPath());
         Body.Translation = translation;
         LookYaw.Rotation = yaw;
         LookPitch.Rotation = pitch;
@@ -82,11 +82,11 @@ public class PlayerController : Node
         if(IsNetworkMaster())
         {
             handleStrafing();
-            if(sendticker++ >60)
+            if(sendticker++ >0)
             {
                 sendticker=0;
                 Rpc("UpdateTrajectory", Body.Translation, LookYaw.Rotation, LookPitch.Rotation);
-                GD.Print("SENDING UPDATE TRAJECTORY: ", GetPath());
+                // GD.Print("SENDING UPDATE TRAJECTORY: ", GetPath());
             }
         }
     }
@@ -96,7 +96,6 @@ public class PlayerController : Node
         Vector3 desiredMove = new Vector3();
 
         //Add all the WASD controls to get a vector.
-        GD.Print(inputEnabled);
         if(inputEnabled)
         {
             if(Input.IsActionPressed("MoveForward"))
