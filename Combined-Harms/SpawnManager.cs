@@ -27,13 +27,13 @@ public class SpawnManager : Node
     //Don't want to have that weird dependency
     private int GenUniqueID()
     {
-        int candidate = rnd.Next(1,2147483647);
+        int candidate = rnd.Next(1,UInt16.MaxValue);
 
         //will almost certainly never happen
         //but in case it does, this guarantees a unique ID if one is available.
         while(forwardMap.ContainsKey(candidate))
         {
-            if(candidate==2147483647)
+            if(candidate==UInt16.MaxValue)
                 candidate = 1;
             else
                 candidate++;
