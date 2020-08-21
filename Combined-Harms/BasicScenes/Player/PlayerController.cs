@@ -9,6 +9,7 @@ public class PlayerController : Node
     public Spatial LookPitch;
     public RigidBody Body;
     public Camera camera;
+    public Area FEET;
 
     [Signal]
     public delegate void Die();
@@ -22,9 +23,12 @@ public class PlayerController : Node
     [Export]
     float acceleration = 10;
     [Export]
+    float jumpImpulse = 10;
+    [Export]
     float maxPitch = 80; //degrees
     int ticker = 0;
     int sendticker= 0;
+    int groundCounter = 0;
     
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -34,7 +38,9 @@ public class PlayerController : Node
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
 
-
+        FEET = (Area) Body.GetNode("FEET");
+        FEET.Connect("body_entered",this,"GroundEncountered");
+        FEET.Connect("body_exited", this, "GroundLeft");
         if(!IsNetworkMaster())
         {
             Body.Mode = RigidBody.ModeEnum.Kinematic;
@@ -67,6 +73,12 @@ public class PlayerController : Node
                 else if (LookPitch.RotationDegrees.x < -maxPitch)
                     LookPitch.RotationDegrees = new Vector3(-maxPitch,0,0);
             }
+            else if (@event is InputEventKey keyPress && inputEnabled  && keyPress.IsActionPressed("Jump") && groundCounter!=0)
+            {
+                GD.Print(groundCounter);
+                Body.ApplyCentralImpulse(jumpImpulse * Vector3.Up);
+            }
+            
         }
     }
 
@@ -91,8 +103,21 @@ public class PlayerController : Node
         }
     }
 
+    public void GroundEncountered(Node body)
+    {
+        groundCounter++;
+    }
+
+    public void GroundLeft(Node body)
+    {   
+        //In case it is possible for an object to enter but not ever leave.
+        if(groundCounter>0) 
+            groundCounter--;
+    }
+
     private void handleStrafing()
     {
+
         Vector3 desiredMove = new Vector3();
 
         //Add all the WASD controls to get a vector.
@@ -100,21 +125,27 @@ public class PlayerController : Node
         {
             if(Input.IsActionPressed("MoveForward"))
                 desiredMove += Vector3.Forward;
-            else if(Input.IsActionPressed("MoveLeft"))
+            if(Input.IsActionPressed("MoveLeft"))
                 desiredMove += Vector3.Left;
-            else if(Input.IsActionPressed("MoveBack"))
+            if(Input.IsActionPressed("MoveBack"))
                 desiredMove += Vector3.Back;
-            else if(Input.IsActionPressed("MoveRight"))
+            if(Input.IsActionPressed("MoveRight"))
                 desiredMove += Vector3.Right;
+
         }
+
         //what's the behavior of Normalized() when desiredMove is zero?
         //I guess it's still zero?
         desiredMove = desiredMove.Normalized()*maxSpeed;
         //desiredMove is still in local space.
         //We want to convert it to global space.
-        //but we still want it to not have any y component.
         Vector3 globalMove = LookYaw.GlobalTransform.basis.Xform(desiredMove);
-        Body.AddCentralForce((globalMove-Body.LinearVelocity)*acceleration);
+        Vector3 horizontalVelocity = Body.LinearVelocity;
+        horizontalVelocity.y = 0;
+        
+        //If we're not on the ground, reduce our control authority.
+        float authority = groundCounter == 0 ? acceleration/10 : acceleration; 
+        Body.AddCentralForce((globalMove-horizontalVelocity)*authority);
     }
 
     public void OnTorsoHit()

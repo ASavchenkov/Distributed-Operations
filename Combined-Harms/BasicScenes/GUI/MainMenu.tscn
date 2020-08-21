@@ -60,7 +60,7 @@ margin_left = 227.0
 margin_right = 450.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
-text = "ws://192.168.1.143:3476"
+text = "ws://127.0.0.1:3476"
 
 [node name="Secret" type="HBoxContainer" parent="TabContainer/Networking/VBoxContainer"]
 margin_top = 28.0
