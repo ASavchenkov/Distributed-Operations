@@ -17,6 +17,11 @@ public abstract class Gun : Spatial
     [Export]
     public float muzzleVelocity = 10;//In meters per second I think?
 
+    //camera recoil effects can really only happen in the x and y directions,
+    //so we don't worry about using full transforms.
+    [Signal]
+    public delegate void Recoil(float x, float y);
+
     public override void _Ready()
     {
         ProjectileManager = (SpawnManager) GetNode("/root/GameRoot/Projectiles");

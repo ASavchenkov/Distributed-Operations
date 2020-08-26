@@ -9,11 +9,17 @@ public class SelectFireRifle : Gun
     public override void _Ready()
     {
         base._Ready();
-        ProjectileSpawn = (Spatial) GetNode("Origin/Muzzle");
-        source = (IMunitionSource) GetNode("Origin/Magazine");
-        MainSight = (Sight) GetNode("Origin/IronSights");
-        HipFireTransform = (Position3D) GetNode("Origin/HipFireTransform");
+        ProjectileSpawn = (Spatial) GetNode("Origin/Gun/Muzzle");
+        source = (IMunitionSource) GetNode("Origin/Gun/Magazine");
+        MainSight = (Sight) GetNode("Origin/Gun/IronSights");
+        HipFireTransform = (Position3D) GetNode("Origin/Gun/HipFireTransform");
         Origin.Transform = HipFireTransform.Transform.Inverse();
+    }
+
+    public override void Fire()
+    {
+        base.Fire();//Basic spawning should be the same. It's just the recoil we're worried about.
+        EmitSignal("Recoil",0,0);
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)
