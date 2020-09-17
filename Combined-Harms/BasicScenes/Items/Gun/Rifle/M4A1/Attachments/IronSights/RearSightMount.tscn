@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://BasicScenes/Items/Gun/Rifle/M4A1/Models/RearSightMount.glb" type="PackedScene" id=1]
+
+
+
+[node name="RearSightMount" instance=ExtResource( 1 )]

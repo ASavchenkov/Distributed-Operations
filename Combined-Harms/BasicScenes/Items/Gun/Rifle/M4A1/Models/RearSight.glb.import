@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/M4A1.glb-ecdd08335f822913f93d9be1d888278f.scn"
+path="res://.import/RearSight.glb-da0f6dab508d0b67c2ddb25496199abf.scn"
 
 [deps]
 
-source_file="res://BasicScenes/Items/Gun/M4A1/M4A1.glb"
-dest_files=[ "res://.import/M4A1.glb-ecdd08335f822913f93d9be1d888278f.scn" ]
+source_file="res://BasicScenes/Items/Gun/Rifle/M4A1/Models/RearSight.glb"
+dest_files=[ "res://.import/RearSight.glb-da0f6dab508d0b67c2ddb25496199abf.scn" ]
 
 [params]
 

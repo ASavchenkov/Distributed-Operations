@@ -66,9 +66,10 @@
     <Compile Include="BasicScenes\GameModes\TDM.cs" />
     <Compile Include="BasicScenes\GameModes\TeamManager.cs" />
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />
-    <Compile Include="BasicScenes\Items\Gun\IronSights.cs" />
+    <Compile Include="BasicScenes\Items\Gun\Rifle\M4A1\Attachments\IronSights\IronSights.cs" />
     <Compile Include="BasicScenes\Items\Gun\Magazine.cs" />
     <Compile Include="BasicScenes\Items\Gun\MunitionSource.cs" />
+    <Compile Include="BasicScenes\Items\Gun\Rifle\RifleProvider.cs" />
     <Compile Include="BasicScenes\Items\Gun\SelectFireRifle.cs" />
     <Compile Include="BasicScenes\Items\Gun\Sight.cs" />
     <Compile Include="BasicScenes\Player\AnimTree.cs" />

@@ -1,0 +1,11 @@
+[gd_scene format=2]
+
+[node name="FPVRifleBase" type="Spatial"]
+
+[node name="Origin" type="Spatial" parent="."]
+
+[node name="Gun" type="Spatial" parent="Origin"]
+
+[node name="Muzzle" type="Position3D" parent="Origin/Gun"]
+
+[node name="HipFireTransform" type="Position3D" parent="Origin/Gun"]

@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://BasicScenes/Items/Gun/M4A1/RearSight.tscn" type="PackedScene" id=1]
-[ext_resource path="res://BasicScenes/Items/Gun/M4A1/RearSightMount.tscn" type="PackedScene" id=2]
+[ext_resource path="res://BasicScenes/Items/Gun/Rifle/M4A1/Attachments/IronSights/RearSight.tscn" type="PackedScene" id=1]
+[ext_resource path="res://BasicScenes/Items/Gun/Rifle/M4A1/Attachments/IronSights/RearSightMount.tscn" type="PackedScene" id=2]
 [ext_resource path="res://BasicScenes/Items/Gun/Sight.cs" type="Script" id=3]
 
 [node name="IronSights" type="Spatial"]
