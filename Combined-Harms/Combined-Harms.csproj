@@ -72,6 +72,7 @@
     <Compile Include="BasicScenes\Items\Gun\Rifle\RifleProvider.cs" />
     <Compile Include="BasicScenes\Items\Gun\SelectFireRifle.cs" />
     <Compile Include="BasicScenes\Items\Gun\Sight.cs" />
+    <Compile Include="BasicScenes\Items\IFPVProvider.cs" />
     <Compile Include="BasicScenes\Player\AnimTree.cs" />
     <Compile Include="BasicScenes\Player\Player.cs" />
     <Compile Include="BasicScenes\Projectiles\Boolet\Boolet.cs" />

@@ -1,21 +1,52 @@
 using Godot;
 using System;
 
-public class RifleProvider : Node
+public abstract class RifleProvider : Node
 {
-    // Declare member variables here. Examples:
-    // private int a = 2;
-    // private string b = "text";
+    Node ParentProvider = null;
+    Node MagazineProvider = null;
+    Node TopRailAttachProvider = null;
+    //Needs to be an IFPVProvider but I can't figure out how to constrain object.
+    PackedScene FPVBase;
 
-    // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
         
     }
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+    public Node GenerateFPVObserver()
+    {
+        Node instance = FPVBase.Instance();
+        if(!(TopRailAttachProvider is null))
+        {
+            Node topRail = instance.GetNode("Origin/Gun/TopRail");
+            Node topAttach = ((IFPVProvider) TopRailAttachProvider).GenerateFPVObserver();
+            topRail.AddChild(topAttach);
+        }
+        return instance;
+    }
+
+    [RemoteSync]
+    public void SetMaster(int uid)
+    {
+        SetNetworkMaster(uid);
+    }
+
+    //Please only call this if you're the master.
+    //Honor system.
+    [PuppetSync]
+    public void SetParent(NodePath path)
+    {
+        ParentProvider = GetNode(path);
+    }
+    [PuppetSync]
+    public void SetMagazine(NodePath path)
+    {
+        MagazineProvider = GetNode(path);
+    }
+    [PuppetSync]
+    public void SetTopRail(NodePath path)
+    {
+        TopRailAttachProvider = GetNode(path);
+    }
 }
