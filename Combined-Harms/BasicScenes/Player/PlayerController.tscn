@@ -1,7 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://BasicScenes/Player/PlayerController.cs" type="Script" id=2]
-[ext_resource path="res://BasicScenes/Items/Gun/SelectFireRifle.tscn" type="PackedScene" id=4]
 [ext_resource path="res://BasicScenes/BallisticTargets/Torso/BallisticTorso.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CapsuleShape" id=1]
@@ -29,9 +28,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
 [node name="Camera" type="Camera" parent="Body/LookYaw/LookPitch"]
 fov = 90.0
 near = 0.1
-
-[node name="SelectFireRifle" parent="Body/LookYaw/LookPitch/Camera" instance=ExtResource( 4 )]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 0 )
 
 [node name="BallisticTorso" parent="Body" instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0896798, 0 )
