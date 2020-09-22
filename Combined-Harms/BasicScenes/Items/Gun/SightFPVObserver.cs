@@ -1,16 +1,18 @@
 using Godot;
 using System;
 
-public abstract class Sight : Spatial
+public class SightFPVObserver : Spatial
 {
     //These may be the same node, or different ones
     //for ironsights "RotationNode" will probably be the front post
     // and "SightNode" will be the rear sight.
 
-    //For single plane optics, both will be the plane.
-    Spatial RotationNode;
-    Spatial SightNode;
 
+    //This is either the front post or the front plane of the optic.
+    [Export]
+    NodePath RotationNodePath;
+    Spatial RotationNode;
+    
     [Export]
     NodePath EyeReliefPath;
     RemoteTransform EyeRelief;
@@ -19,10 +21,10 @@ public abstract class Sight : Spatial
 
     public override void _Ready()
     {
+        RotationNode = (Spatial) GetNode(RotationNodePath);
         EyeRelief = (RemoteTransform) GetNode(EyeReliefPath);
         RemoteEyeRelief = (Position3D) EyeRelief.GetNode(EyeRelief.RemotePath);
     }
-
 
     //Zero the sight:
     //  Set the rotation

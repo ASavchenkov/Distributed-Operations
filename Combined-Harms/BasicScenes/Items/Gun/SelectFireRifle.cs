@@ -11,7 +11,7 @@ public class SelectFireRifle : Gun
         base._Ready();
         ProjectileSpawn = (Spatial) GetNode("Origin/Gun/Muzzle");
         source = (IMunitionSource) GetNode("Origin/Gun/Magazine");
-        MainSight = (Sight) GetNode("Origin/Gun/IronSights");
+        MainSight = (SightFPVObserver) GetNode("Origin/Gun/IronSights");
         HipFireTransform = (Position3D) GetNode("Origin/Gun/HipFireTransform");
         Origin.Transform = HipFireTransform.Transform.Inverse();
     }

@@ -67,7 +67,6 @@
     <Compile Include="BasicScenes\Items\Gun\IronSights.cs" />
     <Compile Include="BasicScenes\Items\Gun\Magazine.cs" />
     <Compile Include="BasicScenes\Items\Gun\MunitionSource.cs" />
-    <Compile Include="BasicScenes\Items\Gun\SelectFireRifle.cs" />
     <Compile Include="BasicScenes\Items\Gun\Sight.cs" />
     <Compile Include="BasicScenes\Player\AnimTree.cs" />
     <Compile Include="BasicScenes\Player\Player.cs" />

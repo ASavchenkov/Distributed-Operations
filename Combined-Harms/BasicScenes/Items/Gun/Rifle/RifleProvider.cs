@@ -1,29 +1,36 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
-public abstract class RifleProvider : Node
+public class RifleProvider : Node, IProvider
 {
-    Node ParentProvider = null;
-    Node MagazineProvider = null;
-    Node TopRailAttachProvider = null;
-    //Needs to be an IFPVProvider but I can't figure out how to constrain object.
-    PackedScene FPVBase;
+    
+    [Export]
+    Dictionary<string,Node> Attachments;
+    //Maps name of attachment point to the actual attachment that is there.
+    //Node is null if nothing is attached there.
+    //Observers are responsible for properly inserting attachments
+    //into their own node structures.
 
-    public override void _Ready()
+    [Export]
+    public Dictionary<string,string> ObserverPaths;
+    //For generating observers
+
+    public delegate void AttachmentUpdateHandler(string attachPoint, IProvider attachment);
+    public event AttachmentUpdateHandler AttachmentUpdated;
+
+
+    public Node GenerateObserver(string name)
     {
-        
+        var observer = (IObserver<RifleProvider>) GD.Load<PackedScene>(ObserverPaths[name]).Instance();
+        observer.Init(this);
+        return (Node) observer;
     }
 
-    public Node GenerateFPVObserver()
+    public void SetAttachment(string attachPoint, IProvider attachment)
     {
-        Node instance = FPVBase.Instance();
-        if(!(TopRailAttachProvider is null))
-        {
-            Node topRail = instance.GetNode("Origin/Gun/TopRail");
-            Node topAttach = ((IFPVProvider) TopRailAttachProvider).GenerateFPVObserver();
-            topRail.AddChild(topAttach);
-        }
-        return instance;
+        Attachments[attachPoint] = (Node) attachment;
+        AttachmentUpdated?.Invoke(attachPoint, attachment);
     }
 
     [RemoteSync]
@@ -34,19 +41,5 @@ public abstract class RifleProvider : Node
 
     //Please only call this if you're the master.
     //Honor system.
-    [PuppetSync]
-    public void SetParent(NodePath path)
-    {
-        ParentProvider = GetNode(path);
-    }
-    [PuppetSync]
-    public void SetMagazine(NodePath path)
-    {
-        MagazineProvider = GetNode(path);
-    }
-    [PuppetSync]
-    public void SetTopRail(NodePath path)
-    {
-        TopRailAttachProvider = GetNode(path);
-    }
+    
 }

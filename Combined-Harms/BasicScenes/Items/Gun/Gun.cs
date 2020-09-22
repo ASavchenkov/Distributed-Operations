@@ -12,7 +12,7 @@ public abstract class Gun : Spatial
     protected Spatial ProjectileSpawn;
     protected IMunitionSource source;
     protected Spatial Origin;
-    protected Sight MainSight;
+    protected SightFPVObserver MainSight;
     
     [Export]
     public float muzzleVelocity = 10;//In meters per second I think?
@@ -45,7 +45,7 @@ public abstract class Gun : Spatial
         
     }
     
-    public void SetOriginToSight(Sight sight)
+    public void SetOriginToSight(SightFPVObserver sight)
     {
         Origin.Transform = sight.RemoteEyeRelief.Transform.Inverse();
         //this will also naturally update the sights global transform.
