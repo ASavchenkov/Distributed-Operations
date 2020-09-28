@@ -6,19 +6,26 @@ using System;
 //Specifically, how the escape key interacts with menus
 public class GameRoot : Spatial
 {    
-    private SpawnManager players;
+    
+    private SpawnManager Users;
+    private SpawnManager PlayerCharacters;
+    private UserObserver LocalUser;
 
     public override void _Ready()
     {
-        players = (SpawnManager) GetNode("Players");
-        SpawnNewPlayer();
-
-        players.Connect("Cleared",this, "SpawnNewPlayer");
+        
+        Users = (SpawnManager) GetNode("Users");
+        UserProvider provider = (UserProvider) Users.Spawn("res://BasicScenes/Player/UserProvider.tscn");
+        
+        //UserObserver only has one observer.
+        LocalUser = (UserObserver) provider.GenerateObserver(null);
+        Users.Connect("Cleared",this, "AddUser");
     }
 
-    public void SpawnNewPlayer()
+    public void AddUser()
     {
-        players.Spawn("res://BasicScenes/Player/Player.tscn");
+        UserProvider provider = (UserProvider) Users.Spawn("res://BasicScenes/Player/UserProvider.tscn");
+        LocalUser.Init(provider);
     }
 
     

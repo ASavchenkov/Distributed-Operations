@@ -8,5 +8,5 @@ Attachments = {
 "Magazine": null
 }
 ObserverPaths = {
-
+"FPV": "res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1FPV.tscn"
 }

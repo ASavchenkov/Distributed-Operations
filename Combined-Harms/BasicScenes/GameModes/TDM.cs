@@ -35,7 +35,7 @@ public class TDM : Node
         Godot.Collections.Array players = PlayerSpawnManager.GetChildren();
         foreach( Node p in players)
         {
-            Player player= (Player) p;
+            UserProvider player= (UserProvider) p;
             if(player.VoteRestart)
                 totalVotes++;
         }

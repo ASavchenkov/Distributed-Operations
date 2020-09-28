@@ -43,6 +43,9 @@ public class SpawnManager : Node
 
     //When we join someone else's game,
     //clear everything and start from scratch.
+    //Since we can't send the whole object in it's current state,
+    //we clear everything and have the game developer handle
+    //re-initialization, since it's likely it will need to happen anyways.
     public void ClearAll(int uid)
     {
         GD.Print("ClearAll");
@@ -51,7 +54,6 @@ public class SpawnManager : Node
             child.QueueFree();
 
         EmitSignal("Cleared");
-        
     }
     
     private Node Insert(string scenePath, int spawnerUID, int nodeID)
@@ -60,7 +62,8 @@ public class SpawnManager : Node
         PackedScene scene = GD.Load<PackedScene>(scenePath);
         Node instance = scene.Instance();
         
-        string name = spawnerUID + "_" + nodeID.ToString();
+        //Name with a hex ID.
+        string name = spawnerUID.ToString("X4") + "_" + nodeID.ToString("X4");
         instance.Name = name;
         instance.SetNetworkMaster(spawnerUID);
         AddChild(instance);

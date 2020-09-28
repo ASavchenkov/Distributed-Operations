@@ -25,7 +25,7 @@ public class TeamManager : Node
     [Export]
     NodePath VotePath;
 
-    Player ThisPlayer;
+    UserObserver ThisPlayer;
     private Node PlayerSpawnManager;
 
     public override void _Ready()
@@ -35,7 +35,7 @@ public class TeamManager : Node
         BlueTeam = (ItemList) GetNode(BluePath);
         VoteCounter = (Label) GetNode(VoteCounterPath);
 
-        ThisPlayer = (Player) GetNode("../../..");
+        ThisPlayer = (UserObserver) GetNode("../../..");
         PlayerSpawnManager = GetNode("/root/GameRoot/Players");
 
         GetNode("/root/GameRoot/TDM").Connect("UpdateTDMLists",this,"UpdateLists");
@@ -55,16 +55,16 @@ public class TeamManager : Node
 
         foreach( Node p in players)
         {
-            Player player = (Player) p;
+            UserProvider player = (UserProvider) p;
             switch(player.ThisTeam)
             {
-                case Player.Team.Spectator:
+                case UserProvider.Team.Spectator:
                     Spectators.AddItem(player.Name);
                     break;
-                case Player.Team.Red:
+                case UserProvider.Team.Red:
                     RedTeam.AddItem(player.Name);
                     break;
-                case Player.Team.Blue:
+                case UserProvider.Team.Blue:
                     BlueTeam.AddItem(player.Name);
                     break;
             }

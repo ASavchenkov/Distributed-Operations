@@ -2,9 +2,11 @@ using Godot;
 using System;
 
 //Specifically for controlling first person movement.
-public class PlayerController : Node
+public class PlayerController : Node, IObserver<PlayerCharacterProvider>
 {
-    
+
+    private PlayerCharacterProvider provider;
+
     public Spatial LookYaw;
     public Spatial LookPitch;
     public RigidBody Body;
@@ -18,16 +20,7 @@ public class PlayerController : Node
 
     [Export]
     float mouseSensitivity = 100;
-    [Export]
-    float maxSpeed = 10;
-    [Export]
-    float acceleration = 10;
-    [Export]
-    float jumpImpulse = 10;
-    [Export]
-    float maxPitch = 80; //degrees
-    int ticker = 0;
-    int sendticker= 0;
+    
     int groundCounter = 0;
     
     // Called when the node enters the scene tree for the first time.
@@ -47,6 +40,14 @@ public class PlayerController : Node
             GetNode("..").Connect("SetInputEnabled", this, "SetInputEnabled");
         }
     }
+
+    public void Init(PlayerCharacterProvider provider)
+    {
+        this.provider = provider;
+        this.Name = "Player_" + provider.Name + "_FPV";
+    }
+
+
 
     [Puppet]
     public void UpdateTrajectory(Vector3 translation, Vector3 yaw, Vector3 pitch)
@@ -68,15 +69,15 @@ public class PlayerController : Node
                 //Yes these look flipped. It's correct.
                 LookYaw.RotateY(-mouseEvent.Relative.x/mouseSensitivity);
                 LookPitch.RotateX(-mouseEvent.Relative.y/mouseSensitivity);
-                if(LookPitch.RotationDegrees.x > maxPitch)
-                    LookPitch.RotationDegrees = new Vector3(maxPitch,0,0);
-                else if (LookPitch.RotationDegrees.x < -maxPitch)
-                    LookPitch.RotationDegrees = new Vector3(-maxPitch,0,0);
+                if(LookPitch.RotationDegrees.x > provider.maxPitch)
+                    LookPitch.RotationDegrees = new Vector3(provider.maxPitch,0,0);
+                else if (LookPitch.RotationDegrees.x < -provider.maxPitch)
+                    LookPitch.RotationDegrees = new Vector3(-provider.maxPitch,0,0);
             }
             else if (@event is InputEventKey keyPress && inputEnabled  && keyPress.IsActionPressed("Jump") && groundCounter!=0)
             {
                 GD.Print(groundCounter);
-                Body.ApplyCentralImpulse(jumpImpulse * Vector3.Up);
+                Body.ApplyCentralImpulse(provider.jumpImpulse * Vector3.Up);
             }
             
         }
@@ -91,16 +92,8 @@ public class PlayerController : Node
 
     public override void _PhysicsProcess(float delta)
     {
-        if(IsNetworkMaster())
-        {
-            handleStrafing();
-            if(sendticker++ >0)
-            {
-                sendticker=0;
-                Rpc("UpdateTrajectory", Body.Translation, LookYaw.Rotation, LookPitch.Rotation);
-                // GD.Print("SENDING UPDATE TRAJECTORY: ", GetPath());
-            }
-        }
+        handleStrafing();
+        provider.Rpc("UpdateTrajectory", Body.Translation, LookYaw.Rotation, LookPitch.Rotation);
     }
 
     public void GroundEncountered(Node body)
@@ -136,7 +129,7 @@ public class PlayerController : Node
 
         //what's the behavior of Normalized() when desiredMove is zero?
         //I guess it's still zero?
-        desiredMove = desiredMove.Normalized()*maxSpeed;
+        desiredMove = desiredMove.Normalized()*provider.maxSpeed;
         //desiredMove is still in local space.
         //We want to convert it to global space.
         Vector3 globalMove = LookYaw.GlobalTransform.basis.Xform(desiredMove);
@@ -144,7 +137,7 @@ public class PlayerController : Node
         horizontalVelocity.y = 0;
         
         //If we're not on the ground, reduce our control authority.
-        float authority = groundCounter == 0 ? acceleration/10 : acceleration; 
+        float authority = groundCounter == 0 ? provider.acceleration/10 : provider.acceleration; 
         Body.AddCentralForce((globalMove-horizontalVelocity)*authority);
     }
 

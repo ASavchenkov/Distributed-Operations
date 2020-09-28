@@ -72,14 +72,16 @@
     <Compile Include="BasicScenes\Items\Gun\Rifle\RifleProvider.cs" />
     <Compile Include="BasicScenes\Items\Gun\SightFPVObserver.cs" />
     <Compile Include="BasicScenes\Items\ObserverInterfaces.cs" />
-    <Compile Include="BasicScenes\Player\AnimTree.cs" />
-    <Compile Include="BasicScenes\Player\Player.cs" />
+    <Compile Include="BasicScenes\Player\PlayerCharacter\AnimTree.cs" />
+    <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterProvider.cs" />
+    <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerChracterFPV.cs" />
+    <Compile Include="BasicScenes\Player\UserObserver.cs" />
+    <Compile Include="BasicScenes\Player\UserProvider.cs" />
     <Compile Include="BasicScenes\Projectiles\Boolet\Boolet.cs" />
     <Compile Include="BasicScenes\Projectiles\Projectile.cs" />
     <Compile Include="BasicScenes\BallisticTargets\BallisticTarget.cs" />
     <Compile Include="GameRoot.cs" />
     <Compile Include="BasicScenes\Items\Gun\Gun.cs" />
-    <Compile Include="BasicScenes\Player\PlayerController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnManager.cs" />
   </ItemGroup>

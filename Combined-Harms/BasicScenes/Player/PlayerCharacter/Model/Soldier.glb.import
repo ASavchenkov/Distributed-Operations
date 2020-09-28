@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/Soldier.glb-f472197d5b77eb7e732fb9a05a454132.scn"
+path="res://.import/Soldier.glb-724f228d9e66979314af563e3dc8db1d.scn"
 
 [deps]
 
-source_file="res://BasicScenes/Player/Soldier.glb"
-dest_files=[ "res://.import/Soldier.glb-f472197d5b77eb7e732fb9a05a454132.scn" ]
+source_file="res://BasicScenes/Player/PlayerCharacter/Model/Soldier.glb"
+dest_files=[ "res://.import/Soldier.glb-724f228d9e66979314af563e3dc8db1d.scn" ]
 
 [params]
 

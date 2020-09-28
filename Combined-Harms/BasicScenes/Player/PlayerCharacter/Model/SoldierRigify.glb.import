@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/SoldierRigify.glb-916eafa8ca684dede4361533dcd3d742.scn"
+path="res://.import/SoldierRigify.glb-9ee38fafc5cbcf97ebb5a09edc7dbc98.scn"
 
 [deps]
 
-source_file="res://BasicScenes/Player/SoldierRigify.glb"
-dest_files=[ "res://.import/SoldierRigify.glb-916eafa8ca684dede4361533dcd3d742.scn" ]
+source_file="res://BasicScenes/Player/PlayerCharacter/Model/SoldierRigify.glb"
+dest_files=[ "res://.import/SoldierRigify.glb-9ee38fafc5cbcf97ebb5a09edc7dbc98.scn" ]
 
 [params]
 
