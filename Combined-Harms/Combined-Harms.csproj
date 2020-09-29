@@ -74,7 +74,7 @@
     <Compile Include="BasicScenes\Items\ObserverInterfaces.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\AnimTree.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterProvider.cs" />
-    <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerChracterFPV.cs" />
+    <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterFPV.cs" />
     <Compile Include="BasicScenes\Player\UserObserver.cs" />
     <Compile Include="BasicScenes\Player\UserProvider.cs" />
     <Compile Include="BasicScenes\Projectiles\Boolet\Boolet.cs" />

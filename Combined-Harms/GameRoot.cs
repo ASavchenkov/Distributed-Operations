@@ -17,8 +17,10 @@ public class GameRoot : Spatial
         Users = (SpawnManager) GetNode("Users");
         UserProvider provider = (UserProvider) Users.Spawn("res://BasicScenes/Player/UserProvider.tscn");
         
-        //UserObserver only has one observer.
-        LocalUser = (UserObserver) provider.GenerateObserver(null);
+        //UserProvider only has one observer,
+        //and it's a permanent node in the SceneTree
+        LocalUser = (UserObserver) GetNode("UserObserver_1");
+        LocalUser.Init(provider);
         Users.Connect("Cleared",this, "AddUser");
     }
 

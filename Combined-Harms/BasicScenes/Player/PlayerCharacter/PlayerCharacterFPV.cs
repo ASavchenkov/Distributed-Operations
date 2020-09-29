@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 //Specifically for controlling first person movement.
-public class PlayerController : Node, IObserver<PlayerCharacterProvider>
+public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
 {
 
     private PlayerCharacterProvider provider;
@@ -34,20 +34,14 @@ public class PlayerController : Node, IObserver<PlayerCharacterProvider>
         FEET = (Area) Body.GetNode("FEET");
         FEET.Connect("body_entered",this,"GroundEncountered");
         FEET.Connect("body_exited", this, "GroundLeft");
-        if(!IsNetworkMaster())
-        {
-            Body.Mode = RigidBody.ModeEnum.Kinematic;
-            GetNode("..").Connect("SetInputEnabled", this, "SetInputEnabled");
-        }
     }
 
     public void Init(PlayerCharacterProvider provider)
     {
         this.provider = provider;
         this.Name = "Player_" + provider.Name + "_FPV";
+        GD.Print("Called Init: ", this.provider.Name);
     }
-
-
 
     [Puppet]
     public void UpdateTrajectory(Vector3 translation, Vector3 yaw, Vector3 pitch)
@@ -62,24 +56,21 @@ public class PlayerController : Node, IObserver<PlayerCharacterProvider>
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if(IsNetworkMaster())
+
+        if(@event is InputEventMouseMotion mouseEvent && inputEnabled)
         {
-            if(@event is InputEventMouseMotion mouseEvent && inputEnabled)
-            {
-                //Yes these look flipped. It's correct.
-                LookYaw.RotateY(-mouseEvent.Relative.x/mouseSensitivity);
-                LookPitch.RotateX(-mouseEvent.Relative.y/mouseSensitivity);
-                if(LookPitch.RotationDegrees.x > provider.maxPitch)
-                    LookPitch.RotationDegrees = new Vector3(provider.maxPitch,0,0);
-                else if (LookPitch.RotationDegrees.x < -provider.maxPitch)
-                    LookPitch.RotationDegrees = new Vector3(-provider.maxPitch,0,0);
-            }
-            else if (@event is InputEventKey keyPress && inputEnabled  && keyPress.IsActionPressed("Jump") && groundCounter!=0)
-            {
-                GD.Print(groundCounter);
-                Body.ApplyCentralImpulse(provider.jumpImpulse * Vector3.Up);
-            }
-            
+            //Yes these look flipped. It's correct.
+            LookYaw.RotateY(-mouseEvent.Relative.x/mouseSensitivity);
+            LookPitch.RotateX(-mouseEvent.Relative.y/mouseSensitivity);
+            if(LookPitch.RotationDegrees.x > provider.maxPitch)
+                LookPitch.RotationDegrees = new Vector3(provider.maxPitch,0,0);
+            else if (LookPitch.RotationDegrees.x < -provider.maxPitch)
+                LookPitch.RotationDegrees = new Vector3(-provider.maxPitch,0,0);
+        }
+        else if (@event is InputEventKey keyPress && inputEnabled  && keyPress.IsActionPressed("Jump") && groundCounter!=0)
+        {
+            GD.Print(groundCounter);
+            Body.ApplyCentralImpulse(provider.jumpImpulse * Vector3.Up);
         }
     }
 

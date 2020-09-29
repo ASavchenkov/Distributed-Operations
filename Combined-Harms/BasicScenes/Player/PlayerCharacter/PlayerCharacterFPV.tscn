@@ -1,15 +1,13 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://BasicScenes/Player/PlayerCharacter/PlayerChracterFPV.cs" type="Script" id=2]
+[ext_resource path="res://BasicScenes/Player/PlayerCharacter/PlayerCharacterFPV.cs" type="Script" id=2]
 [ext_resource path="res://BasicScenes/BallisticTargets/Torso/BallisticTorso.tscn" type="PackedScene" id=5]
-
-
 
 [sub_resource type="CapsuleShape" id=1]
 
 [sub_resource type="SphereShape" id=2]
 
-[node name="PlayerController" type="Node"]
+[node name="PlayerCharacterFPV" type="Node"]
 script = ExtResource( 2 )
 
 [node name="Body" type="RigidBody" parent="."]

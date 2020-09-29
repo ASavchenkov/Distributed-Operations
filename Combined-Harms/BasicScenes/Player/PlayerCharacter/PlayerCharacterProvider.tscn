@@ -2,6 +2,8 @@
 
 [ext_resource path="res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.cs" type="Script" id=1]
 
-
 [node name="PCProvider" type="Node"]
 script = ExtResource( 1 )
+ObserverPaths = {
+"FPV": "res://BasicScenes/Player/PlayerCharacter/PlayerCharacterFPV.tscn"
+}

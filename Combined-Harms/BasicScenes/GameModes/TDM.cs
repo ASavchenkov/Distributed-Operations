@@ -8,7 +8,7 @@ using System;
 //It's essentially a global object.
 public class TDM : Node
 {
-    private Node PlayerSpawnManager;
+    private Node UserManager;
     
     [Signal]
     public delegate void UpdateTDMLists();
@@ -24,18 +24,18 @@ public class TDM : Node
 
     public override void _Ready()
     {
-        PlayerSpawnManager = GetNode("/root/GameRoot/Players");
+        UserManager = GetNode("/root/GameRoot/Users");
 
     }
 
     public void CheckQuorum()
     {
         int totalVotes = 0;
-        int totalPlayers = PlayerSpawnManager.GetChildCount();
-        Godot.Collections.Array players = PlayerSpawnManager.GetChildren();
+        int totalPlayers = UserManager.GetChildCount();
+        Godot.Collections.Array players = UserManager.GetChildren();
         foreach( Node p in players)
         {
-            UserProvider player= (UserProvider) p;
+            UserProvider player = (UserProvider) p;
             if(player.VoteRestart)
                 totalVotes++;
         }

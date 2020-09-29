@@ -16,7 +16,7 @@ script = ExtResource( 1 )
 
 [node name="TDM" parent="." instance=ExtResource( 5 )]
 
-[node name="User" parent="." instance=ExtResource( 8 )]
+[node name="UserObserver_1" parent="." instance=ExtResource( 8 )]
 
 [node name="Users" type="Node" parent="."]
 script = ExtResource( 6 )

@@ -38,7 +38,7 @@ public class PlayerCharacterProvider : Node, IProvider
         Translation = translation;
         YawRotation = yaw;
         PitchRotation = pitch;
-        TrajectoryUpdated.Invoke(translation, yaw, pitch);
+        TrajectoryUpdated?.Invoke(translation, yaw, pitch);
         // Body.Translation = translation;
         // LookYaw.Rotation = yaw;
         // LookPitch.Rotation = pitch;
