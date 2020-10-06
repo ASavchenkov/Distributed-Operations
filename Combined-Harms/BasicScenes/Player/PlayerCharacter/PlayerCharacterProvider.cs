@@ -53,6 +53,6 @@ public class PlayerCharacterProvider : Node, IProvider
     protected override void Dispose(bool disposing)
     {
         ProviderEnd?.Invoke();
-        GD.Print("Buncha bullshit is what this is");
+        base.Dispose(disposing);
     }
 }

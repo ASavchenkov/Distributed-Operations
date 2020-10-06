@@ -70,8 +70,9 @@ public class UserProvider : Node, IProvider
             tdm.CheckQuorum();
     }
 
-    ~UserProvider()
+    protected override void Dispose(bool disposing)
     {
         ProviderEnd?.Invoke();
+        base.Dispose(disposing);
     }
 }

@@ -131,8 +131,10 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
         EmitSignal("Die");
     }
 
+    //Gotta unsubscribe
     protected override void Dispose(bool disposing)
     {
         provider.ProviderEnd -= ProvEndHandler;
+        base.Dispose(disposing);
     }
 }
