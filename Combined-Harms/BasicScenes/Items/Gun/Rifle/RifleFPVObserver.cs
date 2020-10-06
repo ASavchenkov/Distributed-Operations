@@ -16,7 +16,7 @@ public class RifleFPVObserver : Spatial, IObserver<RifleProvider>
     public void Init(RifleProvider provider)
     {
         this.provider = provider;
-        this.provider.AttachmentUpdated += OnAttachmentUpdated;
+        provider.Connect(nameof(RifleProvider.AttachmentUpdated), this, nameof(OnAttachmentUpdated));
     }
 
     public void OnAttachmentUpdated(string attachPoint, IProvider attachment)

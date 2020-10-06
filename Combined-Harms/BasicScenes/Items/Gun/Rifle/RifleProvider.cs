@@ -5,8 +5,7 @@ using System.Collections.Generic;
 public class RifleProvider : Node, IProvider
 {
 
-    public event NotifyProviderEnd ProviderEnd;
-
+    
     [Export]
     Dictionary<string,Node> Attachments;
     //Maps name of attachment point to the actual attachment that is there.
@@ -18,9 +17,8 @@ public class RifleProvider : Node, IProvider
     public Dictionary<string,string> ObserverPaths;
     //For generating observers
 
-    public delegate void AttachmentUpdateHandler(string attachPoint, IProvider attachment);
-    public event AttachmentUpdateHandler AttachmentUpdated;
-
+    [Signal]
+    public delegate void AttachmentUpdated(string attachPoint, IProvider attachment);
 
     public Node GenerateObserver(string name)
     {
@@ -32,7 +30,7 @@ public class RifleProvider : Node, IProvider
     public void SetAttachment(string attachPoint, IProvider attachment)
     {
         Attachments[attachPoint] = (Node) attachment;
-        AttachmentUpdated?.Invoke(attachPoint, attachment);
+        EmitSignal(nameof(AttachmentUpdated),attachPoint, attachment);
     }
 
     [RemoteSync]
@@ -41,9 +39,5 @@ public class RifleProvider : Node, IProvider
         SetNetworkMaster(uid);
     }
 
-    ~RifleProvider()
-    {
-        ProviderEnd?.Invoke();
-    }
     
 }

@@ -5,7 +5,7 @@ using System;
 public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
 {
 
-    private PlayerCharacterProvider provider;
+    private PlayerCharacterProvider provider = null;
 
     public Spatial LookYaw;
     public Spatial LookPitch;
@@ -37,14 +37,13 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
     public void Init(PlayerCharacterProvider provider)
     {
         this.provider = provider;
-        this.provider.ProviderEnd += ProvEndHandler;
-        //No special function on provider end. Just delete self.
+        provider.Connect("tree_exited", this, nameof(QueueFree));
         this.Name = "Player_" + provider.Name + "_FPV";
     }
 
-    public void ProvEndHandler()
+    public void OnProviderExit()
     {
-        GD.Print("fpv handler called");
+        //No special function on provider end. Just delete self.
         QueueFree();
     }
 
@@ -131,10 +130,4 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
         EmitSignal("Die");
     }
 
-    //Gotta unsubscribe
-    protected override void Dispose(bool disposing)
-    {
-        provider.ProviderEnd -= ProvEndHandler;
-        base.Dispose(disposing);
-    }
 }

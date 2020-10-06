@@ -73,6 +73,7 @@
     <Compile Include="BasicScenes\Items\Gun\SightFPVObserver.cs" />
     <Compile Include="BasicScenes\Items\ObserverInterfaces.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\AnimTree.cs" />
+    <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacter3PV.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterProvider.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterFPV.cs" />
     <Compile Include="BasicScenes\Player\UserObserver.cs" />

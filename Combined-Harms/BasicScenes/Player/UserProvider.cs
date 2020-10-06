@@ -5,8 +5,7 @@ using System.Collections.Generic;
 public class UserProvider : Node, IProvider
 {
 
-    public event NotifyProviderEnd ProviderEnd;
-
+    
     [Export]
     public Dictionary<string,string> ObserverPaths;
 
@@ -68,11 +67,5 @@ public class UserProvider : Node, IProvider
         VoteRestart = vote;
         if(oldVote!=VoteRestart)
             tdm.CheckQuorum();
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        ProviderEnd?.Invoke();
-        base.Dispose(disposing);
     }
 }

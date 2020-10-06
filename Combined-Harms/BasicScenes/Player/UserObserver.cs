@@ -44,13 +44,13 @@ public class UserObserver : Node, IObserver<UserProvider>
                     currentMenuNode = mainMenu;
                     currentMenuNode.Visible = true;
                     Input.SetMouseMode(Input.MouseMode.Visible);
-                    EmitSignal("SetInputEnabled", false);
+                    EmitSignal(nameof(SetInputEnabled), false);
                 }
                 else{
                     currentMenuNode.Visible = false;
                     currentMenuNode = null;
                     Input.SetMouseMode(Input.MouseMode.Captured);
-                    EmitSignal("SetInputEnabled", true);
+                    EmitSignal(nameof(SetInputEnabled), true);
                 }
             }
         }

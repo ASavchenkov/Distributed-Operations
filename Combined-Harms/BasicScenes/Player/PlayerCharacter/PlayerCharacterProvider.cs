@@ -9,8 +9,7 @@ public class PlayerCharacterProvider : Node, IProvider
     public Dictionary<string,string> ObserverPaths;
     //For generating observers
 
-    public event NotifyProviderEnd ProviderEnd;
-
+    
     public delegate void TrajectoryUpdateHandler(Vector3 translation, Vector3 yaw, Vector3 pitch);
     public event TrajectoryUpdateHandler TrajectoryUpdated;
 
@@ -48,11 +47,5 @@ public class PlayerCharacterProvider : Node, IProvider
         // Body.Translation = translation;
         // LookYaw.Rotation = yaw;
         // LookPitch.Rotation = pitch;
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        ProviderEnd?.Invoke();
-        base.Dispose(disposing);
     }
 }
