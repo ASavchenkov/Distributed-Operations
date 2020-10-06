@@ -53,8 +53,7 @@ public class SpawnManager : Node
         foreach( Node child in children)
         {
             GD.Print(child.Name);
-            child.Dispose();
-            // child.QueueFree();
+            child.QueueFree();
         }
             
         EmitSignal("Cleared");
