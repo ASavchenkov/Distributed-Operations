@@ -21,21 +21,13 @@ public class UserObserver : Node, IObserver<UserProvider>
         AddChild(mainMenu);
         Input.SetMouseMode(Input.MouseMode.Visible);
 
-        GetNode("/root/GameRoot/PlayerCharacters").Connect("Cleared", this, "SpawnCharacter");
-        SpawnCharacter();
-    }
-
-    public void SpawnCharacter()
-    {
-        var spawner = (SpawnManager) GetNode("/root/GameRoot/PlayerCharacters");
-        var character = (PlayerCharacterProvider) spawner.Spawn("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
-        var charFPV = (PlayerCharacterFPV) character.GenerateObserver("FPV");
-        GetNode("/root/GameRoot/Map").AddChild(charFPV);
     }
 
     public void Init(UserProvider provider)
     {
         this.provider = provider;
+        //We don't need to do anything with provider at the moment,
+        //so we'll put off provider end behavior.
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)

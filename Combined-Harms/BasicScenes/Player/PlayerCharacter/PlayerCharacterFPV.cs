@@ -13,8 +13,6 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
     public Camera camera;
     public Area FEET;
 
-    [Signal]
-    public delegate void Die();
 
     private bool inputEnabled = true;
 
@@ -39,20 +37,16 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
     public void Init(PlayerCharacterProvider provider)
     {
         this.provider = provider;
+        this.provider.ProviderEnd += ProvEndHandler;
+        //No special function on provider end. Just delete self.
         this.Name = "Player_" + provider.Name + "_FPV";
-        GD.Print("Called Init: ", this.provider.Name);
     }
 
-    [Puppet]
-    public void UpdateTrajectory(Vector3 translation, Vector3 yaw, Vector3 pitch)
+    public void ProvEndHandler()
     {
-
-        //GD.Print("UPDATING TRAJECTORY:", GetPath());
-        Body.Translation = translation;
-        LookYaw.Rotation = yaw;
-        LookPitch.Rotation = pitch;
+        GD.Print("fpv handler called");
+        QueueFree();
     }
-
 
     public override void _UnhandledInput(InputEvent @event)
     {
@@ -135,5 +129,10 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
     public void OnTorsoHit()
     {
         EmitSignal("Die");
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        provider.ProviderEnd -= ProvEndHandler;
     }
 }

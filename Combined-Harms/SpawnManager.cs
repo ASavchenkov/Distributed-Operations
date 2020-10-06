@@ -48,16 +48,21 @@ public class SpawnManager : Node
     //re-initialization, since it's likely it will need to happen anyways.
     public void ClearAll(int uid)
     {
-        GD.Print("ClearAll");
+        GD.Print("ClearAll: ", Name);
         var children = GetChildren();
         foreach( Node child in children)
-            child.QueueFree();
-
+        {
+            GD.Print(child.Name);
+            child.Dispose();
+            // child.QueueFree();
+        }
+            
         EmitSignal("Cleared");
     }
     
     private Node Insert(string scenePath, int spawnerUID, int nodeID)
     {
+        GD.Print("Inserting: ",Name);
         //We first load the scene and instance the node as we normally would
         PackedScene scene = GD.Load<PackedScene>(scenePath);
         Node instance = scene.Instance();

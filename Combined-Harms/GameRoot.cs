@@ -8,7 +8,6 @@ public class GameRoot : Spatial
 {    
     
     private SpawnManager Users;
-    private SpawnManager PlayerCharacters;
     private UserObserver LocalUser;
 
     public override void _Ready()
@@ -22,12 +21,23 @@ public class GameRoot : Spatial
         LocalUser = (UserObserver) GetNode("UserObserver_1");
         LocalUser.Init(provider);
         Users.Connect("Cleared",this, "AddUser");
+
+        GetNode("/root/GameRoot/PlayerCharacters").Connect("Cleared", this, "SpawnCharacter");
+        SpawnCharacter();
     }
 
     public void AddUser()
     {
         UserProvider provider = (UserProvider) Users.Spawn("res://BasicScenes/Player/UserProvider.tscn");
         LocalUser.Init(provider);
+    }
+
+    public void SpawnCharacter()
+    {
+        var spawner = (SpawnManager) GetNode("/root/GameRoot/PlayerCharacters");
+        var character = (PlayerCharacterProvider) spawner.Spawn("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
+        var charFPV = (PlayerCharacterFPV) character.GenerateObserver("FPV");
+        GetNode("/root/GameRoot/Map").AddChild(charFPV);
     }
 
     

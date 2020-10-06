@@ -9,6 +9,8 @@ public class PlayerCharacterProvider : Node, IProvider
     public Dictionary<string,string> ObserverPaths;
     //For generating observers
 
+    public event NotifyProviderEnd ProviderEnd;
+
     public delegate void TrajectoryUpdateHandler(Vector3 translation, Vector3 yaw, Vector3 pitch);
     public event TrajectoryUpdateHandler TrajectoryUpdated;
 
@@ -24,7 +26,11 @@ public class PlayerCharacterProvider : Node, IProvider
     public float jumpImpulse {get; private set;} = 10;
     [Export]
     public float maxPitch {get; private set;} = 80; //degrees
-    
+
+    public override void _Ready()
+    {
+        GD.Print("this is the ready function");
+    }
     public Node GenerateObserver(string name)
     {
         var observer = (IObserver<PlayerCharacterProvider>) GD.Load<PackedScene>(ObserverPaths[name]).Instance();
@@ -43,5 +49,10 @@ public class PlayerCharacterProvider : Node, IProvider
         // LookYaw.Rotation = yaw;
         // LookPitch.Rotation = pitch;
     }
-    
+
+    protected override void Dispose(bool disposing)
+    {
+        ProviderEnd?.Invoke();
+        GD.Print("Buncha bullshit is what this is");
+    }
 }

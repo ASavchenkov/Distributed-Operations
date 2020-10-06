@@ -4,7 +4,9 @@ using System.Collections.Generic;
 
 public class RifleProvider : Node, IProvider
 {
-    
+
+    public event NotifyProviderEnd ProviderEnd;
+
     [Export]
     Dictionary<string,Node> Attachments;
     //Maps name of attachment point to the actual attachment that is there.
@@ -39,7 +41,9 @@ public class RifleProvider : Node, IProvider
         SetNetworkMaster(uid);
     }
 
-    //Please only call this if you're the master.
-    //Honor system.
+    ~RifleProvider()
+    {
+        ProviderEnd?.Invoke();
+    }
     
 }
