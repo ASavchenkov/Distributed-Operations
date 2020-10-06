@@ -37,14 +37,8 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
     public void Init(PlayerCharacterProvider provider)
     {
         this.provider = provider;
-        provider.Connect("tree_exited", this, nameof(QueueFree));
+        provider.Connect("tree_exiting", this, "queue_free");
         this.Name = "Player_" + provider.Name + "_FPV";
-    }
-
-    public void OnProviderExit()
-    {
-        //No special function on provider end. Just delete self.
-        QueueFree();
     }
 
     public override void _UnhandledInput(InputEvent @event)
