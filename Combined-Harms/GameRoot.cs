@@ -36,8 +36,6 @@ public class GameRoot : Spatial
     {
         var spawner = (SpawnManager) GetNode("/root/GameRoot/PlayerCharacters");
         var character = (PlayerCharacterProvider) spawner.Spawn("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
-        var charFPV = (PlayerCharacterFPV) character.GenerateObserver("FPV");
-        GetNode("/root/GameRoot/Map").AddChild(charFPV);
     }
 
     

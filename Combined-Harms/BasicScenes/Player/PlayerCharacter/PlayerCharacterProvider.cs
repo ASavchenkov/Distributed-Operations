@@ -9,10 +9,9 @@ public class PlayerCharacterProvider : Node, IProvider
     public Dictionary<string,string> ObserverPaths;
     //For generating observers
 
+    [Signal]
+    public delegate void TrajectoryUpdated(Vector3 translation, Vector3 yaw, Vector3 pitch);
     
-    public delegate void TrajectoryUpdateHandler(Vector3 translation, Vector3 yaw, Vector3 pitch);
-    public event TrajectoryUpdateHandler TrajectoryUpdated;
-
     Vector3 Translation = new Vector3();
     Vector3 YawRotation = new Vector3();
     Vector3 PitchRotation = new Vector3();
@@ -28,8 +27,15 @@ public class PlayerCharacterProvider : Node, IProvider
 
     public override void _Ready()
     {
-        GD.Print("this is the ready function");
+        
+        var MapNode = GetNode("/root/GameRoot/Map");
+
+        //If we're not the network master,
+        //use the simplified observer.
+        var observer = GenerateObserver(IsNetworkMaster() ? "FPV" : "3PV");
+        MapNode.AddChild(observer);
     }
+
     public Node GenerateObserver(string name)
     {
         var observer = (IObserver<PlayerCharacterProvider>) GD.Load<PackedScene>(ObserverPaths[name]).Instance();
@@ -43,7 +49,8 @@ public class PlayerCharacterProvider : Node, IProvider
         Translation = translation;
         YawRotation = yaw;
         PitchRotation = pitch;
-        TrajectoryUpdated?.Invoke(translation, yaw, pitch);
+
+        EmitSignal(nameof(TrajectoryUpdated), translation, yaw, pitch);
         // Body.Translation = translation;
         // LookYaw.Rotation = yaw;
         // LookPitch.Rotation = pitch;

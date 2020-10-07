@@ -1,21 +1,21 @@
 using Godot;
 using System;
 
-public class PlayerCharacter3PV : Spatial
+public class PlayerCharacter3PV : Spatial, IObserver<PlayerCharacterProvider>
 {
-    // Declare member variables here. Examples:
-    // private int a = 2;
-    // private string b = "text";
+    private PlayerCharacterProvider provider = null;
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
+    public void Init(PlayerCharacterProvider provider)
     {
-        
+        this.provider = provider;
+        provider.Connect("tree_exiting", this, "queue_free");
+        provider.Connect(nameof(PlayerCharacterProvider.TrajectoryUpdated), this, nameof(OnTrajectoryUpdated));
     }
 
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
+    public void OnTrajectoryUpdated(Vector3 translation, Vector3 yaw, Vector3 pitch)
+    {
+        Translation = translation;
+        Rotation = yaw;
+        //Pitch will be used when we have IK working with the model.
+    }
 }

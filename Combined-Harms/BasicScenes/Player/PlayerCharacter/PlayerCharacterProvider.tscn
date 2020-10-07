@@ -5,5 +5,6 @@
 [node name="PCProvider" type="Node"]
 script = ExtResource( 1 )
 ObserverPaths = {
+"3PV": "res://BasicScenes/Player/PlayerCharacter/PlayerCharacter3PV.tscn",
 "FPV": "res://BasicScenes/Player/PlayerCharacter/PlayerCharacterFPV.tscn"
 }

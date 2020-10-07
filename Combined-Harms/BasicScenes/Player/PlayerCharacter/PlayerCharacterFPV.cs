@@ -121,7 +121,7 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
 
     public void OnTorsoHit()
     {
-        EmitSignal("Die");
+        GD.Print("torso was hit");
     }
 
 }
