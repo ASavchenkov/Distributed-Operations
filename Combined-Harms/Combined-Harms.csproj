@@ -68,7 +68,7 @@
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />
     <Compile Include="BasicScenes\Items\Gun\Magazine.cs" />
     <Compile Include="BasicScenes\Items\Gun\MunitionSource.cs" />
-    <Compile Include="BasicScenes\Items\Gun\Rifle\RifleFPVObserver.cs" />
+    <Compile Include="BasicScenes\Items\Gun\Rifle\RifleFPV.cs" />
     <Compile Include="BasicScenes\Items\Gun\Rifle\RifleProvider.cs" />
     <Compile Include="BasicScenes\Items\Gun\SightFPVObserver.cs" />
     <Compile Include="BasicScenes\Items\ObserverInterfaces.cs" />
@@ -76,6 +76,7 @@
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacter3PV.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterProvider.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterFPV.cs" />
+    <Compile Include="BasicScenes\Player\Spectator\Spectator.cs" />
     <Compile Include="BasicScenes\Player\UserObserver.cs" />
     <Compile Include="BasicScenes\Player\UserProvider.cs" />
     <Compile Include="BasicScenes\Projectiles\Boolet\Boolet.cs" />

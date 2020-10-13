@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://BasicScenes/Player/Spectator/Spectator.cs" type="Script" id=1]
+
+[node name="Spectator" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="LookYaw" type="Spatial" parent="."]
+
+[node name="LookPitch" type="Spatial" parent="LookYaw"]
+
+[node name="Camera" type="Camera" parent="LookYaw/LookPitch"]

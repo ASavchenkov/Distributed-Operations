@@ -4,6 +4,7 @@ using System;
 
 //Overall root node for the player,
 //whether they are in the menu, spectating, or currently playing.
+
 public class UserObserver : Node, IObserver<UserProvider>
 {
     private UserProvider provider;
@@ -28,6 +29,11 @@ public class UserObserver : Node, IObserver<UserProvider>
         this.provider = provider;
         //We don't need to do anything with provider at the moment,
         //so we'll put off provider end behavior.
+    }
+
+    public void SpawnCharacter()
+    {
+        
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)

@@ -18,7 +18,7 @@ public class RifleProvider : Node, IProvider
     //For generating observers
 
     [Signal]
-    public delegate void AttachmentUpdated(string attachPoint, IProvider attachment);
+    public delegate void AttachmentUpdated(string attachPoint, Node attachment);
 
     public Node GenerateObserver(string name)
     {
@@ -27,9 +27,9 @@ public class RifleProvider : Node, IProvider
         return (Node) observer;
     }
 
-    public void SetAttachment(string attachPoint, IProvider attachment)
+    public void SetAttachment(string attachPoint, Node attachment)
     {
-        Attachments[attachPoint] = (Node) attachment;
+        Attachments[attachPoint] = attachment;
         EmitSignal(nameof(AttachmentUpdated),attachPoint, attachment);
     }
 

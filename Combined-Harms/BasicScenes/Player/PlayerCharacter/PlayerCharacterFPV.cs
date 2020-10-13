@@ -21,6 +21,8 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
     
     int groundCounter = 0;
     
+    private RifleFPV ItemInHands = null;
+    
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -37,8 +39,17 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
     public void Init(PlayerCharacterProvider provider)
     {
         this.provider = provider;
-        provider.Connect("tree_exiting", this, "queue_free");
         this.Name = "Player_" + provider.Name + "_FPV";
+        
+        provider.Connect("tree_exiting", this, "queue_free");
+        provider.Connect(nameof(PlayerCharacterProvider.HandItemUpdated),this,nameof(SetHandItem));
+    }
+
+    public void SetHandItem(RifleProvider p)
+    {
+        ItemInHands?.QueueFree();
+        ItemInHands = (RifleFPV) p.GenerateObserver("FPV");
+        GetNode("Body/LookYaw/LookPitch/Camera/").AddChild(ItemInHands);
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -102,9 +113,7 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
                 desiredMove += Vector3.Back;
             if(Input.IsActionPressed("MoveRight"))
                 desiredMove += Vector3.Right;
-
         }
-
         //what's the behavior of Normalized() when desiredMove is zero?
         //I guess it's still zero?
         desiredMove = desiredMove.Normalized()*provider.maxSpeed;

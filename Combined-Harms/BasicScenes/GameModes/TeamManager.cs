@@ -58,7 +58,7 @@ public class TeamManager : Node
             UserProvider player = (UserProvider) p;
             switch(player.ThisTeam)
             {
-                case UserProvider.Team.Spectator:
+                case UserProvider.Team.Unassigned:
                     Spectators.AddItem(player.Name);
                     break;
                 case UserProvider.Team.Red:

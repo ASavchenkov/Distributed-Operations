@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class RifleFPVObserver : Spatial, IObserver<RifleProvider>
+public class RifleFPV : Spatial, IObserver<RifleProvider>
 {
     
     [Export]

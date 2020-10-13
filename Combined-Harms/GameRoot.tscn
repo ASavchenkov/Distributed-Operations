@@ -33,6 +33,12 @@ __meta__ = {
 "_editor_description_": "Just a place to organize all projectiles if we want to look at them when debugging."
 }
 
+[node name="Loot" type="Node" parent="."]
+script = ExtResource( 6 )
+__meta__ = {
+"_editor_description_": "Just a place to organize all projectiles if we want to look at them when debugging."
+}
+
 [node name="Map" type="Spatial" parent="."]
 
 [node name="Floor" parent="Map" instance=ExtResource( 2 )]
