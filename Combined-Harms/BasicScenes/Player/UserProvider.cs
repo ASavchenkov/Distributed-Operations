@@ -24,7 +24,6 @@ public class UserProvider : Node, IProvider
     public int Score = 0;
     public bool VoteRestart = false;
     
-    [PuppetSync]
     public Node CurrentCharacter = null;
 
     [PuppetSync]
@@ -81,11 +80,18 @@ public class UserProvider : Node, IProvider
         Rpc("UpdateTeam", (int) ThisTeam);
         EmitSignal("TeamChanged");
     }
+
     [Puppet]
     public void UpdateTeam(int team)
     {
         ThisTeam = (Team) team;
         CurrentCharacter = null;
         EmitSignal("TeamChanged");
+    }
+
+    [PuppetSync]
+    public void SetCharacter(NodePath path)
+    {
+        CurrentCharacter = GetNode(path);
     }
 }
