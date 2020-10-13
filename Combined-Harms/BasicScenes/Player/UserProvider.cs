@@ -42,6 +42,7 @@ public class UserProvider : Node, IProvider
 
         if(!IsNetworkMaster())
             RpcId(GetNetworkMaster(), "RequestInit");
+        
     }
 
     public Node GenerateObserver(string name)
@@ -75,18 +76,16 @@ public class UserProvider : Node, IProvider
 
         ThisTeam = (Team) team;
         CurrentCharacter?.QueueFree();
+        CurrentCharacter = null;
         
-        var specScene = GD.Load<PackedScene>("res://BasicScenes/Player/Spectator/Spectator.tscn");
-        CurrentCharacter = specScene.Instance();
-        GetNode("root/GameRoot/Map").AddChild(CurrentCharacter);
-        Rpc("UpdateTeam", (int) ThisTeam, CurrentCharacter.GetPath());
+        Rpc("UpdateTeam", (int) ThisTeam);
         EmitSignal("TeamChanged");
     }
     [Puppet]
-    public void UpdateTeam(int team, NodePath currentCharPath)
+    public void UpdateTeam(int team)
     {
         ThisTeam = (Team) team;
-        CurrentCharacter = GetNode(currentCharPath);
+        CurrentCharacter = null;
         EmitSignal("TeamChanged");
     }
 }

@@ -12,14 +12,17 @@ public class UserObserver : Node, IObserver<UserProvider>
     [Signal]
     public delegate void SetInputEnabled(bool enabled);
 
-    private Godot.CanvasItem mainMenu;
-    private Godot.CanvasItem currentMenuNode = null;
+    private CanvasItem mainMenu;
+    private CanvasItem currentMenuNode = null;
+    
+    //This tracks whether we're spectating, using a character, driving.
+    //Basically whatever camera this user is using.
+    private Node CurrentView = null;
     
     public override void _Ready()
     {
         PackedScene menuScene = GD.Load<PackedScene>("res://BasicScenes/GUI/MainMenu.tscn");
-        mainMenu = (CanvasItem) menuScene.Instance();
-        AddChild(mainMenu);
+        mainMenu = (CanvasItem) GetNode("MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
 
     }
@@ -27,13 +30,18 @@ public class UserObserver : Node, IObserver<UserProvider>
     public void Init(UserProvider provider)
     {
         this.provider = provider;
-        //We don't need to do anything with provider at the moment,
-        //so we'll put off provider end behavior.
+        //whenever a new provider is set, the team might change implicitly, even on startup.
+        OnTeamChanged();
+        provider.Connect(nameof(UserProvider.TeamChanged),this,nameof(OnTeamChanged));
+        
     }
 
-    public void SpawnCharacter()
+    public void OnTeamChanged()
     {
-        
+        //Whatever used to be the current view should be QueueFree'd by now.
+        var spectatorScene = GD.Load<PackedScene>("res://BasicScenes/Player/Spectator/Spectator.tscn");
+        CurrentView = spectatorScene.Instance();
+        GetNode("/root/GameRoot/Map").AddChild(CurrentView);
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)

@@ -1,6 +1,9 @@
 using Godot;
 using System;
 
+
+//Doesn't need observer pattern
+//since only one spectator exists.
 public class Spectator : Spatial
 {
     public Spatial LookYaw;
@@ -67,10 +70,10 @@ public class Spectator : Spatial
         }
         //what's the behavior of Normalized() when desiredMove is zero?
         //I guess it's still zero?
-        var desiredMove = (desiredMoveXY +desiredMoveZ).Normalized()*maxSpeed;
+        var desiredMove = (desiredMoveXY + desiredMoveZ).Normalized()*maxSpeed;
         //desiredMove is still in local space.
         //We want to convert it to global space.
-        Vector3 globalMove = LookPitch.GlobalTransform.basis.Xform(desiredMoveXY);
+        Vector3 globalMove = LookPitch.GlobalTransform.basis.Xform(desiredMove);
         Translation += globalMove * delta;
         //We just apply movement manually since spectator cam doesn't have any interactions.
     }
