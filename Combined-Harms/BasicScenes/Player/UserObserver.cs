@@ -40,7 +40,8 @@ public class UserObserver : Node, IObserver<UserProvider>
 
     public void OnTeamChanged()
     {
-        //Whatever used to be the current view should be QueueFree'd by now.
+        //CurrentView may already have been freed, in which case do nothing.
+        CurrentView?.QueueFree();
         var spectatorScene = GD.Load<PackedScene>("res://BasicScenes/Player/Spectator/Spectator.tscn");
         CurrentView = spectatorScene.Instance();
         GetNode("/root/GameRoot/Map").AddChild(CurrentView);
