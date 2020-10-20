@@ -22,6 +22,7 @@ public class RifleProvider : Node, IProvider
 
     public Node GenerateObserver(string name)
     {
+        GD.Print("generating rifle observer");
         var observer = (IObserver<RifleProvider>) GD.Load<PackedScene>(ObserverPaths[name]).Instance();
         observer.Init(this);
         return (Node) observer;

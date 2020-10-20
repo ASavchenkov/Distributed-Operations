@@ -4,3 +4,6 @@
 
 [node name="Rifle" type="Node"]
 script = ExtResource( 1 )
+ObserverPaths = {
+"FPV": "res://BasicScenes/Items/Gun/Rifle/RifleFPV.tscn"
+}

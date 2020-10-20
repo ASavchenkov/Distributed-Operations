@@ -2,9 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class TeamManager : Node
+public class TDMMenu : Node
 {
-
 
     [Export]
     NodePath SpectatorPath;
@@ -26,7 +25,7 @@ public class TeamManager : Node
     NodePath VotePath;
 
     UserObserver ThisPlayer;
-    private Node PlayerSpawnManager;
+    private Node UserManager;
 
     public override void _Ready()
     {
@@ -35,12 +34,7 @@ public class TeamManager : Node
         BlueTeam = (ItemList) GetNode(BluePath);
         VoteCounter = (Label) GetNode(VoteCounterPath);
 
-        ThisPlayer = (UserObserver) GetNode("../../..");
-        PlayerSpawnManager = GetNode("/root/GameRoot/Players");
-
-        GetNode("/root/GameRoot/TDM").Connect("UpdateTDMLists",this,"UpdateLists");
-        GetNode("/root/GameRoot/TDM").Connect("UpdateVotes",this,"UpdateVotes");
-        GetNode(VotePath).Connect("toggled", this, "VoteToggled");
+        UserManager = GetNode("/root/GameRoot/Users");
 
         UpdateLists();
     }
@@ -51,29 +45,24 @@ public class TeamManager : Node
         RedTeam.Clear();
         BlueTeam.Clear();
 
-        Godot.Collections.Array players = PlayerSpawnManager.GetChildren();
+        Godot.Collections.Array users = UserManager.GetChildren();
 
-        foreach( Node p in players)
+        foreach( Node p in users)
         {
-            UserProvider player = (UserProvider) p;
-            switch(player.ThisTeam)
+            UserProvider user = (UserProvider) p;
+            switch(user.ThisTeam)
             {
                 case UserProvider.Team.Unassigned:
-                    Spectators.AddItem(player.Name);
+                    Spectators.AddItem(user.Alias);
                     break;
                 case UserProvider.Team.Red:
-                    RedTeam.AddItem(player.Name);
+                    RedTeam.AddItem(user.Alias);
                     break;
                 case UserProvider.Team.Blue:
-                    BlueTeam.AddItem(player.Name);
+                    BlueTeam.AddItem(user.Alias);
                     break;
             }
         }
-    }
-
-    public void VoteToggled(bool vote)
-    {
-        ThisPlayer.Rpc("UpdateVote", vote);
     }
 
     public void UpdateVotes(int votes, float needed, int total)
@@ -81,14 +70,5 @@ public class TeamManager : Node
         VoteCounter.Text = $"{votes}/{total}, {needed} votes needed.";
     }
 
-    // when WE select a team.
-    public void OnTeamSelected(int team)
-    {
-        ThisPlayer.Rpc("UpdateTeam",team);
-    }
 
-    public void OnToggleVoteRestart( bool vote)
-    {
-        ThisPlayer.Rpc("UpdateVote", vote);
-    }
 }

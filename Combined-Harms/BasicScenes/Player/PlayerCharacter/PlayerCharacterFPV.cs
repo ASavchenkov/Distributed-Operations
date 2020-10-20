@@ -47,6 +47,7 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
 
     public void SetHandItem(RifleProvider p)
     {
+        GD.Print("setting hand item to rifle");
         ItemInHands?.QueueFree();
         ItemInHands = (RifleFPV) p.GenerateObserver("FPV");
         GetNode("Body/LookYaw/LookPitch/Camera/").AddChild(ItemInHands);

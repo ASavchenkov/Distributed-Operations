@@ -7,12 +7,12 @@ using System;
 
 public class UserObserver : Node, IObserver<UserProvider>
 {
-    private UserProvider provider;
+    public UserProvider provider {get; private set;}
 
     [Signal]
     public delegate void SetInputEnabled(bool enabled);
 
-    private CanvasItem mainMenu;
+    private CanvasItem MainMenu;
     private CanvasItem currentMenuNode = null;
     
     //This tracks whether we're spectating, using a character, driving.
@@ -24,9 +24,11 @@ public class UserObserver : Node, IObserver<UserProvider>
     public override void _Ready()
     {
         PackedScene menuScene = GD.Load<PackedScene>("res://BasicScenes/GUI/MainMenu.tscn");
-        mainMenu = (CanvasItem) GetNode("MainMenu");
+        MainMenu = (CanvasItem) GetNode("MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
         PCManager = (SpawnManager) GetNode("/root/GameRoot/PlayerCharacters");
+
+        MainMenu.GetNode("TabContainer/TDM/VBoxContainer/TeamChoice/Option").Connect("item_selected",this, nameof(SetTeam));
     }
 
     public void Init(UserProvider provider)
@@ -35,7 +37,7 @@ public class UserObserver : Node, IObserver<UserProvider>
         //whenever a new provider is set, the team might change implicitly, even on startup.
         OnTeamChanged();
         provider.Connect(nameof(UserProvider.TeamChanged),this,nameof(OnTeamChanged));
-        GetNode("MainMenu/TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
+        MainMenu.GetNode("TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
     }
 
     public void OnTeamChanged()
@@ -47,8 +49,20 @@ public class UserObserver : Node, IObserver<UserProvider>
         GetNode("/root/GameRoot/Map").AddChild(CurrentView);
     }
 
+    public void SetTeam(int team)
+    {
+        if(provider.ThisTeam == (UserProvider.Team) team) return;
+
+        provider.CurrentCharacter?.QueueFree();
+        provider.CurrentCharacter = null;
+        
+        provider.Rpc("UpdateTeam", team);
+    }
+
     public void SpawnPC()
     {
+        if(provider.ThisTeam == UserProvider.Team.Unassigned) return;
+
         CurrentView?.QueueFree();
         CurrentView = PCManager.Spawn("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
         
@@ -66,7 +80,7 @@ public class UserObserver : Node, IObserver<UserProvider>
                 //to open the main menu.
                 if(currentMenuNode is null)
                 {
-                    currentMenuNode = mainMenu;
+                    currentMenuNode = MainMenu;
                     currentMenuNode.Visible = true;
                     Input.SetMouseMode(Input.MouseMode.Visible);
                     EmitSignal(nameof(SetInputEnabled), false);

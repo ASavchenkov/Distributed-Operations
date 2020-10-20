@@ -34,11 +34,14 @@ public class PlayerCharacterProvider : Node, IProvider
     {
 
         var MapNode = GetNode("/root/GameRoot/Map");
-
         //If we're not the network master,
         //use the simplified observer.
         var observer = GenerateObserver(IsNetworkMaster() ? "FPV" : "3PV");
         MapNode.AddChild(observer);
+
+        var lootSpawner = (SpawnManager) GetNode("/root/GameRoot/Loot");
+        SetHandItem ((RifleProvider) lootSpawner.Spawn("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn"));
+
     }
 
     public Node GenerateObserver(string name)

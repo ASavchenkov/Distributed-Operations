@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
+[ext_resource path="res://BasicScenes/GUI/TDMMenu.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/GUI/NetworkingTab.cs" type="Script" id=2]
 
 [node name="MainMenu" type="CenterContainer"]
@@ -20,6 +21,7 @@ __meta__ = {
 }
 
 [node name="Networking" type="CenterContainer" parent="TabContainer"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
@@ -138,13 +140,18 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="TDM" type="CenterContainer" parent="TabContainer"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 4.0
 margin_top = 32.0
 margin_right = -4.0
 margin_bottom = -4.0
+script = ExtResource( 1 )
+SpectatorPath = NodePath("VBoxContainer/Spectators/ScrollContainer/PeerList")
+RedPath = NodePath("VBoxContainer/HBoxContainer/Red/ScrollContainer/PeerList")
+BluePath = NodePath("VBoxContainer/HBoxContainer/Blue/ScrollContainer/PeerList")
+VoteCounterPath = NodePath("VBoxContainer/VoteRestart/VoteCounter")
+VotePath = NodePath("VBoxContainer/VoteRestart/CheckBox")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="TabContainer/TDM"]
 margin_left = 71.0
@@ -330,4 +337,3 @@ margin_bottom = 20.0
 size_flags_horizontal = 3
 text = "Spawn!"
 [connection signal="pressed" from="TabContainer/Networking/VBoxContainer/Refresh" to="TabContainer/Networking" method="_DisplayPeers"]
-[connection signal="item_selected" from="TabContainer/TDM/VBoxContainer/TeamChoice/Option" to="TabContainer/TDM" method="OnTeamSelected"]

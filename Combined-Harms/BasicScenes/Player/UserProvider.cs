@@ -29,18 +29,20 @@ public class UserProvider : Node, IProvider
     [PuppetSync]
     public string Alias;
 
-    private TDM tdm;
     private SpawnManager PCManager;
 
     public override void _Ready()
     {
         Alias = this.Name;  //Let player change it if they so wish.
                             //this.Name is a good default though.
-        tdm = (TDM) GetNode("/root/GameRoot/TDM");
+        
         PCManager = (SpawnManager) GetNode("/root/GameRoot/PlayerCharacters");
 
+        var menu = GetNode("/root/GameRoot/UserObserver_1/MainMenu/TabContainer/TDM");
+        Connect(nameof(TeamChanged), menu, nameof(TDMMenu.UpdateLists));
+        
         if(!IsNetworkMaster())
-            RpcId(GetNetworkMaster(), "RequestInit");
+            RpcId(GetNetworkMaster(), nameof(RequestInit));
         
     }
 
@@ -58,35 +60,23 @@ public class UserProvider : Node, IProvider
         Score = score;
         VoteRestart = vote;
         Alias = alias;
-        tdm.EmitSignal("UpdateTDMLists");
+        EmitSignal(nameof(TeamChanged));
     }
 
     [Master]
     public void RequestInit()
     {
         int uid = GetTree().GetRpcSenderId();
-        RpcId(uid, "RemoteInit", ThisTeam, Score, VoteRestart, Alias);
+        RpcId(uid, nameof(RemoteInit), ThisTeam, Score, VoteRestart, Alias);
     }
 
-    //Only get's called on the master peer.
-    public void SetTeam(Team team)
-    {
-        if(ThisTeam == team) return;
 
-        ThisTeam = (Team) team;
-        CurrentCharacter?.QueueFree();
-        CurrentCharacter = null;
-        
-        Rpc("UpdateTeam", (int) ThisTeam);
-        EmitSignal("TeamChanged");
-    }
-
-    [Puppet]
+    [PuppetSync]
     public void UpdateTeam(int team)
     {
         ThisTeam = (Team) team;
         CurrentCharacter = null;
-        EmitSignal("TeamChanged");
+        EmitSignal(nameof(TeamChanged));
     }
 
     [PuppetSync]

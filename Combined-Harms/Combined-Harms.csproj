@@ -64,7 +64,7 @@
     <Compile Include="addons\PurePeerSignaling\scripts\SlushNode.cs" />
     <Compile Include="BasicScenes\BallisticTargets\Torso\BallisticTorso.cs" />
     <Compile Include="BasicScenes\GameModes\TDM.cs" />
-    <Compile Include="BasicScenes\GameModes\TeamManager.cs" />
+    <Compile Include="BasicScenes\GUI\TDMMenu.cs" />
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />
     <Compile Include="BasicScenes\Items\Gun\Magazine.cs" />
     <Compile Include="BasicScenes\Items\Gun\MunitionSource.cs" />
