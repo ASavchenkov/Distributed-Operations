@@ -57,8 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="addons\PurePeerSignaling\Example.cs" />
-    <Compile Include="addons\PurePeerSignaling\scripts\HandshakeClient.cs" />
-    <Compile Include="addons\PurePeerSignaling\scripts\HandshakeServer.cs" />
+    <Compile Include="addons\PurePeerSignaling\Scripts\GUI\NetworkingMenu.cs" />
+    <Compile Include="addons\PurePeerSignaling\scripts\GUI\PeerItem.cs" />
+    <!-- <Compile Include="addons\PurePeerSignaling\scripts\HandshakeClient.cs" /> -->
+    <!-- <Compile Include="addons\PurePeerSignaling\scripts\HandshakeServer.cs" /> -->
     <Compile Include="addons\PurePeerSignaling\scripts\Networking.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\SignaledPeer.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\SlushNode.cs" />
