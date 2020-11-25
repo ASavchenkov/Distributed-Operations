@@ -53,19 +53,18 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
-    <!-- COPY THIS TO YOUR CSPROJ -->
   </ItemGroup>
   <ItemGroup>
     <Compile Include="addons\PurePeerSignaling\Example.cs" />
     <Compile Include="addons\PurePeerSignaling\Scripts\GUI\NetworkingMenu.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\GUI\PeerItem.cs" />
-    <!-- <Compile Include="addons\PurePeerSignaling\scripts\HandshakeClient.cs" /> -->
-    <!-- <Compile Include="addons\PurePeerSignaling\scripts\HandshakeServer.cs" /> -->
     <Compile Include="addons\PurePeerSignaling\scripts\Networking.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\SignaledPeer.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\SlushNode.cs" />
     <Compile Include="BasicScenes\BallisticTargets\Torso\BallisticTorso.cs" />
-    <Compile Include="BasicScenes\GameModes\TDM.cs" />
+    <Compile Include="BasicScenes\GameManagement\NOKManager.cs" />
+    <Compile Include="BasicScenes\GameManagement\RandomSelector.cs" />
+    <Compile Include="BasicScenes\GameManagement\TDM.cs" />
     <Compile Include="BasicScenes\GUI\TDMMenu.cs" />
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />
     <Compile Include="BasicScenes\Items\Gun\Magazine.cs" />
@@ -91,11 +90,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MessagePack">
-      <!-- COPY THIS TO YOUR CSPROJ -->
       <Version>2.1.115</Version>
-      <!-- COPY THIS TO YOUR CSPROJ -->
     </PackageReference>
-    <!-- COPY THIS TO YOUR CSPROJ -->
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies">
       <Version>1.0.0</Version>
       <PrivateAssets>All</PrivateAssets>

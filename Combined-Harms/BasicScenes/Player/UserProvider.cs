@@ -26,8 +26,9 @@ public class UserProvider : Node, IProvider
     
     public Node CurrentCharacter = null;
 
-    [PuppetSync]
     public string Alias;
+    //When the peer disconnects, this will be used to determine
+    //who to set as the master for this peers providers.
 
     private SpawnManager PCManager;
 
@@ -35,7 +36,7 @@ public class UserProvider : Node, IProvider
     {
         Alias = this.Name;  //Let player change it if they so wish.
                             //this.Name is a good default though.
-        
+
         PCManager = (SpawnManager) GetNode("/root/GameRoot/PlayerCharacters");
 
         var menu = GetNode("/root/GameRoot/UserObserver_1/MainMenu/TabContainer/TDM");
@@ -70,6 +71,14 @@ public class UserProvider : Node, IProvider
         RpcId(uid, nameof(RemoteInit), ThisTeam, Score, VoteRestart, Alias);
     }
 
+    public void SetTeam(int team)
+    {
+        if(ThisTeam == (UserProvider.Team) team) return;
+
+        CurrentCharacter?.QueueFree();
+        CurrentCharacter = null;
+        Rpc(nameof(UpdateTeam), team);
+    }
 
     [PuppetSync]
     public void UpdateTeam(int team)

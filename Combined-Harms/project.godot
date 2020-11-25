@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Combined-Harms"
-run/main_scene="res://addons/PurePeerSignaling/Example.tscn"
+run/main_scene="res://GameRoot.tscn"
 config/icon="res://icon.png"
 
 [gdnative]

@@ -28,8 +28,7 @@ public class UserObserver : Node, IObserver<UserProvider>
         Input.SetMouseMode(Input.MouseMode.Visible);
         PCManager = (SpawnManager) GetNode("/root/GameRoot/PlayerCharacters");
 
-        MainMenu.GetNode("TabContainer/TDM/VBoxContainer/TeamChoice/Option").Connect("item_selected",this, nameof(SetTeam));
-    }
+        }
 
     public void Init(UserProvider provider)
     {
@@ -37,6 +36,7 @@ public class UserObserver : Node, IObserver<UserProvider>
         //whenever a new provider is set, the team might change implicitly, even on startup.
         OnTeamChanged();
         provider.Connect(nameof(UserProvider.TeamChanged),this,nameof(OnTeamChanged));
+        MainMenu.GetNode("TabContainer/TDM/VBoxContainer/TeamChoice/Option").Connect("item_selected",provider, nameof(UserProvider.SetTeam));
         MainMenu.GetNode("TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
     }
 
@@ -47,16 +47,6 @@ public class UserObserver : Node, IObserver<UserProvider>
         var spectatorScene = GD.Load<PackedScene>("res://BasicScenes/Player/Spectator/Spectator.tscn");
         CurrentView = spectatorScene.Instance();
         GetNode("/root/GameRoot/Map").AddChild(CurrentView);
-    }
-
-    public void SetTeam(int team)
-    {
-        if(provider.ThisTeam == (UserProvider.Team) team) return;
-
-        provider.CurrentCharacter?.QueueFree();
-        provider.CurrentCharacter = null;
-        
-        provider.Rpc("UpdateTeam", team);
     }
 
     public void SpawnPC()
