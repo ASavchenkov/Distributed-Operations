@@ -44,8 +44,7 @@ public class PlayerCharacterProvider : Node, IProvider, INOKTransferrable
 
         if(!IsNetworkMaster())
         {
-            var nokManager = (NOKManager) GetNode("/root/GameRoot/NOKManager");
-            nokManager.Subscribe(this);
+            NOKManager.Instance.Subscribe(this);
         }
         
     }

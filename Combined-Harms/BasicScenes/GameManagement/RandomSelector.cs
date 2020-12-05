@@ -3,45 +3,42 @@ using System;
 
 public class RandomSelector : Node
 {
-    NOKManager manager;
-    Networking networking;
+    
     public override void _Ready()
     {
-        manager = (NOKManager) GetNode("/root/GameRoot/NOKManager");
-        networking = (Networking) GetNode("/root/GameRoot/Networking");
-        networking.RTCMP.Connect("peer_connected", this, nameof(OnPeerConnected));
+        Networking.Instance.RTCMP.Connect("peer_connected", this, nameof(OnPeerConnected));
     }
 
     public void OnPeerConnected(int uid)
     {   
-        manager.ThisNOK = uid;
-        networking.RTCMP.Disconnect("peer_connected", this, nameof(OnPeerConnected));
-        networking.SignaledPeers[uid].Connect(nameof(SignaledPeer.ConnectionLost),this, nameof(OnNOKDC));
-        networking.SignaledPeers[uid].Connect(nameof(SignaledPeer.Delete),this, nameof(OnNOKDC));
+        NOKManager.Instance.ThisNOK = uid;
+        Networking.Instance.RTCMP.Disconnect("peer_connected", this, nameof(OnPeerConnected));
+        Networking.Instance.SignaledPeers[uid].Connect(nameof(SignaledPeer.ConnectionLost),this, nameof(OnPeerDC));
+        Networking.Instance.SignaledPeers[uid].Connect(nameof(SignaledPeer.Delete),this, nameof(OnPeerDC));
     
     }
 
-    public void OnNOKDC()
+    public void OnPeerDC()
     {
-        if(networking.SignaledPeers.ContainsKey(manager.ThisNOK))
+        if(Networking.Instance.SignaledPeers.ContainsKey(NOKManager.Instance.ThisNOK))
         {
-            networking.SignaledPeers[manager.ThisNOK].Disconnect(nameof(SignaledPeer.ConnectionLost),this, nameof(OnNOKDC));
-            networking.SignaledPeers[manager.ThisNOK].Disconnect(nameof(SignaledPeer.Delete),this, nameof(OnNOKDC));
+            Networking.Instance.SignaledPeers[NOKManager.Instance.ThisNOK].Disconnect(nameof(SignaledPeer.ConnectionLost),this, nameof(OnPeerDC));
+            Networking.Instance.SignaledPeers[NOKManager.Instance.ThisNOK].Disconnect(nameof(SignaledPeer.Delete),this, nameof(OnPeerDC));
         }
         
         int newNOK = -1;
-        foreach(SignaledPeer p in networking.SignaledPeers.Values)
+        foreach(SignaledPeer p in Networking.Instance.SignaledPeers.Values)
         {
             if(p.CurrentState == SignaledPeer.ConnectionStateMachine.NOMINAL)
             {
                 newNOK = p.UID;
-                networking.SignaledPeers[newNOK].Connect(nameof(SignaledPeer.ConnectionLost),this, nameof(OnNOKDC));
-                networking.SignaledPeers[newNOK].Connect(nameof(SignaledPeer.Delete),this, nameof(OnNOKDC));
+                Networking.Instance.SignaledPeers[newNOK].Connect(nameof(SignaledPeer.ConnectionLost),this, nameof(OnPeerDC));
+                Networking.Instance.SignaledPeers[newNOK].Connect(nameof(SignaledPeer.Delete),this, nameof(OnPeerDC));
                 break;
             }
         }
-        manager.ThisNOK = newNOK;
+        NOKManager.Instance.ThisNOK = newNOK;
         if(newNOK == -1)
-            networking.RTCMP.Connect("peer_connected", this, nameof(OnPeerConnected));
+            Networking.Instance.RTCMP.Connect("peer_connected", this, nameof(OnPeerConnected));
     }
 }

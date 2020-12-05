@@ -20,7 +20,7 @@ public class SpawnManager : Node
     public override void _Ready()
     {
         GetTree().Connect("network_peer_connected",this, "OnPeerConnected");
-        GetNode("/root/GameRoot/Networking").Connect("ConnectedToSession",this, "ClearAll");
+        Networking.Instance.Connect("ConnectedToSession",this, "ClearAll");
     }
 
     //Copied but slightly different from what's in HandshakeServer

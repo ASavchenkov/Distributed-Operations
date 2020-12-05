@@ -45,8 +45,7 @@ public class UserProvider : Node, IProvider, INOKTransferrable
         if(!IsNetworkMaster())
         {
             RpcId(GetNetworkMaster(), nameof(RequestInit));
-            var nokManager = (NOKManager) GetNode("/root/GameRoot/NOKManager");
-            nokManager.Subscribe(this);
+            NOKManager.Instance.Subscribe(this);
         }
             
     }

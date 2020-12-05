@@ -9,6 +9,12 @@ using System.Collections.Generic;
 public class NOKManager : Node
 {
 
+    public static NOKManager Instance
+	{
+		get;
+		private set;
+	}
+
     public class NOKSignaller : Godot.Object
     {
         //who the next of kin is.
@@ -36,13 +42,12 @@ public class NOKManager : Node
         }
     }
     Dictionary<int, NOKSignaller> NOKs = new Dictionary<int, NOKSignaller>();
-    Networking networking;
-
+    
     public override void _Ready()
 	{
-        networking = (Networking) GetNode("/root/GameRoot/Networking");
-        networking.RTCMP.Connect("peer_connected",this,nameof(OnPeerConnected));
-        networking.RTCMP.Connect("peer_disconnected",this,nameof(OnPeerDC));
+        Instance = this;
+        Networking.Instance.RTCMP.Connect("peer_connected",this,nameof(OnPeerConnected));
+        Networking.Instance.RTCMP.Connect("peer_disconnected",this,nameof(OnPeerDC));
     }
 
     public void OnPeerConnected(int uid)

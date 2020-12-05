@@ -4,28 +4,26 @@ using System;
 public class NetworkingTab : CenterContainer
 {
     private ItemList peerList;
-    private Networking networking;
-
+    
     public override void _Ready()
     {
         peerList = (ItemList) GetNode("VBoxContainer/ScrollContainer/PeerList");
-        networking = (Networking) GetNode("/root/GameRoot/Networking");
-
+        
         //connect all the signals to Networking.
         LineEdit HostURL = (LineEdit) GetNode("VBoxContainer/HostURL/LineEdit");
-        HostURL.Connect("text_changed", networking, "_SetURL");
+        HostURL.Connect("text_changed", Networking.Instance, "_SetURL");
 
         LineEdit Secret = (LineEdit) GetNode("VBoxContainer/Secret/LineEdit");
-        Secret.Connect("text_changed", networking, "_SetSecret");
+        Secret.Connect("text_changed", Networking.Instance, "_SetSecret");
 
         Button JoinSession = (Button) GetNode("VBoxContainer/Join");
-        JoinSession.Connect("pressed", networking, "_JoinMesh");
+        JoinSession.Connect("pressed", Networking.Instance, "_JoinMesh");
         
         Button StartServer = (Button) GetNode("VBoxContainer/ServerEnabled/Start");
-        StartServer.Connect("pressed", networking, "_StartServer");
+        StartServer.Connect("pressed", Networking.Instance, "_StartServer");
 
         Button StopServer = (Button) GetNode("VBoxContainer/ServerEnabled/Stop");
-        StopServer.Connect("pressed", networking, "_StopServer");
+        StopServer.Connect("pressed", Networking.Instance, "_StopServer");
         
     }
 
@@ -34,9 +32,9 @@ public class NetworkingTab : CenterContainer
         GD.Print("DISPLAYING PEERS");
         peerList.Clear();
         
-        foreach(int uid in networking.RTCMP.GetPeers().Keys)
+        foreach(int uid in Networking.Instance.RTCMP.GetPeers().Keys)
 		{
-			string peerString = uid.ToString() + ": " + ((bool) networking.RTCMP.GetPeer(uid)["connected"]).ToString() + "\n";
+			string peerString = uid.ToString() + ": " + ((bool) Networking.Instance.RTCMP.GetPeer(uid)["connected"]).ToString() + "\n";
             peerList.AddItem(peerString);
         }
 
