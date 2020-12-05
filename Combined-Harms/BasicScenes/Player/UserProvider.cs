@@ -6,7 +6,7 @@ using System.Collections.Generic;
 //Provider with the "authoritative" version of user data
 //Stores some game specific information too for specators.
 
-public class UserProvider : Node, IProvider
+public class UserProvider : Node, IProvider, INOKTransferrable
 {
     
     [Export]
@@ -31,20 +31,24 @@ public class UserProvider : Node, IProvider
     //who to set as the master for this peers providers.
 
     private SpawnManager PCManager;
-
+    
     public override void _Ready()
     {
         Alias = this.Name;  //Let player change it if they so wish.
                             //this.Name is a good default though.
 
         PCManager = (SpawnManager) GetNode("/root/GameRoot/PlayerCharacters");
-
+        
         var menu = GetNode("/root/GameRoot/UserObserver_1/MainMenu/TabContainer/TDM");
         Connect(nameof(TeamChanged), menu, nameof(TDMMenu.UpdateLists));
         
         if(!IsNetworkMaster())
+        {
             RpcId(GetNetworkMaster(), nameof(RequestInit));
-        
+            var nokManager = (NOKManager) GetNode("/root/GameRoot/NOKManager");
+            nokManager.Subscribe(this);
+        }
+            
     }
 
     public Node GenerateObserver(string name)
@@ -92,5 +96,12 @@ public class UserProvider : Node, IProvider
     public void SetCharacter(NodePath path)
     {
         CurrentCharacter = GetNode(path);
+    }
+
+    public void OnNOKTransfer(int uid)
+    {
+        //This particular object can just be deleted (safely)
+        //if the peer DCs.
+        QueueFree();
     }
 }

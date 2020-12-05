@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class PlayerCharacterProvider : Node, IProvider
+public class PlayerCharacterProvider : Node, IProvider, INOKTransferrable
 {
 
     [Export]
@@ -42,6 +42,17 @@ public class PlayerCharacterProvider : Node, IProvider
         var lootSpawner = (SpawnManager) GetNode("/root/GameRoot/Loot");
         SetHandItem ((RifleProvider) lootSpawner.Spawn("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn"));
 
+        if(!IsNetworkMaster())
+        {
+            var nokManager = (NOKManager) GetNode("/root/GameRoot/NOKManager");
+            nokManager.Subscribe(this);
+        }
+        
+    }
+
+    public void OnNOKTransfer(int uid)
+    {
+        QueueFree();
     }
 
     public Node GenerateObserver(string name)

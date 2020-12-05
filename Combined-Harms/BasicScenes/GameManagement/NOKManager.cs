@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 
 //Makes sure Next Of Kin (NOK) is synchronized between all peers,
@@ -7,6 +8,22 @@ using System.Collections.Generic;
 //Doesn't actually handle the selection of the NOK.
 public class NOKManager : Node
 {
+
+    public class NOKSignaller : Godot.Object
+    {
+        //who the next of kin is.
+        //public because who else is going to change this?
+        public int uid = -1;
+        [Signal]
+        public delegate void Transfer(int uid);
+        public void trigger()
+        {
+            EmitSignal(nameof(Transfer), uid);
+        }
+
+        
+    }
+
     //expose as property so changes automatically trigger RPC.
     int _ThisNOK = -1;
     public int ThisNOK
@@ -18,7 +35,7 @@ public class NOKManager : Node
             Rpc(nameof(UpdateNOK), _ThisNOK);
         }
     }
-    Dictionary<int, int> NOKs = new Dictionary<int, int>();
+    Dictionary<int, NOKSignaller> NOKs = new Dictionary<int, NOKSignaller>();
     Networking networking;
 
     public override void _Ready()
@@ -28,16 +45,14 @@ public class NOKManager : Node
         networking.RTCMP.Connect("peer_disconnected",this,nameof(OnPeerDC));
     }
 
-    [Signal]
-    public delegate void TransferToNOK(int peer, int NOK);
-
     public void OnPeerConnected(int uid)
     {
+        NOKs[uid] = new NOKSignaller();
         RpcId(uid, nameof(RequestNOK));
     }
     public void OnPeerDC(int uid)
     {
-        EmitSignal(nameof(TransferToNOK), uid, NOKs[uid]);
+        NOKs[uid].trigger();
         NOKs.Remove(uid);
     }
 
@@ -50,8 +65,29 @@ public class NOKManager : Node
     }
 
     [Remote]
-    public void UpdateNOK(int NOK)
+    public void UpdateNOK(int uid)
     {
-        NOKs[GetTree().GetRpcSenderId()] = NOK;
+        NOKs[GetTree().GetRpcSenderId()].uid = uid;
+    }
+
+    public void Subscribe (Node n)
+    {
+        Debug.Assert(n is INOKTransferrable);
+        NOKs[n.GetNetworkMaster()].Connect(nameof(NOKSignaller.Transfer),n,nameof(INOKTransferrable.OnNOKTransfer));
+    }
+    public void UnSubscribe (Node n)
+    {
+        Debug.Assert(n is INOKTransferrable);
+        NOKs[n.GetNetworkMaster()].Disconnect(nameof(NOKSignaller.Transfer),n,nameof(INOKTransferrable.OnNOKTransfer));
+    }
+
+    //Poor mans default interface implementation.
+    //We're not on c# 8 yet so the default function is here
+    //and needs to explicitly be invoked still.
+    public void ChangeMaster(Node n, int uid)
+    {
+        UnSubscribe(n);
+        n.SetNetworkMaster(uid);
+        Subscribe(n);
     }
 }
