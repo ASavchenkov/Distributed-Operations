@@ -6,6 +6,14 @@ using System.Collections.Generic;
 //But can also simply be dragged and dropped on root nodes of scenes
 //(as long as they have no other functionality)
 //Don't forget to input the ScenePath string when not using NodeFactory
+
+public interface Test
+{
+    public void lol()
+    {
+        
+    }
+}
 public class ReplicableNode : Node
 {
     
