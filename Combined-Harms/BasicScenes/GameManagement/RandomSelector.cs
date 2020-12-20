@@ -20,6 +20,7 @@ public class RandomSelector : Node
 
     public void OnNOKDC()
     {
+        GD.Print("CALL TO ONNOKDC");
         if(Networking.Instance.SignaledPeers.ContainsKey(NOKManager.Instance.ThisNOK))
         {
             Networking.Instance.SignaledPeers[NOKManager.Instance.ThisNOK].Disconnect(nameof(SignaledPeer.ConnectionLost),this, nameof(OnNOKDC));

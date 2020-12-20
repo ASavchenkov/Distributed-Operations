@@ -32,6 +32,7 @@ public class UserObserver : Node, IObserver<UserProvider>
 
     public void Init(UserProvider provider)
     {
+        GD.Print("CALL TO USEROBSERVER INIT");
         this.provider = provider;
         //whenever a new provider is set, the team might change implicitly, even on startup.
         OnTeamChanged();

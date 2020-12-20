@@ -64,6 +64,8 @@
     <Compile Include="BasicScenes\BallisticTargets\Torso\BallisticTorso.cs" />
     <Compile Include="BasicScenes\GameManagement\NOKManager.cs" />
     <Compile Include="BasicScenes\GameManagement\RandomSelector.cs" />
+    <Compile Include="BasicScenes\GameManagement\ReplicableNode.cs" />
+    <Compile Include="BasicScenes\GameManagement\Replicator.cs" />
     <Compile Include="BasicScenes\GameManagement\TDM.cs" />
     <Compile Include="BasicScenes\GUI\TDMMenu.cs" />
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />

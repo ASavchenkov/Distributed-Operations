@@ -6,12 +6,15 @@ using System.Collections.Generic;
 //Provider with the "authoritative" version of user data
 //Stores some game specific information too for specators.
 
-public class UserProvider : Node, IProvider, INOKTransferrable
+public class UserProvider : ReplicableNode, IProvider, INOKTransferrable
 {
     
     [Export]
     public Dictionary<string,string> ObserverPaths;
 
+    public static NodeFactory<UserProvider> Factory = new NodeFactory<UserProvider>("res://BasicScenes/Player/UserProvider.tscn");
+    public override string ScenePath { get{return Factory.ScenePath;}}
+    
     public enum Team {Unassigned, Red, Blue};
     public Team ThisTeam = Team.Unassigned;
     
@@ -34,6 +37,8 @@ public class UserProvider : Node, IProvider, INOKTransferrable
     
     public override void _Ready()
     {
+        base._Ready();
+
         Alias = this.Name;  //Let player change it if they so wish.
                             //this.Name is a good default though.
 
@@ -45,7 +50,6 @@ public class UserProvider : Node, IProvider, INOKTransferrable
         if(!IsNetworkMaster())
         {
             RpcId(GetNetworkMaster(), nameof(RequestInit));
-            NOKManager.Instance.Subscribe(this);
         }
             
     }
