@@ -3,10 +3,10 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-public class Replicator : Node
+public class ReplicationServer : Node
 {
 
-    public static Replicator Instance { get; private set;}
+    public static ReplicationServer Instance { get; private set;}
 
     HashSet<int> occupiedIDs = new HashSet<int>();
     Random rnd = new Random();
@@ -32,12 +32,12 @@ public class Replicator : Node
         return candidate;
     }
 
-    public void Replicate(ReplicableNode n)
+    public void Replicate(IReplicable n)
     {
         Rpc(n.GetParent().GetPath(), n.Name, n.ScenePath);
     }
 
-    public void ReplicateID(ReplicableNode n, int uid)
+    public void ReplicateID(IReplicable n, int uid)
     {
         RpcId(uid, nameof(Replicate), n.GetParent().GetPath(), n.Name, n.ScenePath);     
     }
@@ -54,7 +54,7 @@ public class Replicator : Node
         }
         
 
-        var childNode = (ReplicableNode) GetNode(parent + "/" + name);
+        var childNode = (IReplicable) GetNode(parent + "/" + name);
         if(!(childNode is null))
         {
             //check if someone is simply confirming replication
@@ -62,7 +62,7 @@ public class Replicator : Node
             if(childNode.ScenePath == scenePath 
                 &&childNode.GetNetworkMaster() == GetTree().GetRpcSenderId())
             {
-                childNode.Rpc(nameof(ReplicableNode.AckRPC));
+                childNode.Rpc(nameof(IReplicable.AckRPC));
             }
             else GD.Print("Replication Error: Node path collision");
             //purely for debugging. Shouldn't happen.
@@ -74,15 +74,21 @@ public class Replicator : Node
             //If it doesn't exist yet, then just replicate it.
             //Easiest case to handle.
             PackedScene scene = GD.Load<PackedScene>(scenePath);
-            childNode = (ReplicableNode) scene.Instance();
-            parentNode.AddChild(childNode);
+            childNode = (IReplicable) scene.Instance();
+            parentNode.AddChild((Node) childNode);
 
             childNode.Name = name;
             childNode.SetNetworkMaster(GetTree().GetRpcSenderId());
-            childNode.Rpc(nameof(ReplicableNode.AckRPC));
+            childNode.Rpc(nameof(IReplicable.AckRPC));
+            
             
         }
     
+    }
+    [Remote]
+    public void AckRPC(int uid)
+    {
+        
     }
 
 }

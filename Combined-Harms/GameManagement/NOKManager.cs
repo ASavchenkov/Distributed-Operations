@@ -75,24 +75,13 @@ public class NOKManager : Node
         NOKs[GetTree().GetRpcSenderId()].uid = uid;
     }
 
-    public void Subscribe (Node n)
+    public void Subscribe (IReplicable n)
     {
-        Debug.Assert(n is INOKTransferrable);
-        NOKs[n.GetNetworkMaster()].Connect(nameof(NOKSignaller.Transfer),n,nameof(INOKTransferrable.OnNOKTransfer));
+        NOKs[n.GetNetworkMaster()].Connect(nameof(NOKSignaller.Transfer),(Node)  n,nameof(IReplicable.OnNOKTransfer));
     }
-    public void UnSubscribe (Node n)
+    public void UnSubscribe (IReplicable n)
     {
-        Debug.Assert(n is INOKTransferrable);
-        NOKs[n.GetNetworkMaster()].Disconnect(nameof(NOKSignaller.Transfer),n,nameof(INOKTransferrable.OnNOKTransfer));
+        NOKs[n.GetNetworkMaster()].Disconnect(nameof(NOKSignaller.Transfer),(Node) n,nameof(IReplicable.OnNOKTransfer));
     }
 
-    //Poor mans default interface implementation.
-    //We're not on c# 8 yet so the default function is here
-    //and needs to explicitly be invoked still.
-    public void ChangeMaster(Node n, int uid)
-    {
-        UnSubscribe(n);
-        n.SetNetworkMaster(uid);
-        Subscribe(n);
-    }
 }

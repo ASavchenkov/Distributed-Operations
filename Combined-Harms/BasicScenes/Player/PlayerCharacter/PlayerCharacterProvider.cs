@@ -2,8 +2,20 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class PlayerCharacterProvider : Node, IProvider, INOKTransferrable
+public class PlayerCharacterProvider : Node, IProvider, IReplicable
 {
+
+    public static NodeFactory<PlayerCharacterProvider> Factory = 
+        new NodeFactory<PlayerCharacterProvider> ("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
+    
+    public string ScenePath {get => Factory.ScenePath;}
+    public Replicator memberReplicator {get;set;}
+    
+    [Remote]
+    public void AckRPC(int uid)
+    {
+        memberReplicator.AckRPC(uid);
+    }
 
     [Export]
     public Dictionary<string,string> ObserverPaths;
@@ -32,7 +44,8 @@ public class PlayerCharacterProvider : Node, IProvider, INOKTransferrable
 
     public override void _Ready()
     {
-
+        memberReplicator = new Replicator(this);
+        
         var MapNode = GetNode("/root/GameRoot/Map");
         //If we're not the network master,
         //use the simplified observer.

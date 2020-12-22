@@ -6,15 +6,24 @@ using System.Collections.Generic;
 //Provider with the "authoritative" version of user data
 //Stores some game specific information too for specators.
 
-public class UserProvider : ReplicableNode, IProvider, INOKTransferrable
+public class UserProvider : Node, IReplicable, IProvider
 {
     
+    public static NodeFactory<UserProvider> Factory = 
+        new NodeFactory<UserProvider>("res://BasicScenes/Player/UserProvider.tscn");
+    
+    public string ScenePath {get => Factory.ScenePath;}
+    public Replicator memberReplicator {get;set;}
+    
+    [Remote]
+    public void AckRPC(int uid)
+    {
+        memberReplicator.AckRPC(uid);
+    }
+
     [Export]
     public Dictionary<string,string> ObserverPaths;
 
-    public static NodeFactory<UserProvider> Factory = new NodeFactory<UserProvider>("res://BasicScenes/Player/UserProvider.tscn");
-    public override string ScenePath { get{return Factory.ScenePath;}}
-    
     public enum Team {Unassigned, Red, Blue};
     public Team ThisTeam = Team.Unassigned;
     
@@ -32,13 +41,13 @@ public class UserProvider : ReplicableNode, IProvider, INOKTransferrable
     public string Alias;
     //When the peer disconnects, this will be used to determine
     //who to set as the master for this peers providers.
-
-    private SpawnManager PCManager;
     
+    private SpawnManager PCManager;
+
     public override void _Ready()
     {
-        base._Ready();
-
+        memberReplicator = new Replicator(this);
+        
         Alias = this.Name;  //Let player change it if they so wish.
                             //this.Name is a good default though.
 
@@ -51,7 +60,8 @@ public class UserProvider : ReplicableNode, IProvider, INOKTransferrable
         {
             RpcId(GetNetworkMaster(), nameof(RequestInit));
         }
-            
+        
+        
     }
 
     public Node GenerateObserver(string name)

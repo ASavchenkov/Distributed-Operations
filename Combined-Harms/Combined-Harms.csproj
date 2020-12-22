@@ -24,11 +24,10 @@
     <Compile Include="addons\PurePeerSignaling\scripts\SignaledPeer.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\SlushNode.cs" />
     <Compile Include="BasicScenes\BallisticTargets\Torso\BallisticTorso.cs" />
-    <Compile Include="BasicScenes\GameManagement\NOKManager.cs" />
-    <Compile Include="BasicScenes\GameManagement\RandomSelector.cs" />
-    <Compile Include="BasicScenes\GameManagement\ReplicableNode.cs" />
-    <Compile Include="BasicScenes\GameManagement\Replicator.cs" />
-    <Compile Include="BasicScenes\GameManagement\TDM.cs" />
+    <Compile Include="GameManagement\NOKManager.cs" />
+    <Compile Include="GameManagement\RandomSelector.cs" />
+    <Compile Include="GameManagement\ReplicationServer.cs" />
+    <Compile Include="GameManagement\TDM.cs" />
     <Compile Include="BasicScenes\GUI\TDMMenu.cs" />
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />
     <Compile Include="BasicScenes\Items\Gun\Magazine.cs" />
@@ -36,7 +35,7 @@
     <Compile Include="BasicScenes\Items\Gun\Rifle\RifleFPV.cs" />
     <Compile Include="BasicScenes\Items\Gun\Rifle\RifleProvider.cs" />
     <Compile Include="BasicScenes\Items\Gun\SightFPVObserver.cs" />
-    <Compile Include="BasicScenes\Items\ObserverInterfaces.cs" />
+    <Compile Include="GameManagement\Abstractions.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\AnimTree.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacter3PV.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterProvider.cs" />

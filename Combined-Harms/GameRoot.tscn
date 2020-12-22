@@ -4,11 +4,11 @@
 [ext_resource path="res://BasicScenes/MapObjects/Paintball/StaticCube.tscn" type="PackedScene" id=2]
 [ext_resource path="res://BasicScenes/MapObjects/Paintball/Tetra.glb" type="PackedScene" id=3]
 [ext_resource path="res://addons/PurePeerSignaling/Networking.tscn" type="PackedScene" id=4]
-[ext_resource path="res://BasicScenes/GameManagement/TDM.tscn" type="PackedScene" id=5]
+[ext_resource path="res://GameManagement/TDM.tscn" type="PackedScene" id=5]
 [ext_resource path="res://BasicScenes/MapObjects/Paintball/Obelisk.glb" type="PackedScene" id=7]
 [ext_resource path="res://BasicScenes/Player/UserObserver.tscn" type="PackedScene" id=8]
-[ext_resource path="res://BasicScenes/GameManagement/NOKManager.tscn" type="PackedScene" id=9]
-[ext_resource path="res://BasicScenes/GameManagement/Replicator.tscn" type="PackedScene" id=10]
+[ext_resource path="res://GameManagement/NOKManager.tscn" type="PackedScene" id=9]
+[ext_resource path="res://GameManagement/ReplicationServer.tscn" type="PackedScene" id=10]
 
 [node name="GameRoot" type="Spatial"]
 script = ExtResource( 1 )

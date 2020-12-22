@@ -26,6 +26,7 @@ public class GameRoot : Spatial
     public void AddUser()
     {
         UserProvider provider = UserProvider.Factory.Instance();
+        
         LocalUser.Init(provider);
     }
 }
