@@ -15,7 +15,7 @@ script = ExtResource( 1 )
 
 [node name="Networking" parent="." instance=ExtResource( 4 )]
 
-[node name="Replicator" parent="." instance=ExtResource( 10 )]
+[node name="ReplicationServer" parent="." instance=ExtResource( 10 )]
 
 [node name="NOKManager" parent="." instance=ExtResource( 9 )]
 
