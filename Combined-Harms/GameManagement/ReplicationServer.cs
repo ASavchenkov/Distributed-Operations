@@ -8,28 +8,9 @@ public class ReplicationServer : Node
 
     public static ReplicationServer Instance { get; private set;}
 
-    HashSet<int> occupiedIDs = new HashSet<int>();
-    Random rnd = new Random();
-
     public override void _Ready()
     {
         Instance = this;
-    }
-
-    private int GenUniqueID()
-    {
-        int candidate = rnd.Next(1,UInt16.MaxValue);
-
-        //will almost certainly never happen
-        //but in case it does, this guarantees a unique ID if one is available.
-        while(occupiedIDs.Contains(candidate))
-        {
-            if(candidate==UInt16.MaxValue)
-                candidate = 1;
-            else
-                candidate++;
-        }
-        return candidate;
     }
 
     public void Replicate(IReplicable n)
@@ -49,7 +30,7 @@ public class ReplicationServer : Node
         var parentNode = GetNode(parent);
         if(parentNode is null)
         {
-            GD.Print("parent node path :", parent,"| invalid");
+            GD.Print("parent node path :<", parent,"> invalid");
             return;
         }
         
@@ -64,11 +45,10 @@ public class ReplicationServer : Node
             {
                 childNode.Rpc(nameof(IReplicable.AckRPC));
             }
-            else GD.Print("Replication Error: Node path collision");
+            else GD.Print("Replication Error: Node path collision/ non-master call");
             //purely for debugging. Shouldn't happen.
             //Don't know how to deal with this in production.
         }
-        
         else
         {
             //If it doesn't exist yet, then just replicate it.
@@ -79,16 +59,9 @@ public class ReplicationServer : Node
 
             childNode.Name = name;
             childNode.SetNetworkMaster(GetTree().GetRpcSenderId());
-            childNode.Rpc(nameof(IReplicable.AckRPC));
-            
-            
+            childNode.Rpc(nameof(IReplicable.AckRPC));   
         }
     
-    }
-    [Remote]
-    public void AckRPC(int uid)
-    {
-        
     }
 
 }

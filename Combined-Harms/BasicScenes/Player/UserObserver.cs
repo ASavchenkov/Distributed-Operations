@@ -19,16 +19,13 @@ public class UserObserver : Node, IObserver<UserProvider>
     //Basically whatever camera this user is using. Operates at the provider level.
     private Node CurrentView = null;
     
-    private SpawnManager PCManager;
-
     public override void _Ready()
     {
         PackedScene menuScene = GD.Load<PackedScene>("res://BasicScenes/GUI/MainMenu.tscn");
         MainMenu = (CanvasItem) GetNode("MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
-        PCManager = (SpawnManager) GetNode("/root/GameRoot/PlayerCharacters");
-
-        }
+        
+    }
 
     public void Init(UserProvider provider)
     {
@@ -55,7 +52,8 @@ public class UserObserver : Node, IObserver<UserProvider>
         if(provider.ThisTeam == UserProvider.Team.Unassigned) return;
 
         CurrentView?.QueueFree();
-        CurrentView = PCManager.Spawn("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
+        CurrentView = PlayerCharacterProvider.Factory.Instance();
+        GetNode("/root/GameRoot/PlayerCharacters").AddChild(CurrentView);
         
         provider.Rpc(nameof(UserProvider.SetCharacter),CurrentView.GetPath());
     }

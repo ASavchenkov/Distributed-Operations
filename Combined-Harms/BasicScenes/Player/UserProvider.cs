@@ -13,13 +13,8 @@ public class UserProvider : Node, IReplicable, IProvider
         new NodeFactory<UserProvider>("res://BasicScenes/Player/UserProvider.tscn");
     
     public string ScenePath {get => Factory.ScenePath;}
-    public Replicator memberReplicator {get;set;}
-    
-    [Remote]
-    public void AckRPC(int uid)
-    {
-        memberReplicator.AckRPC(uid);
-    }
+
+    public HashSet<int> Unconfirmed {get;set;}
 
     [Export]
     public Dictionary<string,string> ObserverPaths;
@@ -42,17 +37,12 @@ public class UserProvider : Node, IReplicable, IProvider
     //When the peer disconnects, this will be used to determine
     //who to set as the master for this peers providers.
     
-    private SpawnManager PCManager;
-
     public override void _Ready()
     {
-        memberReplicator = new Replicator(this);
-        
+        ((IReplicable) this).ready();
         Alias = this.Name;  //Let player change it if they so wish.
                             //this.Name is a good default though.
 
-        PCManager = (SpawnManager) GetNode("/root/GameRoot/PlayerCharacters");
-        
         var menu = GetNode("/root/GameRoot/UserObserver_1/MainMenu/TabContainer/TDM");
         Connect(nameof(TeamChanged), menu, nameof(TDMMenu.UpdateLists));
         

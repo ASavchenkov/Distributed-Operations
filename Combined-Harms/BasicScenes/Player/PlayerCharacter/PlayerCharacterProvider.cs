@@ -9,13 +9,7 @@ public class PlayerCharacterProvider : Node, IProvider, IReplicable
         new NodeFactory<PlayerCharacterProvider> ("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
     
     public string ScenePath {get => Factory.ScenePath;}
-    public Replicator memberReplicator {get;set;}
-    
-    [Remote]
-    public void AckRPC(int uid)
-    {
-        memberReplicator.AckRPC(uid);
-    }
+    public HashSet<int> Unconfirmed {get; set;}
 
     [Export]
     public Dictionary<string,string> ObserverPaths;
@@ -44,7 +38,7 @@ public class PlayerCharacterProvider : Node, IProvider, IReplicable
 
     public override void _Ready()
     {
-        memberReplicator = new Replicator(this);
+        ((IReplicable) this).ready();
         
         var MapNode = GetNode("/root/GameRoot/Map");
         //If we're not the network master,
