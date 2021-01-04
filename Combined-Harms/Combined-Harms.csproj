@@ -11,6 +11,7 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <Deterministic>false</Deterministic>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -52,8 +53,9 @@
     <Compile Include="SpawnManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MessagePack">
+    <PackageReference Include="MessagePack" Version="2.2.85" />
+    <!-- <PackageReference Include="MessagePack">
       <Version>2.1.115</Version>
-    </PackageReference>
+    </PackageReference> -->
   </ItemGroup>
 </Project>
