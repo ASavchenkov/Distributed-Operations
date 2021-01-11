@@ -15,7 +15,7 @@ public class ReplicationServer : Node
 
     public void Replicate(IReplicable n)
     {
-        Rpc(n.GetParent().GetPath(), n.Name, n.ScenePath);
+        Rpc(nameof(Replicate), n.GetParent().GetPath(), n.Name, n.ScenePath);
     }
 
     public void ReplicateID(IReplicable n, int uid)

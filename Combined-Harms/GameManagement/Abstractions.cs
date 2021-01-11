@@ -9,6 +9,11 @@ using System.Collections.Generic;
 public interface IObserver
 {
     void Subscribe(Node provider);
+
+    void DefaultSub(Node provider)
+    {
+        provider.Connect("tree_exiting", (Node) this, "queue_free");
+    }
 }
 
 //Create a static instance in your classes to make creation

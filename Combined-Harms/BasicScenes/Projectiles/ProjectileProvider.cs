@@ -10,9 +10,16 @@ These never change masters.
 If the master disappears, so does the projectile.
 */
 
-public class ProjectileProvider : Node, IFPV
+public class ProjectileProvider : Node, IReplicable, IFPV
 {
-    
+    //Replicable boilerplate
+    [Export]
+    public string ScenePath {get;set;}
+    public HashSet<int> Unconfirmed {get;set;}
+    //IFPV boilerplate
+    [Export]
+    public string ObserverPathFPV {get;set;}
+
     public delegate void ImpactFunction( BallisticTarget target);
 
     public Dictionary<Type,ImpactFunction> impactFunctions
@@ -21,24 +28,29 @@ public class ProjectileProvider : Node, IFPV
     //It's a dictionary that maps specific BallisticTargets 
     //to functions that compute interaction with them.
 
-    Vector3 Translation;
-    Vector3 LinearVelocity;
-
-
-    public RayCast rayCast;
+    public Vector3 Translation;
+    public Vector3 LinearVelocity;
 
     [PuppetSync]
     public void Init(Vector3 Translation, Vector3 LinearVelocity)
     {
         this.Translation = Translation;
         this.LinearVelocity = LinearVelocity;
+        
+        //Currently everyone uses the same observer,
+        //so we don't need to do the whole if else shebang.
+        ProjectileFPV observer = (ProjectileFPV) EasyInstancer.GenObserver(this, ObserverPathFPV);
+        GetNode("/root/GameRoot/Map").AddChild(observer);
+
+        //This is normally handled by differing observer code.
+        //But for now it's not worth it.
+        if(! IsNetworkMaster())
+            observer.Mode = RigidBody.ModeEnum.Kinematic;
     }
 
     public override void _Ready()
     {
-        rayCast = (RayCast) GetNode("RayCast");
-        if(! IsNetworkMaster())
-            Mode = ModeEnum.Kinematic;
+        ((IReplicable) this).ready();
     }
 
     [PuppetSync]
