@@ -1,14 +1,16 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+
 /*
 Base class for small fast moving objects
 that do something when they hit something else.
 
 These never change masters.
+If the master disappears, so does the projectile.
 */
 
-public class Projectile : RigidBody
+public class ProjectileProvider : Node, IFPV
 {
     
     public delegate void ImpactFunction( BallisticTarget target);
@@ -18,6 +20,10 @@ public class Projectile : RigidBody
     //This looks super complicated, but it's only a little bit complicated.
     //It's a dictionary that maps specific BallisticTargets 
     //to functions that compute interaction with them.
+
+    Vector3 Translation;
+    Vector3 LinearVelocity;
+
 
     public RayCast rayCast;
 

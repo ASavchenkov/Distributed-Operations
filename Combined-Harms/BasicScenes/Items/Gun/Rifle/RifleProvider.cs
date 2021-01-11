@@ -2,10 +2,16 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class RifleProvider : Node, IProvider
+public class RifleProvider : Node, IReplicable, IFPV
 {
 
-    
+    [Export]
+    public string ScenePath {get;set;}
+    public HashSet<int> Unconfirmed {get;set;}
+
+    [Export]
+    public string ObserverPathFPV {get; set;}
+
     [Export]
     Dictionary<string,Node> Attachments;
     //Maps name of attachment point to the actual attachment that is there.
@@ -14,18 +20,16 @@ public class RifleProvider : Node, IProvider
     //into their own node structures.
 
     [Export]
-    public Dictionary<string,string> ObserverPaths;
+    public string FPVPath;
     //For generating observers
+
 
     [Signal]
     public delegate void AttachmentUpdated(string attachPoint, Node attachment);
 
-    public Node GenerateObserver(string name)
+    public override void _Ready()
     {
-        GD.Print("generating rifle observer");
-        var observer = (IObserver<RifleProvider>) GD.Load<PackedScene>(ObserverPaths[name]).Instance();
-        observer.Init(this);
-        return (Node) observer;
+        ((IReplicable) this).ready();
     }
 
     public void SetAttachment(string attachPoint, Node attachment)
@@ -38,7 +42,5 @@ public class RifleProvider : Node, IProvider
     public void SetMaster(int uid)
     {
         SetNetworkMaster(uid);
-    }
-
-    
+    }   
 }

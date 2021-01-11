@@ -6,7 +6,7 @@ using System.Collections.Generic;
 //Provider with the "authoritative" version of user data
 //Stores some game specific information too for specators.
 
-public class UserProvider : Node, IReplicable, IProvider
+public class UserProvider : Node, IReplicable, IFPV
 {
     
     public static NodeFactory<UserProvider> Factory = 
@@ -17,7 +17,7 @@ public class UserProvider : Node, IReplicable, IProvider
     public HashSet<int> Unconfirmed {get;set;}
 
     [Export]
-    public Dictionary<string,string> ObserverPaths;
+    public string ObserverPathFPV {get;set;}
 
     public enum Team {Unassigned, Red, Blue};
     public Team ThisTeam = Team.Unassigned;
@@ -51,14 +51,6 @@ public class UserProvider : Node, IReplicable, IProvider
             RpcId(GetNetworkMaster(), nameof(RequestInit));
         }
         
-        
-    }
-
-    public Node GenerateObserver(string name)
-    {
-        var observer = (IObserver<UserProvider>) GD.Load<PackedScene>(ObserverPaths[name]).Instance();
-        observer.Init(this);
-        return (Node) observer;
     }
 
     [Remote]

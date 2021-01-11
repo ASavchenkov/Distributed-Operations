@@ -1,17 +1,18 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-public interface IProvider
-{
-    Node GenerateObserver(string name);
-}
 
-public interface IObserver<T> where T: IProvider
+
+//Valid casts are on the implementer,
+//since there's no way to guarantee types at compile
+//for scene instantiation.
+public interface IObserver
 {
-    void Init(T provider);
+    void Subscribe(Node provider);
 }
 
 //Create a static instance in your classes to make creation
+//of nodes easier in code.
 public class NodeFactory<T> where T: Node
 {
     public string ScenePath {get; private set;}
@@ -23,9 +24,36 @@ public class NodeFactory<T> where T: Node
 
     public T Instance()
     {
-        PackedScene scene = GD.Load<PackedScene>(ScenePath);
-        return (T) scene.Instance();
+        return EasyInstancer.Instance<T>(ScenePath);
     }   
+}
+
+public static class EasyInstancer
+{
+    public static T Instance<T> (string scenePath) where T: Node
+    {
+        PackedScene scene = GD.Load<PackedScene>(scenePath);
+        return (T) scene.Instance();
+    }
+    public static Node GenObserver( Node provider, string path)
+    {
+        var observer = (IObserver) EasyInstancer.Instance<Node>(path);
+        //somehow we need to know the type for Subscribe.
+        observer.Subscribe(provider);
+        return  (Node) observer;
+    }
+}
+
+public interface IFPV
+{
+    [Export]
+    string ObserverPathFPV { get; set;}
+}
+
+public interface I3PV
+{
+    [Export]
+    string ObserverPath3PV { get; set;}
 }
 
 public interface IReplicable
@@ -39,8 +67,13 @@ public interface IReplicable
         Unconfirmed.Remove(uid);    
     }
     
-    void OnNOKTransfer(int uid);
-    
+    void OnNOKTransfer(int uid)
+    {
+        QueueFree();
+    }
+
+    //Call with "((IReplicable) this).ready();" in _Ready()
+    //How do we get rid of this boilerplate?
     void ready()
     {
         Unconfirmed = new HashSet<int>(Networking.Instance.SignaledPeers.Keys);

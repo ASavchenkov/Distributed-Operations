@@ -5,7 +5,7 @@ using System;
 //Overall root node for the player,
 //whether they are in the menu, spectating, or currently playing.
 
-public class UserObserver : Node, IObserver<UserProvider>
+public class UserObserver : Node, IObserver
 {
     public UserProvider provider {get; private set;}
 
@@ -27,13 +27,13 @@ public class UserObserver : Node, IObserver<UserProvider>
         
     }
 
-    public void Init(UserProvider provider)
+    public void Subscribe(Node provider)
     {
         GD.Print("CALL TO USEROBSERVER INIT");
-        this.provider = provider;
+        this.provider = (UserProvider) provider;
         //whenever a new provider is set, the team might change implicitly, even on startup.
         OnTeamChanged();
-        provider.Connect(nameof(UserProvider.TeamChanged),this,nameof(OnTeamChanged));
+        this.provider.Connect(nameof(UserProvider.TeamChanged),this,nameof(OnTeamChanged));
         MainMenu.GetNode("TabContainer/TDM/VBoxContainer/TeamChoice/Option").Connect("item_selected",provider, nameof(UserProvider.SetTeam));
         MainMenu.GetNode("TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
     }

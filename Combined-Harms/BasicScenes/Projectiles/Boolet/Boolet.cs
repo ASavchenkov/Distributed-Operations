@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 
-public class Boolet : Projectile
+public class Boolet : ProjectileProvider
 {
 
     [Puppet]

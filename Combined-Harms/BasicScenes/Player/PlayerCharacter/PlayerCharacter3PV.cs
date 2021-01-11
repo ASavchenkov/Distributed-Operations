@@ -1,13 +1,13 @@
 using Godot;
 using System;
 
-public class PlayerCharacter3PV : Spatial, IObserver<PlayerCharacterProvider>
+public class PlayerCharacter3PV : Spatial, IObserver
 {
     private PlayerCharacterProvider provider = null;
 
-    public void Init(PlayerCharacterProvider provider)
+    public void Subscribe(Node provider)
     {
-        this.provider = provider;
+        this.provider = (PlayerCharacterProvider) provider;
         provider.Connect("tree_exiting", this, "queue_free");
         provider.Connect(nameof(PlayerCharacterProvider.TrajectoryUpdated), this, nameof(OnTrajectoryUpdated));
     }

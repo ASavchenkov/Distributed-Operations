@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 //Specifically for controlling first person movement.
-public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
+public class PlayerCharacterFPV : Node, IObserver
 {
 
     private PlayerCharacterProvider provider = null;
@@ -36,9 +36,9 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
         FEET.Connect("body_exited", this, "GroundLeft");
     }
 
-    public void Init(PlayerCharacterProvider provider)
+    public void Subscribe(Node provider)
     {
-        this.provider = provider;
+        this.provider = (PlayerCharacterProvider) provider;
         this.Name = "Player_" + provider.Name + "_FPV";
         
         provider.Connect("tree_exiting", this, "queue_free");
@@ -49,7 +49,7 @@ public class PlayerCharacterFPV : Node, IObserver<PlayerCharacterProvider>
     {
         GD.Print("setting hand item to rifle");
         ItemInHands?.QueueFree();
-        ItemInHands = (RifleFPV) p.GenerateObserver("FPV");
+        ItemInHands = (RifleFPV) EasyInstancer.GenObserver(p, p.ObserverPathFPV);
         GetNode("Body/LookYaw/LookPitch/Camera/").AddChild(ItemInHands);
     }
 

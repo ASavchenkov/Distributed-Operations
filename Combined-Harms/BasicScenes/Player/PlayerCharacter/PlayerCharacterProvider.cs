@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class PlayerCharacterProvider : Node, IProvider, IReplicable
+public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
 {
 
     public static NodeFactory<PlayerCharacterProvider> Factory = 
@@ -12,7 +12,9 @@ public class PlayerCharacterProvider : Node, IProvider, IReplicable
     public HashSet<int> Unconfirmed {get; set;}
 
     [Export]
-    public Dictionary<string,string> ObserverPaths;
+    public string ObserverPathFPV { get; set;}
+    [Export]
+    public string ObserverPath3PV { get; set;}
     //For generating observers
 
     [Signal]
@@ -33,6 +35,8 @@ public class PlayerCharacterProvider : Node, IProvider, IReplicable
     public float jumpImpulse {get; private set;} = 10;
     [Export]
     public float maxPitch {get; private set;} = 80; //degrees
+    [Export]
+    public string GunPath{get; private set;}
 
     RifleProvider ItemInHands = null;
 
@@ -43,11 +47,12 @@ public class PlayerCharacterProvider : Node, IProvider, IReplicable
         var MapNode = GetNode("/root/GameRoot/Map");
         //If we're not the network master,
         //use the simplified observer.
-        var observer = GenerateObserver(IsNetworkMaster() ? "FPV" : "3PV");
+        Node observer = EasyInstancer.GenObserver(this, IsNetworkMaster() ? ObserverPathFPV : ObserverPath3PV);
         MapNode.AddChild(observer);
 
-        var lootSpawner = (SpawnManager) GetNode("/root/GameRoot/Loot");
-        SetHandItem ((RifleProvider) lootSpawner.Spawn("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn"));
+        RifleProvider M4A1 = (RifleProvider) GD.Load<PackedScene>(GunPath).Instance();
+        GetNode("/root/GameRoot/Loot").AddChild(M4A1);
+        SetHandItem(M4A1);
 
         if(!IsNetworkMaster())
         {
@@ -59,13 +64,6 @@ public class PlayerCharacterProvider : Node, IProvider, IReplicable
     public void OnNOKTransfer(int uid)
     {
         QueueFree();
-    }
-
-    public Node GenerateObserver(string name)
-    {
-        var observer = (IObserver<PlayerCharacterProvider>) GD.Load<PackedScene>(ObserverPaths[name]).Instance();
-        observer.Init(this);
-        return (Node) observer;
     }
 
     public void SetHandItem(RifleProvider item)
