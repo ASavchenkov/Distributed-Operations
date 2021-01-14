@@ -13,6 +13,7 @@ public class RifleFPV : Spatial, IObserver
     protected Spatial Muzzle;
     protected IMunitionSource source;
     protected Spatial Origin;
+    protected Position3D HipFireTransform;
     protected SightFPVObserver MainSight;
     //When we start to do things like canted sights
     //we will need to revisit this.
@@ -30,7 +31,10 @@ public class RifleFPV : Spatial, IObserver
 
     public override void _Ready()
     {
+        Origin = (Spatial) GetNode("Origin");
         Projectiles = GetNode("/root/GameRoot/Projectiles");
+        MainSight = (SightFPVObserver) GetNode("Origin/Gun/FrontPostRail/IronSights");
+        HipFireTransform = (Position3D) GetNode("Origin/Gun/HipFireTransform");
     }
 
     public void Subscribe(Node provider)
@@ -69,6 +73,26 @@ public class RifleFPV : Spatial, IObserver
             var observer = EasyInstancer.Instance<Node>(attachment.ObserverPathFPV);
             parentNode.AddChild(EasyInstancer.GenObserver((Node) attachment, attachment.ObserverPathFPV));
         }
-        
+    }
+
+    public void SetOriginToSight(SightFPVObserver sight)
+    {
+        Origin.Transform = sight.RemoteEyeRelief.Transform.Inverse();
+        //this will also naturally update the sights global transform.
+    }
+    public override void _UnhandledInput(InputEvent inputEvent)
+    {
+        if(inputEvent.IsActionPressed("ItemPrimary"))
+        {
+            Fire();
+        }
+        else if(inputEvent.IsActionPressed("ItemSecondary"))
+        {
+            SetOriginToSight(MainSight);
+        }
+        else if(inputEvent.IsActionReleased("ItemSecondary"))
+        {
+            Origin.Transform = HipFireTransform.Transform.Inverse();
+        }
     }
 }

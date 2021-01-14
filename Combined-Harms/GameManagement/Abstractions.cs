@@ -8,12 +8,15 @@ using System.Collections.Generic;
 //for scene instantiation.
 public interface IObserver
 {
-    void Subscribe(Node provider);
-
-    void DefaultSub(Node provider)
+    void Subscribe(Node provider)
     {
+        //Prepend ID to make sure nothing collides.
+        Name = provider.Name + "_" + Name;
         provider.Connect("tree_exiting", (Node) this, "queue_free");
     }
+    #region NodeStuff
+    string Name { get; set; }
+    #endregion
 }
 
 //Create a static instance in your classes to make creation
@@ -71,10 +74,16 @@ public interface IReplicable
     {
         Unconfirmed.Remove(uid);    
     }
+
+    [PuppetSync]
+    void Despawn()
+    {
+        QueueFree();
+    }
     
     void OnNOKTransfer(int uid)
     {
-        QueueFree();
+        Rpc(nameof(Despawn));
     }
 
     //Call with "((IReplicable) this).ready();" in _Ready()

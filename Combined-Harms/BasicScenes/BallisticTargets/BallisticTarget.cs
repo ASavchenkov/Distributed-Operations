@@ -20,14 +20,14 @@ spray location.
 public class BallisticTarget : Area
 {
 
-    public Dictionary<Type,Action<Projectile>> impactFunctions
-     = new Dictionary<Type,Action<Projectile>>();
+    public Dictionary<Type,Action<ProjectileProvider>> impactFunctions
+     = new Dictionary<Type,Action<ProjectileProvider>>();
     // Check "Projectile" for explanation as to what this does.
     // This is essentially the mirror of that.
 
-    public virtual bool ComputeImpact(Projectile projectile)
+    public virtual bool ComputeImpact(ProjectileProvider projectile)
     {
-       Action<Projectile> matchedAction;
+       Action<ProjectileProvider> matchedAction;
         if ( impactFunctions.TryGetValue(projectile.GetType(), out matchedAction))
         {
             matchedAction(projectile);

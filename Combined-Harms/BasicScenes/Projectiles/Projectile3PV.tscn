@@ -4,9 +4,10 @@
 
 [sub_resource type="SphereMesh" id=1]
 
-[node name="Boolet" type="RigidBody"]
+[node name="Projectile" type="RigidBody"]
 collision_layer = 4
 collision_mask = 5
+mode = 3
 gravity_scale = 0.1
 axis_lock_angular_x = true
 axis_lock_angular_y = true
@@ -20,11 +21,3 @@ __meta__ = {
 transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = null
-
-[node name="RayCast" type="RayCast" parent="."]
-enabled = true
-collision_mask = 5
-collide_with_areas = true
-__meta__ = {
-"_editor_description_": "Only collide with colliders in the default layer (0) oand ballistics layer (2)"
-}

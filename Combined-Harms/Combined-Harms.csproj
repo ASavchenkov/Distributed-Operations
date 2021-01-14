@@ -25,6 +25,7 @@
     <Compile Include="addons\PurePeerSignaling\scripts\SignaledPeer.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\SlushNode.cs" />
     <Compile Include="BasicScenes\BallisticTargets\Torso\BallisticTorso.cs" />
+    <Compile Include="BasicScenes\Projectiles\Projectile3PV.cs" />
     <Compile Include="BasicScenes\Projectiles\ProjectileFPV.cs" />
     <Compile Include="GameManagement\NOKManager.cs" />
     <Compile Include="GameManagement\RandomSelector.cs" />
@@ -49,7 +50,6 @@
     <Compile Include="BasicScenes\Projectiles\ProjectileProvider.cs" />
     <Compile Include="BasicScenes\BallisticTargets\BallisticTarget.cs" />
     <Compile Include="GameRoot.cs" />
-    <Compile Include="BasicScenes\Items\Gun\Gun.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnManager.cs" />
   </ItemGroup>

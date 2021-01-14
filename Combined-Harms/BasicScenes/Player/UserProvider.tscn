@@ -4,3 +4,4 @@
 
 [node name="Node" type="Node"]
 script = ExtResource( 1 )
+ObserverPathFPV = "res://BasicScenes/Player/UserObserver.tscn"

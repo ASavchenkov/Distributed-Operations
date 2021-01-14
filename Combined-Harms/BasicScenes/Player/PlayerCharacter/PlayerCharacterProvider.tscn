@@ -4,8 +4,6 @@
 
 [node name="PCProvider" type="Node"]
 script = ExtResource( 1 )
+ObserverPathFPV = "res://BasicScenes/Player/PlayerCharacter/PlayerCharacterFPV.tscn"
+ObserverPath3PV = "res://BasicScenes/Player/PlayerCharacter/PlayerCharacter3PV.tscn"
 GunPath = "res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn"
-ObserverPaths = {
-"3PV": "res://BasicScenes/Player/PlayerCharacter/PlayerCharacter3PV.tscn",
-"FPV": "res://BasicScenes/Player/PlayerCharacter/PlayerCharacterFPV.tscn"
-}

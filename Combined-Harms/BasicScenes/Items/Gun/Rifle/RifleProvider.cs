@@ -5,10 +5,12 @@ using System.Collections.Generic;
 public class RifleProvider : Node, IReplicable, IFPV
 {
 
+    //IReplicable boilerplate
     [Export]
     public string ScenePath {get;set;}
     public HashSet<int> Unconfirmed {get;set;}
 
+    //IFPV boilerplate
     [Export]
     public string ObserverPathFPV {get; set;}
 
@@ -18,11 +20,6 @@ public class RifleProvider : Node, IReplicable, IFPV
     //Node is null if nothing is attached there.
     //Observers are responsible for properly inserting attachments
     //into their own node structures.
-
-    [Export]
-    public string FPVPath;
-    //For generating observers
-
 
     [Signal]
     public delegate void AttachmentUpdated(string attachPoint, Node attachment);
@@ -42,5 +39,6 @@ public class RifleProvider : Node, IReplicable, IFPV
     public void SetMaster(int uid)
     {
         SetNetworkMaster(uid);
-    }   
+    }
+
 }
