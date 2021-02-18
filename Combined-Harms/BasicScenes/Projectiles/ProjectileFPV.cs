@@ -2,7 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class ProjectileFPV : RigidBody, IObserver
+
+public class ProjectileFPV : RigidBody
 {
 
     public ProjectileProvider provider;
@@ -12,7 +13,7 @@ public class ProjectileFPV : RigidBody, IObserver
     public void Subscribe(Node provider)
     {
         this.provider = (ProjectileProvider) provider;
-        ((IObserver)this).Subscribe(this.provider);
+        this.Subscribe(this.provider);
         Translation = this.provider.Translation;
         LinearVelocity = this.provider.LinearVelocity;
     }

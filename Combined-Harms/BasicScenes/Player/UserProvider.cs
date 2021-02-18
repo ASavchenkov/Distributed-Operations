@@ -2,19 +2,20 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
 
 //Provider with the "authoritative" version of user data
 //Stores some game specific information too for specators.
 
 public class UserProvider : Node, IReplicable, IFPV
 {
-    
+
+    public HashSet<int> Unconfirmed {get;set;}
+
     public static NodeFactory<UserProvider> Factory = 
         new NodeFactory<UserProvider>("res://BasicScenes/Player/UserProvider.tscn");
     
     public string ScenePath {get => Factory.ScenePath;}
-
-    public HashSet<int> Unconfirmed {get;set;}
 
     [Export]
     public string ObserverPathFPV {get;set;}
@@ -39,7 +40,8 @@ public class UserProvider : Node, IReplicable, IFPV
     
     public override void _Ready()
     {
-        ((IReplicable) this).ready();
+        this.ReplicableReady();
+        
         Alias = this.Name;  //Let player change it if they so wish.
                             //this.Name is a good default though.
 

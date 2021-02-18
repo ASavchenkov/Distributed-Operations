@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class PlayerCharacter3PV : Spatial, IObserver
+public class PlayerCharacter3PV : Spatial
 {
     private PlayerCharacterProvider provider = null;
 

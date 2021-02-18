@@ -1,8 +1,10 @@
 using Godot;
 using System;
 
+using ReplicationAbstractions;
+
 //Specifically for controlling first person movement.
-public class PlayerCharacterFPV : Node, IObserver
+public class PlayerCharacterFPV : Node
 {
 
     private PlayerCharacterProvider provider = null;

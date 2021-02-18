@@ -2,6 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
+
 public class RifleProvider : Node, IReplicable, IFPV
 {
 
@@ -26,7 +28,7 @@ public class RifleProvider : Node, IReplicable, IFPV
 
     public override void _Ready()
     {
-        ((IReplicable) this).ready();
+        this.ReplicableReady();
     }
 
     public void SetAttachment(string attachPoint, Node attachment)

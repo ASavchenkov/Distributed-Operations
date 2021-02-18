@@ -3,6 +3,8 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
+
 public class ReplicationServer : Node
 {
 
@@ -22,6 +24,19 @@ public class ReplicationServer : Node
     {
         RpcId(uid, nameof(Replicate), n.GetParent().GetPath(), n.Name, n.ScenePath);     
     }
+
+    [Remote]
+    public void AckRPC(string path)
+    {
+        ((IReplicable) GetNode(path)).Ack(GetTree().GetRpcSenderId());
+    }
+
+    //No checking here yet
+    [Remote]
+    public void Despawn(string path)
+    {
+        GetNode(path).QueueFree();
+    }
     
     [Remote]
     public void Replicate(string parent, string name, string scenePath)
@@ -34,8 +49,8 @@ public class ReplicationServer : Node
             return;
         }
         
-
-        var childNode = (IReplicable) GetNode(parent + "/" + name);
+        string childPath = parent+ "/" + name;
+        var childNode = (IReplicable) GetNode(childPath);
         if(!(childNode is null))
         {
             //check if someone is simply confirming replication
@@ -43,7 +58,8 @@ public class ReplicationServer : Node
             if(childNode.ScenePath == scenePath 
                 &&childNode.GetNetworkMaster() == GetTree().GetRpcSenderId())
             {
-                childNode.Rpc(nameof(IReplicable.AckRPC));
+                RpcId(GetTree().GetRpcSenderId(), nameof(AckRPC), childPath);
+                childNode.Rpc(nameof(ReplicationExtensions.Ack));
             }
             else GD.Print("Replication Error: Node path collision/ non-master call");
             //purely for debugging. Shouldn't happen.
@@ -59,7 +75,7 @@ public class ReplicationServer : Node
 
             childNode.Name = name;
             childNode.SetNetworkMaster(GetTree().GetRpcSenderId());
-            childNode.Rpc(nameof(IReplicable.AckRPC));   
+            RpcId(GetTree().GetRpcSenderId(), nameof(AckRPC), childNode.GetPath());
         }
     
     }

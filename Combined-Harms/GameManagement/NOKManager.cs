@@ -3,6 +3,8 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
+
 //Makes sure Next Of Kin (NOK) is synchronized between all peers,
 //So that everyone knows who the master of each networked node is.
 //Doesn't actually handle the selection of the NOK.
@@ -77,11 +79,11 @@ public class NOKManager : Node
 
     public void Subscribe (IReplicable n)
     {
-        NOKs[n.GetNetworkMaster()].Connect(nameof(NOKSignaller.Transfer),(Node)  n,nameof(IReplicable.OnNOKTransfer));
+        NOKs[n.GetNetworkMaster()].Connect(nameof(NOKSignaller.Transfer),(Node)  n,nameof(ReplicationExtensions.OnNOKTransfer));
     }
     public void UnSubscribe (IReplicable n)
     {
-        NOKs[n.GetNetworkMaster()].Disconnect(nameof(NOKSignaller.Transfer),(Node) n,nameof(IReplicable.OnNOKTransfer));
+        NOKs[n.GetNetworkMaster()].Disconnect(nameof(NOKSignaller.Transfer),(Node) n,nameof(ReplicationExtensions.OnNOKTransfer));
     }
 
 }

@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
 /*
 Base class for small fast moving objects
 that do something when they hit something else.
@@ -12,6 +13,7 @@ If the master disappears, so does the projectile.
 
 public class ProjectileProvider : Node, IReplicable, IFPV, I3PV
 {
+
     //Replicable boilerplate
     [Export]
     public string ScenePath {get;set;}
@@ -39,14 +41,14 @@ public class ProjectileProvider : Node, IReplicable, IFPV, I3PV
 
     public override void _Ready()
     {
-        ((IReplicable) this).ready();
+        this.ReplicableReady();
     }
 
     public virtual void DefaultImpact()
     {
         //default functionality is to simply delete self
         //We need to make sure this deletion happens on all peers.
-        Rpc(nameof(IReplicable.Despawn));
+        this.MasterDespawn();
     }
 
     // public void ComputeImpact(BallisticTarget target)

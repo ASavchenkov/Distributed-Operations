@@ -2,7 +2,9 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class RifleFPV : Spatial, IObserver
+using ReplicationAbstractions;
+
+public class RifleFPV : Spatial
 {
     
     [Export]

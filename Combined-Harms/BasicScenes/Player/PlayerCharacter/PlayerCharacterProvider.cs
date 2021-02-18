@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
 public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
 {
 
@@ -42,7 +43,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
 
     public override void _Ready()
     {
-        ((IReplicable) this).ready();
+        this.ReplicableReady();
         
         var MapNode = GetNode("/root/GameRoot/Map");
         //If we're not the network master,

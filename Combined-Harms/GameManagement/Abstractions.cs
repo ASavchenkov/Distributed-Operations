@@ -2,139 +2,133 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-
-//Valid casts are on the implementer,
-//since there's no way to guarantee types at compile
-//for scene instantiation.
-public interface IObserver
+namespace ReplicationAbstractions
 {
-    void Subscribe(Node provider)
+
+    public interface IReplicable
     {
-        //Prepend ID to make sure nothing collides.
-        Name = provider.Name + "_" + Name;
-        provider.Connect("tree_exiting", (Node) this, "queue_free");
-    }
-    #region NodeStuff
-    string Name { get; set; }
-    #endregion
-}
 
-//Create a static instance in your classes to make creation
-//of nodes easier in code.
-public class NodeFactory<T> where T: Node
-{
-    public string ScenePath {get; private set;}
+        HashSet<int> Unconfirmed {get;set;}
+        string ScenePath {get;}
 
-    public NodeFactory(string scenePath)
-    {
-        ScenePath = scenePath;
-    }
-
-    public T Instance()
-    {
-        return EasyInstancer.Instance<T>(ScenePath);
-    }   
-}
-
-public static class EasyInstancer
-{
-    public static T Instance<T> (string scenePath) where T: Node
-    {
-        PackedScene scene = GD.Load<PackedScene>(scenePath);
-        return (T) scene.Instance();
-    }
-    public static Node GenObserver( Node provider, string path)
-    {
-        var observer = (IObserver) EasyInstancer.Instance<Node>(path);
-        //somehow we need to know the type for Subscribe.
-        observer.Subscribe(provider);
-        return  (Node) observer;
-    }
-}
-
-public interface IFPV
-{
-    [Export]
-    string ObserverPathFPV { get; set;}
-}
-
-public interface I3PV
-{
-    [Export]
-    string ObserverPath3PV { get; set;}
-}
-
-public interface IReplicable
-{
-    string ScenePath {get;}
-    HashSet<int> Unconfirmed {get;set;}
-
-    [Remote]
-    void AckRPC(int uid)
-    {
-        Unconfirmed.Remove(uid);    
-    }
-
-    [PuppetSync]
-    void Despawn()
-    {
-        QueueFree();
+        #region NODE_STUFF
+        //This stuff is already implemented in Node
+        //So to make sure we can use them on IReplicable types
+        //we define them here;
+        Node GetParent();
+        string Name{get;set;}
+        int GetNetworkMaster();
+        bool IsNetworkMaster();
+        void SetNetworkMaster(int uid, bool recursive = true);
+        void QueueFree();
+        object Rpc(string method, params object[] args);
+        NodePath GetPath();
+        #endregion
     }
     
-    void OnNOKTransfer(int uid)
+    public static class ReplicationExtensions
     {
-        Rpc(nameof(Despawn));
-    }
-
-    //Call with "((IReplicable) this).ready();" in _Ready()
-    //How do we get rid of this boilerplate?
-    void ready()
-    {
-        Unconfirmed = new HashSet<int>(Networking.Instance.SignaledPeers.Keys);
-        Networking.Instance.RTCMP.Connect("peer_connected", (Node) this,nameof(OnPeerConnected));
-        Networking.Instance.RTCMP.Connect("peer_disconnected", (Node) this,nameof(OnPeerDC));
-        Networking.Instance.Connect(nameof(Networking.ConnectedToSession), (Node) this, nameof(OnConnectedToSession));
-        if(IsNetworkMaster())
+        public static void ReplicableReady( this IReplicable n)
         {
-            GenName();
-            ReplicationServer.Instance.Replicate(this);
+        
+            n.Unconfirmed = new HashSet<int>(Networking.Instance.SignaledPeers.Keys);
+            Networking.Instance.RTCMP.Connect("peer_connected", (Node) n,nameof(OnPeerConnected));
+            Networking.Instance.RTCMP.Connect("peer_disconnected", (Node) n,nameof(OnPeerDC));
+            Networking.Instance.Connect(nameof(Networking.ConnectedToSession), (Node) n, nameof(OnConnectedToSession));
+            
+            if( n.IsNetworkMaster())
+            {
+                n.GenName();
+                ReplicationServer.Instance.Replicate(n);
+            }
+            else
+            {
+                NOKManager.Instance.Subscribe(n);
+            }
         }
-        else
+        public static void Ack(this IReplicable n, int uid)
         {
-            NOKManager.Instance.Subscribe(this);
+            n.Unconfirmed.Remove(uid);
+        }
+        public static void MasterDespawn(this IReplicable n)
+        {
+            ReplicationServer.Instance.Rpc(nameof(ReplicationServer.Despawn), ((Node)n).GetPath());
+        }
+        public static void GenName(this IReplicable n)
+        {
+            n.Name = System.Text.Encoding.ASCII.GetString(Guid.NewGuid().ToByteArray());
+        }
+
+        public static void OnNOKTransfer(this IReplicable n, int uid)
+        {
+            n.MasterDespawn();
+        }
+        public static void OnPeerConnected( this IReplicable n, int uid)
+        {
+            n.Unconfirmed.Add(uid);
+        }
+
+        public static void OnPeerDC( this IReplicable n, int uid)
+        {
+            n.Unconfirmed.Remove(uid);
+        }
+
+        public static void OnConnectedToSession( this IReplicable n, int uid)
+        {
+            n.QueueFree();
         }
     }
-    
-    private void GenName()
+
+    public static class EasyInstancer
     {
-        Name = System.Text.Encoding.ASCII.GetString(Guid.NewGuid().ToByteArray());
-    }
-    public void OnPeerConnected( int uid)
-    {
-        Unconfirmed.Add(uid);
+        public static T Instance<T> (string scenePath) where T: Node
+        {
+            PackedScene scene = GD.Load<PackedScene>(scenePath);
+            return (T) scene.Instance();
+        }
+        public static Node GenObserver( Node provider, string path)
+        {
+            var observer = EasyInstancer.Instance<Node>(path);
+            //somehow we need to know the type for Subscribe.
+            observer.Subscribe(provider);
+            return  (Node) observer;
+        }
+        //Default subscription function.
+        //Implement one internally yourself when you want something else.
+        public static void Subscribe( this Node observer, Node provider)
+        {
+            observer.Name = provider.Name + "_" + observer.Name;
+            provider.Connect("tree_exiting", observer, "queue_free");
+        }
     }
 
-    void OnPeerDC(int uid)
+    //Create a static instance in your classes to make creation
+    //of nodes easier in code (optional)
+    public class NodeFactory<T> where T: Node
     {
-        Unconfirmed.Remove(uid);
+        public string ScenePath {get; private set;}
+
+        public NodeFactory(string scenePath)
+        {
+            ScenePath = scenePath;
+        }
+
+        public T Instance()
+        {
+            return EasyInstancer.Instance<T>(ScenePath);
+        }   
     }
 
-    void OnConnectedToSession(int uid)
+    public interface IFPV
     {
-        QueueFree();
+        [Export]
+        string ObserverPathFPV { get; set;}
     }
 
-    #region NODE_STUFF
-    //This stuff is already implemented in Node
-    //So to make sure we can use them on IReplicable types
-    //we define them here;
-    Node GetParent();
-    string Name{get;set;}
-    int GetNetworkMaster();
-    bool IsNetworkMaster();
-    void SetNetworkMaster(int uid, bool recursive = true);
-    void QueueFree();
-    object Rpc(string method, params object[] args);
-    #endregion
-
+    public interface I3PV
+    {
+        [Export]
+        string ObserverPath3PV { get; set;}
+    }
 }
+
