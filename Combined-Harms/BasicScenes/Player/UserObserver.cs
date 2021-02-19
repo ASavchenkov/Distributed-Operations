@@ -1,10 +1,11 @@
 using Godot;
 using System;
 
+using ReplicationAbstractions;
 //Overall root node for the player,
 //whether they are in the menu, spectating, or currently playing.
 
-public class UserObserver : Node
+public class UserObserver : Node, IObserver
 {
     public UserProvider provider {get; private set;}
 

@@ -78,7 +78,10 @@ namespace ReplicationAbstractions
             n.QueueFree();
         }
     }
-
+    public interface IObserver
+    {
+        void Subscribe(Node provider);
+    }
     public static class EasyInstancer
     {
         public static T Instance<T> (string scenePath) where T: Node
@@ -88,14 +91,18 @@ namespace ReplicationAbstractions
         }
         public static Node GenObserver( Node provider, string path)
         {
-            var observer = EasyInstancer.Instance<Node>(path);
-            //somehow we need to know the type for Subscribe.
-            observer.Subscribe(provider);
+            Node observer = Instance<Node>(path);
+            if(observer is IObserver o)
+            {
+                o.Subscribe(provider);
+            }else{
+                observer.DefaultSubscribe(provider);
+            }
             return  (Node) observer;
         }
         //Default subscription function.
         //Implement one internally yourself when you want something else.
-        public static void Subscribe( this Node observer, Node provider)
+        public static void DefaultSubscribe( this Node observer, Node provider)
         {
             observer.Name = provider.Name + "_" + observer.Name;
             provider.Connect("tree_exiting", observer, "queue_free");

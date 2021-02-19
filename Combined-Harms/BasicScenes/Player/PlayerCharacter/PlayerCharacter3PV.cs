@@ -1,7 +1,9 @@
 using Godot;
 using System;
 
-public class PlayerCharacter3PV : Spatial
+using ReplicationAbstractions;
+
+public class PlayerCharacter3PV : Spatial, IObserver
 {
     private PlayerCharacterProvider provider = null;
 

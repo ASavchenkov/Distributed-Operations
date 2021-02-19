@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using ReplicationAbstractions;
 
-public class RifleFPV : Spatial
+public class RifleFPV : Spatial, IObserver
 {
     
     [Export]
@@ -41,6 +41,7 @@ public class RifleFPV : Spatial
 
     public void Subscribe(Node provider)
     {
+        this.DefaultSubscribe(provider);
         this.provider = (RifleProvider) provider;
         this.provider.Connect(nameof(RifleProvider.AttachmentUpdated), this, nameof(OnAttachmentUpdated));
     }

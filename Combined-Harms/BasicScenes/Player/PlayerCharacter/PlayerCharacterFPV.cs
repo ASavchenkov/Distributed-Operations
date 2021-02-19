@@ -4,7 +4,7 @@ using System;
 using ReplicationAbstractions;
 
 //Specifically for controlling first person movement.
-public class PlayerCharacterFPV : Node
+public class PlayerCharacterFPV : Node, IObserver
 {
 
     private PlayerCharacterProvider provider = null;

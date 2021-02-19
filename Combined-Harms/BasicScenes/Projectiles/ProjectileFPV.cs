@@ -2,8 +2,9 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
 
-public class ProjectileFPV : RigidBody
+public class ProjectileFPV : RigidBody, IObserver
 {
 
     public ProjectileProvider provider;
