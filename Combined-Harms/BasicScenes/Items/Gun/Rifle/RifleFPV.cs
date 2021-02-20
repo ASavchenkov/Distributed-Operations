@@ -12,6 +12,7 @@ public class RifleFPV : Spatial, IObserver
 
     RifleProvider provider;
 
+    private Node Projectiles;
     protected Spatial Muzzle;
     protected IMunitionSource source;
     protected Spatial Origin;
@@ -29,8 +30,7 @@ public class RifleFPV : Spatial, IObserver
     [Signal]
     public delegate void Recoil(float x, float y);
 
-    private Node Projectiles;
-
+    
     public override void _Ready()
     {
         Origin = (Spatial) GetNode("Origin");
@@ -44,6 +44,8 @@ public class RifleFPV : Spatial, IObserver
         this.DefaultSubscribe(provider);
         this.provider = (RifleProvider) provider;
         this.provider.Connect(nameof(RifleProvider.AttachmentUpdated), this, nameof(OnAttachmentUpdated));
+        source = this.provider.Mag;
+        Muzzle = (Spatial) GetNode("Origin/Gun/Muzzle");
     }
 
     //Default code for firing a projectile.
@@ -57,6 +59,7 @@ public class RifleFPV : Spatial, IObserver
             Vector3 velocity = Muzzle.GlobalTransform.basis.Xform(-Vector3.Back) * muzzleVelocity;
             
             ProjectileProvider p = EasyInstancer.Instance<ProjectileProvider>(projectileScene);
+            Projectiles.AddChild(p);
             p.Rpc("Init",Muzzle.GlobalTransform.origin, velocity);
         }
 

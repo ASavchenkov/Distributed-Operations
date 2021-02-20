@@ -4,3 +4,6 @@
 
 [node name="Node" type="Node"]
 script = ExtResource( 1 )
+ScenePath = "res://BasicScenes/Projectiles/ProjectileProvider.tscn"
+ObserverPathFPV = "res://BasicScenes/Projectiles/ProjectileFPV.tscn"
+ObserverPath3PV = "res://BasicScenes/Projectiles/Projectile3PV.tscn"

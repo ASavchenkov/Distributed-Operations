@@ -23,12 +23,16 @@ public class RifleProvider : Node, IReplicable, IFPV
     //Observers are responsible for properly inserting attachments
     //into their own node structures.
 
+    public Magazine Mag;
+
     [Signal]
     public delegate void AttachmentUpdated(string attachPoint, Node attachment);
 
     public override void _Ready()
     {
         this.ReplicableReady();
+        Mag = Magazine.Factory.Instance();
+        SetAttachment("magwell", Mag);
     }
 
     public void SetAttachment(string attachPoint, Node attachment)
