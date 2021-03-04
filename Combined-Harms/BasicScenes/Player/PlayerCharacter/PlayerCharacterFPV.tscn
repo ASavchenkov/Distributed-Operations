@@ -1,7 +1,10 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://BasicScenes/Player/PlayerCharacter/PlayerCharacterFPV.cs" type="Script" id=2]
-[ext_resource path="res://BasicScenes/BallisticTargets/Torso/BallisticTorso.tscn" type="PackedScene" id=5]
+[ext_resource path="res://BasicScenes/Ballistics/Targets/Torso/BodyPart.tscn" type="PackedScene" id=5]
+
+
+
 
 [sub_resource type="CapsuleShape" id=1]
 

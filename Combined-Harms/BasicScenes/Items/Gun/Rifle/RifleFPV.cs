@@ -56,7 +56,7 @@ public class RifleFPV : Spatial, IObserver
         string projectileScene = source.DequeueMunition();
         if(!(projectileScene is null))
         {
-            Vector3 velocity = Muzzle.GlobalTransform.basis.Xform(-Vector3.Back) * muzzleVelocity;
+            Vector3 velocity = Muzzle.GlobalTransform.basis.Xform(-Vector3.Left) * muzzleVelocity;
             
             ProjectileProvider p = EasyInstancer.Instance<ProjectileProvider>(projectileScene);
             Projectiles.AddChild(p);

@@ -24,9 +24,10 @@
     <Compile Include="addons\PurePeerSignaling\scripts\Networking.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\SignaledPeer.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\SlushNode.cs" />
-    <Compile Include="BasicScenes\BallisticTargets\Torso\BallisticTorso.cs" />
-    <Compile Include="BasicScenes\Projectiles\Projectile3PV.cs" />
-    <Compile Include="BasicScenes\Projectiles\ProjectileFPV.cs" />
+    <Compile Include="BasicScenes\Ballistics\Projectiles\Boolet\BooletProvider.cs" />
+    <Compile Include="BasicScenes\Ballistics\Targets\Torso\BodyPart.cs" />
+    <Compile Include="BasicScenes\Ballistics\Projectiles\Projectile3PV.cs" />
+    <Compile Include="BasicScenes\Ballistics\Projectiles\ProjectileFPV.cs" />
     <Compile Include="GameManagement\NOKManager.cs" />
     <Compile Include="GameManagement\RandomSelector.cs" />
     <Compile Include="GameManagement\ReplicationServer.cs" />
@@ -46,9 +47,9 @@
     <Compile Include="BasicScenes\Player\Spectator\Spectator.cs" />
     <Compile Include="BasicScenes\Player\UserObserver.cs" />
     <Compile Include="BasicScenes\Player\UserProvider.cs" />
-    <Compile Include="BasicScenes\Projectiles\Boolet\Boolet.cs" />
-    <Compile Include="BasicScenes\Projectiles\ProjectileProvider.cs" />
-    <Compile Include="BasicScenes\BallisticTargets\BallisticTarget.cs" />
+    <Compile Include="BasicScenes\Ballistics\Projectiles\Boolet\BooletFPV.cs" />
+    <Compile Include="BasicScenes\Ballistics\Projectiles\ProjectileProvider.cs" />
+    <Compile Include="BasicScenes\Ballistics\Targets\IBallisticTarget.cs" />
     <Compile Include="GameRoot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SpawnManager.cs" />

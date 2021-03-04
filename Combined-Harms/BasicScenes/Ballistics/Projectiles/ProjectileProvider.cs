@@ -44,34 +44,10 @@ public class ProjectileProvider : Node, IReplicable, IFPV, I3PV
         this.ReplicableReady();
     }
 
-    public virtual void DefaultImpact()
-    {
-        //default functionality is to simply delete self
-        //We need to make sure this deletion happens on all peers.
-        this.MasterDespawn();
-    }
-
-    // public void ComputeImpact(BallisticTarget target)
-    // {
-    //     ImpactFunction matchedFunction;
-    //     if(target is null)
-    //         DefaultImpact();
-    //     else if ( ImpactFunctions.TryGetValue(target.GetType(), out matchedFunction))
-    //         matchedFunction(target);
-    //     else if (!target.ComputeImpact(this))
-    //         DefaultImpact();
-    // }
-
     [PuppetSync]
     public void UpdateTrajectory(Vector3 translation, Vector3 velocity)
     {
         Translation = translation;
         LinearVelocity = velocity;
     }
-
-    //The base function handles hit detection
-    //Additional ballistics are left to the engine
-    //as well as the deriving class.
-    
-
 }

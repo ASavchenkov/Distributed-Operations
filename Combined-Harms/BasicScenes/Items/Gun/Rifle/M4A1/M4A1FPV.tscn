@@ -11,7 +11,7 @@ attachmentMap = {
 }
 
 [node name="Muzzle" parent="Origin/Gun" index="0"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.258374, 0.0166112, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.258374, 0.0166112, -2.60893e-09 )
 
 [node name="HipFireTransform" parent="Origin/Gun" index="1"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.347763, 0.0664238, -0.0952405 )

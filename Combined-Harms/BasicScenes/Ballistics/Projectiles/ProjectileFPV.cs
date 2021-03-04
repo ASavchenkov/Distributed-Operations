@@ -4,10 +4,13 @@ using System.Collections.Generic;
 
 using ReplicationAbstractions;
 
-public class ProjectileFPV : RigidBody, IObserver
+public abstract class ProjectileFPV : RigidBody, IObserver
 {
 
-    public ProjectileProvider provider;
+    protected ProjectileProvider _provider;
+
+    //"new this property and cast to appropriate type in deriving classes.
+    public ProjectileProvider provider {get => _provider; private set => _provider = value;}
     
     public RayCast rayCast;
     
@@ -24,6 +27,11 @@ public class ProjectileFPV : RigidBody, IObserver
         rayCast = (RayCast) GetNode("RayCast");
     }
 
+    public virtual void OnContact(IBallisticTarget target)
+    {
+        //Does nothing by default.
+    }
+
     public override void _IntegrateForces(PhysicsDirectBodyState state)
     {
         
@@ -36,10 +44,12 @@ public class ProjectileFPV : RigidBody, IObserver
         {
 
             //GetCollider will never return null since IsColliding() returned true
-            BallisticTarget target = rayCast.GetCollider() as BallisticTarget;
-            GD.Print(rayCast.GetCollider().GetType());
+            IBallisticTarget target = rayCast.GetCollider() as IBallisticTarget;
             //But target can be null if it's not a BallisticTarget
-            // provider.ComputeImpact(target);
+            target?.OnContact(this);
+            OnContact(target);
+
+            
         }
 
         provider.Rpc("UpdateTrajectory", Translation, state.LinearVelocity);

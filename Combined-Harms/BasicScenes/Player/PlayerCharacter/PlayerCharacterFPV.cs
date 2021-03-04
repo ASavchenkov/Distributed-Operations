@@ -57,7 +57,6 @@ public class PlayerCharacterFPV : Node, IObserver
 
     public override void _UnhandledInput(InputEvent @event)
     {
-
         if(@event is InputEventMouseMotion mouseEvent && inputEnabled)
         {
             //Yes these look flipped. It's correct.
