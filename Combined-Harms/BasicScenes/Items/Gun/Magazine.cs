@@ -15,7 +15,7 @@ public class Magazine : Node, IMunitionSource
     public HashSet<int> Unconfirmed {get;set;}
 
 
-    string ProjectileScene = "res://BasicScenes/Projectiles/ProjectileProvider.tscn";
+    string ProjectileScene = "res://BasicScenes/Ballistics/Projectiles/Boolet/BooletProvider.tscn";
     int currentAmount = 30;
 
     public string DequeueMunition()

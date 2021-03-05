@@ -2,7 +2,6 @@
 
 [ext_resource path="res://BasicScenes/Ballistics/Projectiles/ProjectileFPV.cs" type="Script" id=1]
 
-
 [sub_resource type="SphereMesh" id=1]
 
 [node name="ProjectileFPV" type="RigidBody"]

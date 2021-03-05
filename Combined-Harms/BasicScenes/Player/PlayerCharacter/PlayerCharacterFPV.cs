@@ -130,7 +130,7 @@ public class PlayerCharacterFPV : Node, IObserver
         Body.AddCentralForce((globalMove-horizontalVelocity)*authority);
     }
 
-    public void OnTorsoHit()
+    public void TakeDamage(int damage, int penetration)
     {
         GD.Print("torso was hit");
     }

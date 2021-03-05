@@ -32,7 +32,7 @@ public class ReplicationServer : Node
     }
 
     //No checking here yet
-    [Remote]
+    [RemoteSync]
     public void Despawn(string path)
     {
         GetNode(path).QueueFree();

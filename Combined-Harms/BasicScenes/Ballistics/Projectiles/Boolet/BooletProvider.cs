@@ -15,19 +15,3 @@ public class BooletProvider : ProjectileProvider
     [Export]
     public float Penetration;
 }
-
-
-    public class BaseMember { }
-
-    public class BaseOwner
-    {
-        protected BaseMember _member;
-        public BaseMember member {get => _member; private set => _member = value;}
-    }
-
-    public class DerivedMember: BaseMember { }
-
-    public class DerivedOwner : BaseOwner
-    {
-        public new DerivedMember member {get => (DerivedMember) _member; private set => _member = value;}
-    }

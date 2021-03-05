@@ -1,14 +1,12 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://BasicScenes/Ballistics/Projectiles/Boolet/BooletFPV.cs" type="Script" id=1]
-
-
+[ext_resource path="res://BasicScenes/Ballistics/Projectiles/ProjectileFPV.cs" type="Script" id=1]
 
 [sub_resource type="SphereMesh" id=1]
 
 [node name="Projectile" type="RigidBody"]
 collision_layer = 4
-collision_mask = 5
+collision_mask = 0
 mode = 3
 gravity_scale = 0.1
 axis_lock_angular_x = true

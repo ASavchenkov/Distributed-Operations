@@ -29,6 +29,7 @@ public abstract class ProjectileFPV : RigidBody, IObserver
 
     public virtual void OnContact(IBallisticTarget target)
     {
+        GD.Print("base OnContact");
         //Does nothing by default.
     }
 
@@ -48,12 +49,11 @@ public abstract class ProjectileFPV : RigidBody, IObserver
             //But target can be null if it's not a BallisticTarget
             target?.OnContact(this);
             OnContact(target);
-
             
+            provider.Rpc("UpdateTrajectory", Translation, state.LinearVelocity);
+            //we only update the trajectory when something of note happens to the projectile.
+            //otherwise, the 3PV observer should estimate trajectory on it's own
+            //to retain smooth visuals. (Projectile3PV is just a visualization after all)
         }
-
-        provider.Rpc("UpdateTrajectory", Translation, state.LinearVelocity);
-        
     }
-    
 }

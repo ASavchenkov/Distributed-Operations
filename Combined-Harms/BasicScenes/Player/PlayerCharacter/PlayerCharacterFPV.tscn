@@ -1,10 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://BasicScenes/Player/PlayerCharacter/PlayerCharacterFPV.cs" type="Script" id=2]
-[ext_resource path="res://BasicScenes/Ballistics/Targets/Torso/BodyPart.tscn" type="PackedScene" id=5]
-
-
-
+[ext_resource path="res://BasicScenes/Ballistics/Targets/Body/BodyPart.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CapsuleShape" id=1]
 
@@ -48,4 +45,4 @@ __meta__ = {
 [node name="CollisionShape" type="CollisionShape" parent="Body/FEET"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.0620419, 0 )
 shape = SubResource( 2 )
-[connection signal="TorsoHit" from="Body/BallisticTorso" to="." method="OnTorsoHit"]
+[connection signal="Hit" from="Body/BallisticTorso" to="." method="TakeDamage"]

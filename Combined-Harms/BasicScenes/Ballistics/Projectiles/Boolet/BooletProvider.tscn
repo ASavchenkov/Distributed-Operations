@@ -5,4 +5,7 @@
 [node name="Node" type="Node"]
 script = ExtResource( 1 )
 ScenePath = "res://BasicScenes/Ballistics/Projectiles/Boolet/BooletProvider.tscn"
-ObserverPathFPV = ""
+ObserverPathFPV = "res://BasicScenes/Ballistics/Projectiles/Boolet/BooletFPV.tscn"
+ObserverPath3PV = "res://BasicScenes/Ballistics/Projectiles/Projectile3PV.tscn"
+Damage = 420.0
+Penetration = 69.0
