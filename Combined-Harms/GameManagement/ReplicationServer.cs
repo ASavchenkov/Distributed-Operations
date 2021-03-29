@@ -25,12 +25,6 @@ public class ReplicationServer : Node
         RpcId(uid, nameof(Replicate), n.GetParent().GetPath(), n.Name, n.ScenePath);     
     }
 
-    [Remote]
-    public void AckRPC(string path)
-    {
-        ((IReplicable) GetNode(path)).Ack(GetTree().GetRpcSenderId());
-    }
-
     //No checking here yet
     [RemoteSync]
     public void Despawn(string path)
@@ -51,21 +45,7 @@ public class ReplicationServer : Node
         
         string childPath = parent+ "/" + name;
         var childNode = (IReplicable) GetNode(childPath);
-        if(!(childNode is null))
-        {
-            //check if someone is simply confirming replication
-            //Due to the loss of the ACK packet, or NOK transfer.
-            if(childNode.ScenePath == scenePath 
-                &&childNode.GetNetworkMaster() == GetTree().GetRpcSenderId())
-            {
-                RpcId(GetTree().GetRpcSenderId(), nameof(AckRPC), childPath);
-                childNode.Rpc(nameof(ReplicationExtensions.Ack));
-            }
-            else GD.Print("Replication Error: Node path collision/ non-master call");
-            //purely for debugging. Shouldn't happen.
-            //Don't know how to deal with this in production.
-        }
-        else
+        if(childNode is null)
         {
             //If it doesn't exist yet, then just replicate it.
             //Easiest case to handle.
@@ -75,7 +55,12 @@ public class ReplicationServer : Node
 
             childNode.Name = name;
             childNode.SetNetworkMaster(GetTree().GetRpcSenderId());
-            RpcId(GetTree().GetRpcSenderId(), nameof(AckRPC), childNode.GetPath());
+        }
+        else
+        {
+            GD.PrintErr("Replication Error: Node path collision/ non-master call");
+            //purely for debugging. Shouldn't happen.
+            //Don't know how to deal with this in production.
         }
     
     }

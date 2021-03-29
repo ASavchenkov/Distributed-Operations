@@ -8,9 +8,10 @@ public class RifleProvider : Node, IReplicable, IFPV
 {
 
     //IReplicable boilerplate
+    public ReplicationMember rMember {get; set;}
+    
     [Export]
     public string ScenePath {get;set;}
-    public HashSet<int> Unconfirmed {get;set;}
 
     //IFPV boilerplate
     [Export]

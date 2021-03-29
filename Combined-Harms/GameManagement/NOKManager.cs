@@ -28,8 +28,6 @@ public class NOKManager : Node
         {
             EmitSignal(nameof(Transfer), uid);
         }
-
-        
     }
 
     //expose as property so changes automatically trigger RPC.
@@ -79,11 +77,11 @@ public class NOKManager : Node
 
     public void Subscribe (IReplicable n)
     {
-        NOKs[n.GetNetworkMaster()].Connect(nameof(NOKSignaller.Transfer),(Node)  n,nameof(ReplicationExtensions.OnNOKTransfer));
+        NOKs[n.GetNetworkMaster()].Connect(nameof(NOKSignaller.Transfer), n.rMember,nameof(ReplicationMember.OnNOKTransfer));
     }
     public void UnSubscribe (IReplicable n)
     {
-        NOKs[n.GetNetworkMaster()].Disconnect(nameof(NOKSignaller.Transfer),(Node) n,nameof(ReplicationExtensions.OnNOKTransfer));
+        NOKs[n.GetNetworkMaster()].Disconnect(nameof(NOKSignaller.Transfer),n.rMember,nameof(ReplicationMember.OnNOKTransfer));
     }
 
 }

@@ -6,11 +6,13 @@ using ReplicationAbstractions;
 public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
 {
 
+    public ReplicationMember rMember {get; set;}
+
     public static NodeFactory<PlayerCharacterProvider> Factory = 
         new NodeFactory<PlayerCharacterProvider> ("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
     
     public string ScenePath {get => Factory.ScenePath;}
-    public HashSet<int> Unconfirmed {get; set;}
+
 
     [Export]
     public string ObserverPathFPV { get; set;}

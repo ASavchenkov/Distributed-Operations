@@ -15,9 +15,9 @@ public class ProjectileProvider : Node, IReplicable, IFPV, I3PV
 {
 
     //Replicable boilerplate
+    public ReplicationMember rMember {get; set;}
     [Export]
     public string ScenePath {get;set;}
-    public HashSet<int> Unconfirmed {get;set;}
     //Observer boilerplate
     [Export]
     public string ObserverPathFPV {get;set;}

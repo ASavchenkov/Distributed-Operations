@@ -1,14 +1,53 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Timers;
 
 namespace ReplicationAbstractions
 {
 
+    //Mixin for what used to be extension methods,
+    //since extension methods can't be triggered by signals.
+    public class ReplicationMember : Godot.Object
+    {
+        private IReplicable master;
+
+        public ReplicationMember(IReplicable m)
+        {
+            master = m;
+        }
+
+        public void MasterDespawn()
+        {
+            ReplicationServer.Instance.Rpc(nameof(ReplicationServer.Despawn), ((Node) master).GetPath());
+        }
+        public void GenName()
+        {
+            master.Name = System.Text.Encoding.ASCII.GetString(Guid.NewGuid().ToByteArray());
+        }
+
+        public void OnPeerConnected(int uid)
+        {
+            if( master.IsNetworkMaster())
+                ReplicationServer.Instance.ReplicateID(master, uid);
+        }
+
+        public void OnConnectedToSession(int uid)
+        {
+            MasterDespawn();
+        }
+
+        //When you want to have different behavior,
+        //derive ReplicationMember and override this function.
+        public virtual void OnNOKTransfer(int uid)
+        {
+            MasterDespawn();
+        }
+    }
+
     public interface IReplicable
     {
-
-        HashSet<int> Unconfirmed {get;set;}
+        ReplicationMember rMember {get;set;}
         string ScenePath {get;}
 
         #region NODE_STUFF
@@ -31,51 +70,19 @@ namespace ReplicationAbstractions
         public static void ReplicableReady( this IReplicable n)
         {
         
-            n.Unconfirmed = new HashSet<int>(Networking.Instance.SignaledPeers.Keys);
-            Networking.Instance.RTCMP.Connect("peer_connected", (Node) n,nameof(OnPeerConnected));
-            Networking.Instance.RTCMP.Connect("peer_disconnected", (Node) n,nameof(OnPeerDC));
-            Networking.Instance.Connect(nameof(Networking.ConnectedToSession), (Node) n, nameof(OnConnectedToSession));
+            n.rMember = new ReplicationMember(n);
+            Networking.Instance.RTCMP.Connect("peer_connected", n.rMember,nameof(ReplicationMember.OnPeerConnected));
+            Networking.Instance.Connect(nameof(Networking.ConnectedToSession), n.rMember, nameof(ReplicationMember.OnConnectedToSession));
             
             if( n.IsNetworkMaster())
             {
-                n.GenName();
+                n.rMember.GenName();
                 ReplicationServer.Instance.Replicate(n);
             }
             else
             {
                 NOKManager.Instance.Subscribe(n);
             }
-        }
-        public static void Ack(this IReplicable n, int uid)
-        {
-            n.Unconfirmed.Remove(uid);
-        }
-        public static void MasterDespawn(this IReplicable n)
-        {
-            ReplicationServer.Instance.Rpc(nameof(ReplicationServer.Despawn), ((Node)n).GetPath());
-        }
-        public static void GenName(this IReplicable n)
-        {
-            n.Name = System.Text.Encoding.ASCII.GetString(Guid.NewGuid().ToByteArray());
-        }
-
-        public static void OnNOKTransfer(this IReplicable n, int uid)
-        {
-            n.MasterDespawn();
-        }
-        public static void OnPeerConnected( this IReplicable n, int uid)
-        {
-            n.Unconfirmed.Add(uid);
-        }
-
-        public static void OnPeerDC( this IReplicable n, int uid)
-        {
-            n.Unconfirmed.Remove(uid);
-        }
-
-        public static void OnConnectedToSession( this IReplicable n, int uid)
-        {
-            n.QueueFree();
         }
     }
     public interface IObserver

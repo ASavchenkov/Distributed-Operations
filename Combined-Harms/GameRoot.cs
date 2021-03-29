@@ -18,8 +18,12 @@ public class GameRoot : Spatial
         //and it's a permanent node in the SceneTree
         LocalUser = (UserObserver) GetNode("UserObserver_1");
         AddUser();
-        Networking.Instance.Connect(nameof(Networking.ConnectedToSession), this, nameof(AddUser));
-        
+        Networking.Instance.Connect(nameof(Networking.ConnectedToSession), this, nameof(OnConnectedToSession));
+    }
+
+    public void OnConnectedToSession(int uid)
+    {
+
     }
     public void AddUser()
     {

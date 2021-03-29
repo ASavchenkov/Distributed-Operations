@@ -10,7 +10,7 @@ using ReplicationAbstractions;
 public class UserProvider : Node, IReplicable, IFPV
 {
 
-    public HashSet<int> Unconfirmed {get;set;}
+    public ReplicationMember rMember {get; set;}
 
     public static NodeFactory<UserProvider> Factory = 
         new NodeFactory<UserProvider>("res://BasicScenes/Player/UserProvider.tscn");
@@ -21,7 +21,7 @@ public class UserProvider : Node, IReplicable, IFPV
     public string ObserverPathFPV {get;set;}
 
     public enum Team {Unassigned, Red, Blue};
-    public Team ThisTeam = Team.Unassigned;
+    public Team ThisTeam = Team.Red;
     
     [Signal]
     public delegate void TeamChanged();
@@ -46,6 +46,7 @@ public class UserProvider : Node, IReplicable, IFPV
                             //this.Name is a good default though.
 
         var menu = GetNode("/root/GameRoot/UserObserver_1/MainMenu/TabContainer/TDM");
+        
         Connect(nameof(TeamChanged), menu, nameof(TDMMenu.UpdateLists));
         
         if(!IsNetworkMaster())
@@ -72,6 +73,7 @@ public class UserProvider : Node, IReplicable, IFPV
         RpcId(uid, nameof(RemoteInit), ThisTeam, Score, VoteRestart, Alias);
     }
 
+    //Call locally
     public void SetTeam(int team)
     {
         if(ThisTeam == (UserProvider.Team) team) return;
@@ -84,6 +86,7 @@ public class UserProvider : Node, IReplicable, IFPV
     [PuppetSync]
     public void UpdateTeam(int team)
     {
+        GD.Print(Name, ": Changed team");
         ThisTeam = (Team) team;
         CurrentCharacter = null;
         EmitSignal(nameof(TeamChanged));
@@ -99,6 +102,6 @@ public class UserProvider : Node, IReplicable, IFPV
     {
         //This particular object can just be deleted (safely)
         //if the peer DCs.
-        QueueFree();
+        rMember.MasterDespawn();
     }
 }
