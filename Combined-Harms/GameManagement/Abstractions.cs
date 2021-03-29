@@ -23,7 +23,7 @@ namespace ReplicationAbstractions
         }
         public void GenName()
         {
-            master.Name = System.Text.Encoding.ASCII.GetString(Guid.NewGuid().ToByteArray());
+            master.Name = Guid.NewGuid().ToString("D");
         }
 
         public void OnPeerConnected(int uid)

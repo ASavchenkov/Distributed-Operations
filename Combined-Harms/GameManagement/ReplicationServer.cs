@@ -29,6 +29,7 @@ public class ReplicationServer : Node
     [RemoteSync]
     public void Despawn(string path)
     {
+        GD.Print("Despawning: ", path);
         GetNode(path).QueueFree();
     }
     
