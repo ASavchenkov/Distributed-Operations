@@ -35,16 +35,16 @@ public class UserProvider : Node, IReplicable, IFPV
     public Node CurrentCharacter = null;
 
     public string Alias;
-    //When the peer disconnects, this will be used to determine
-    //who to set as the master for this peers providers.
     
     public override void _Ready()
     {
+        
+        GD.Print("Master UID: ", GetNetworkMaster());
         this.ReplicableReady();
         
         Alias = this.Name;  //Let player change it if they so wish.
                             //this.Name is a good default though.
-
+        GD.Print("Alias: ", Alias);
         var menu = GetNode("/root/GameRoot/UserObserver_1/MainMenu/TabContainer/TDM");
         
         Connect(nameof(TeamChanged), menu, nameof(TDMMenu.UpdateLists));

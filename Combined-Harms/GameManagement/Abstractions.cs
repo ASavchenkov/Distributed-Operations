@@ -10,31 +10,26 @@ namespace ReplicationAbstractions
     //since extension methods can't be triggered by signals.
     public class ReplicationMember : Godot.Object
     {
-        private IReplicable master;
+        private IReplicable owner;
 
-        public ReplicationMember(IReplicable m)
+        public ReplicationMember(IReplicable o)
         {
-            master = m;
+            owner = o;
         }
 
         public void MasterDespawn()
         {
-            ReplicationServer.Instance.Rpc(nameof(ReplicationServer.Despawn), ((Node) master).GetPath());
+            ReplicationServer.Instance.Rpc(nameof(ReplicationServer.Despawn), ((Node) owner).GetPath());
         }
         public void GenName()
         {
-            master.Name = Guid.NewGuid().ToString("D");
+            owner.Name = Guid.NewGuid().ToString("D");
         }
 
         public void OnPeerConnected(int uid)
         {
-            if( master.IsNetworkMaster())
-                ReplicationServer.Instance.ReplicateID(master, uid);
-        }
-
-        public void OnConnectedToSession(int uid)
-        {
-            MasterDespawn();
+            if( owner.IsNetworkMaster())
+                ReplicationServer.Instance.ReplicateID(owner, uid);
         }
 
         //When you want to have different behavior,
@@ -72,7 +67,6 @@ namespace ReplicationAbstractions
         
             n.rMember = new ReplicationMember(n);
             Networking.Instance.RTCMP.Connect("peer_connected", n.rMember,nameof(ReplicationMember.OnPeerConnected));
-            Networking.Instance.Connect(nameof(Networking.ConnectedToSession), n.rMember, nameof(ReplicationMember.OnConnectedToSession));
             
             if( n.IsNetworkMaster())
             {

@@ -24,6 +24,7 @@ public class UserObserver : Node, IObserver
         PackedScene menuScene = GD.Load<PackedScene>("res://BasicScenes/GUI/MainMenu.tscn");
         MainMenu = (CanvasItem) GetNode("MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
+        MainMenu.GetNode("TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
         
     }
 
@@ -35,7 +36,6 @@ public class UserObserver : Node, IObserver
         OnTeamChanged();
         this.provider.Connect(nameof(UserProvider.TeamChanged),this,nameof(OnTeamChanged));
         MainMenu.GetNode("TabContainer/TDM/VBoxContainer/TeamChoice/Option").Connect("item_selected",provider, nameof(UserProvider.SetTeam));
-        MainMenu.GetNode("TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
     }
 
     public void OnTeamChanged()

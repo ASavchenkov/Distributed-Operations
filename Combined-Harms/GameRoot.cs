@@ -23,11 +23,13 @@ public class GameRoot : Spatial
 
     public void OnConnectedToSession(int uid)
     {
-
+        AddUser();
     }
     public void AddUser()
     {
+        LocalUser?.provider?.rMember?.MasterDespawn();
         UserProvider provider = UserProvider.Factory.Instance();
+        provider.SetNetworkMaster(GetTree().GetNetworkUniqueId());
         Users.AddChild(provider);
         LocalUser.Subscribe(provider);
     }

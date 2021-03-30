@@ -17,12 +17,12 @@ public class ReplicationServer : Node
 
     public void Replicate(IReplicable n)
     {
-        Rpc(nameof(Replicate), n.GetParent().GetPath(), n.Name, n.ScenePath);
+        Rpc(nameof(ReplicateRPC), n.GetParent().GetPath(), n.Name, n.ScenePath);
     }
 
     public void ReplicateID(IReplicable n, int uid)
     {
-        RpcId(uid, nameof(Replicate), n.GetParent().GetPath(), n.Name, n.ScenePath);     
+        RpcId(uid, nameof(ReplicateRPC), n.GetParent().GetPath(), n.Name, n.ScenePath);     
     }
 
     //No checking here yet
@@ -34,7 +34,7 @@ public class ReplicationServer : Node
     }
     
     [Remote]
-    public void Replicate(string parent, string name, string scenePath)
+    public void ReplicateRPC(string parent, string name, string scenePath)
     {
         
         var parentNode = GetNode(parent);
@@ -45,16 +45,17 @@ public class ReplicationServer : Node
         }
         
         string childPath = parent+ "/" + name;
-        var childNode = (IReplicable) GetNode(childPath);
+        var childNode = (IReplicable) GetNodeOrNull(childPath);
         if(childNode is null)
         {
             //If it doesn't exist yet, then just replicate it.
             //Easiest case to handle.
             PackedScene scene = GD.Load<PackedScene>(scenePath);
             childNode = (IReplicable) scene.Instance();
-            parentNode.AddChild((Node) childNode);
 
             childNode.Name = name;
+            parentNode.AddChild((Node) childNode);
+
             childNode.SetNetworkMaster(GetTree().GetRpcSenderId());
         }
         else
