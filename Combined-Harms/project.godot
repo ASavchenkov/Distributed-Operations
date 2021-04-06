@@ -19,6 +19,14 @@ config/name="Combined-Harms"
 run/main_scene="res://GameRoot.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Networking="*res://addons/PurePeerSignaling/Networking.tscn"
+NOKManager="*res://GameManagement/NOKManager.tscn"
+ReplicationServer="*res://GameManagement/ReplicationServer.tscn"
+UserObserver_1="*res://GameManagement/UserObserver.tscn"
+GameManager="*res://GameManagement/GameManager.tscn"
+
 [gdnative]
 
 singletons=[ "res://webrtc_debug/webrtc_debug.tres" ]
