@@ -17,15 +17,12 @@ public class GameRoot : Spatial
         //UserProvider only has one observer,
         //and it's a permanent node in the SceneTree
         LocalUser = (UserObserver) GetNode("UserObserver_1");
-        AddUser();
+        OnConnectedToSession(1);
+        //We've essentially connected to our own session when we start the application
         Networking.Instance.Connect(nameof(Networking.ConnectedToSession), this, nameof(OnConnectedToSession));
     }
 
     public void OnConnectedToSession(int uid)
-    {
-        AddUser();
-    }
-    public void AddUser()
     {
         LocalUser?.provider?.rMember?.MasterDespawn();
         UserProvider provider = UserProvider.Factory.Instance();
