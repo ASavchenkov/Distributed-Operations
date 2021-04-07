@@ -36,7 +36,8 @@ public class ReplicationServer : Node
     [Remote]
     public void ReplicateRPC(string parent, string name, string scenePath)
     {
-        
+        GD.Print("Replicating: ", parent, "; ", name, "; ", scenePath);
+        GD.Print("Peer ID: ", GetTree().GetRpcSenderId());
         var parentNode = GetNode(parent);
         if(parentNode is null)
         {
@@ -45,18 +46,20 @@ public class ReplicationServer : Node
         }
         
         string childPath = parent+ "/" + name;
+        GD.Print("Final Path: ", childPath);
         var childNode = (IReplicable) GetNodeOrNull(childPath);
         if(childNode is null)
         {
+            GD.Print("default branch");
             //If it doesn't exist yet, then just replicate it.
             //Easiest case to handle.
             PackedScene scene = GD.Load<PackedScene>(scenePath);
             childNode = (IReplicable) scene.Instance();
 
             childNode.Name = name;
+            childNode.SetNetworkMaster(GetTree().GetRpcSenderId());
             parentNode.AddChild((Node) childNode);
 
-            childNode.SetNetworkMaster(GetTree().GetRpcSenderId());
         }
         else
         {

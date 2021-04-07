@@ -38,8 +38,6 @@ public class UserProvider : Node, IReplicable, IFPV
     
     public override void _Ready()
     {
-        Connect("tree_exiting", this, nameof(OnQueueFree));
-
         GD.Print("Master UID: ", GetNetworkMaster());
         this.ReplicableReady();
         
@@ -49,10 +47,9 @@ public class UserProvider : Node, IReplicable, IFPV
         var menu = GetNode("/root/UserObserver_1/MainMenu/TabContainer/TDM");
         
         Connect(nameof(TeamChanged), menu, nameof(TDMMenu.UpdateLists));
-        
         if(!IsNetworkMaster())
         {
-            RpcId(GetNetworkMaster(), nameof(RequestInit));
+            Rpc(nameof(RequestInit));
         }
         
     }
@@ -64,7 +61,7 @@ public class UserProvider : Node, IReplicable, IFPV
         Score = score;
         VoteRestart = vote;
         Alias = alias;
-        EmitSignal(nameof(TeamChanged));
+        EmitSignal("TeamChanged");
     }
 
     [Master]
@@ -106,9 +103,5 @@ public class UserProvider : Node, IReplicable, IFPV
         //This particular object can just be deleted (safely)
         //if the peer DCs.
         rMember.MasterDespawn();
-    }
-    public void OnQueueFree()
-    {
-        GD.PrintErr("Oh no we don't want to go!");
     }
 }

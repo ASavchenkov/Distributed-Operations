@@ -28,7 +28,7 @@ namespace ReplicationAbstractions
 
         public void OnPeerConnected(int uid)
         {
-            if( owner.IsNetworkMaster())
+            if( IsInstanceValid((Node) owner) && owner.IsNetworkMaster())
                 ReplicationServer.Instance.ReplicateID(owner, uid);
         }
 
