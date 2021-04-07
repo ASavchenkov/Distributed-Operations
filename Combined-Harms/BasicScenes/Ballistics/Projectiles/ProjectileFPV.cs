@@ -47,7 +47,8 @@ public abstract class ProjectileFPV : RigidBody, IObserver
             //GetCollider will never return null since IsColliding() returned true
             IBallisticTarget target = rayCast.GetCollider() as IBallisticTarget;
             //But target can be null if it's not a BallisticTarget
-            target?.OnContact(this);
+            if(IsInstanceValid((Node) target))
+                target.OnContact(this);
             OnContact(target);
             
             provider.Rpc("UpdateTrajectory", Translation, state.LinearVelocity);

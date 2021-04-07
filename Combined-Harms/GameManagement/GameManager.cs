@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
+using ReplicationAbstractions;
 
 public class GameManager : Node
 {
@@ -8,22 +10,35 @@ public class GameManager : Node
 
     public override void _Ready()
     {
-        Users = GetNode("/root/GameRoot/Users");
-        
-        //UserProvider only has one observer,
-        //and it's a permanent node in the SceneTree
         LocalUser = (UserObserver) GetNode("/root/UserObserver_1");
-        OnConnectedToSession(1);
         //We've essentially connected to our own session when we start the application
+        GetNode("/root").Connect("ready", this, nameof(OnConnectedToSession),
+            new Godot.Collections.Array(new object[] {-1}));
         Networking.Instance.Connect(nameof(Networking.ConnectedToSession), this, nameof(OnConnectedToSession));
     }
 
     public void OnConnectedToSession(int uid)
     {
-        LocalUser?.provider?.rMember?.MasterDespawn();
+        
+        GD.Print("This should only get called once");
+        //If this is the start of the application, disconnect the signal from root.
+        if(uid == -1)
+            GetNode("/root").Disconnect("ready",this, nameof(OnConnectedToSession));
+        
+        //Manually replace because the default seems to do it async
+        //and we need to do this synchronously.
+        GetNode("/root/GameRoot").Free();
+        var gameRoot = EasyInstancer.Instance<Node>("res://GameRoot.tscn");
+        GetNode("/root").AddChild(gameRoot);
+
+        Users = gameRoot.GetNode("Users");
         UserProvider provider = UserProvider.Factory.Instance();
         provider.SetNetworkMaster(GetTree().GetNetworkUniqueId());
         Users.AddChild(provider);
         LocalUser.Subscribe(provider);
     }
+
+
+
+
 }

@@ -41,7 +41,8 @@ public class UserObserver : Node, IObserver
     public void OnTeamChanged()
     {
         //CurrentView may already have been freed, in which case do nothing.
-        CurrentView?.QueueFree();
+        if(IsInstanceValid(CurrentView))
+            CurrentView.QueueFree();
         var spectatorScene = GD.Load<PackedScene>("res://BasicScenes/Player/Spectator/Spectator.tscn");
         CurrentView = spectatorScene.Instance();
         GetNode("/root/GameRoot/Map").AddChild(CurrentView);
@@ -51,7 +52,8 @@ public class UserObserver : Node, IObserver
     {
         if(provider.ThisTeam == UserProvider.Team.Unassigned) return;
 
-        CurrentView?.QueueFree();
+        if(IsInstanceValid(CurrentView))
+            CurrentView.QueueFree();
         CurrentView = PlayerCharacterProvider.Factory.Instance();
         GetNode("/root/GameRoot/PlayerCharacters").AddChild(CurrentView);
         

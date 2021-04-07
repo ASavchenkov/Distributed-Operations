@@ -38,7 +38,8 @@ public class UserProvider : Node, IReplicable, IFPV
     
     public override void _Ready()
     {
-        
+        Connect("tree_exiting", this, nameof(OnQueueFree));
+
         GD.Print("Master UID: ", GetNetworkMaster());
         this.ReplicableReady();
         
@@ -78,7 +79,9 @@ public class UserProvider : Node, IReplicable, IFPV
     {
         if(ThisTeam == (UserProvider.Team) team) return;
 
-        CurrentCharacter?.QueueFree();
+        if(IsInstanceValid(CurrentCharacter))
+            CurrentCharacter.QueueFree();
+            
         CurrentCharacter = null;
         Rpc(nameof(UpdateTeam), team);
     }
@@ -103,5 +106,9 @@ public class UserProvider : Node, IReplicable, IFPV
         //This particular object can just be deleted (safely)
         //if the peer DCs.
         rMember.MasterDespawn();
+    }
+    public void OnQueueFree()
+    {
+        GD.PrintErr("Oh no we don't want to go!");
     }
 }
