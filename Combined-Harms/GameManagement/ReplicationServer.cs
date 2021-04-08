@@ -46,11 +46,9 @@ public class ReplicationServer : Node
         }
         
         string childPath = parent+ "/" + name;
-        GD.Print("Final Path: ", childPath);
         var childNode = (IReplicable) GetNodeOrNull(childPath);
         if(childNode is null)
         {
-            GD.Print("default branch");
             //If it doesn't exist yet, then just replicate it.
             //Easiest case to handle.
             PackedScene scene = GD.Load<PackedScene>(scenePath);
