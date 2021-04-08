@@ -2,6 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
+
 public class RifleFPV : Spatial, IObserver
 {
     
@@ -10,6 +12,7 @@ public class RifleFPV : Spatial, IObserver
 
     RifleProvider provider;
 
+    private Node Projectiles;
     protected Spatial Muzzle;
     protected IMunitionSource source;
     protected Spatial Origin;
@@ -27,8 +30,7 @@ public class RifleFPV : Spatial, IObserver
     [Signal]
     public delegate void Recoil(float x, float y);
 
-    private Node Projectiles;
-
+    
     public override void _Ready()
     {
         Origin = (Spatial) GetNode("Origin");
@@ -39,8 +41,11 @@ public class RifleFPV : Spatial, IObserver
 
     public void Subscribe(Node provider)
     {
+        this.DefaultSubscribe(provider);
         this.provider = (RifleProvider) provider;
         this.provider.Connect(nameof(RifleProvider.AttachmentUpdated), this, nameof(OnAttachmentUpdated));
+        source = this.provider.Mag;
+        Muzzle = (Spatial) GetNode("Origin/Gun/Muzzle");
     }
 
     //Default code for firing a projectile.
@@ -51,9 +56,10 @@ public class RifleFPV : Spatial, IObserver
         string projectileScene = source.DequeueMunition();
         if(!(projectileScene is null))
         {
-            Vector3 velocity = Muzzle.GlobalTransform.basis.Xform(-Vector3.Back) * muzzleVelocity;
+            Vector3 velocity = Muzzle.GlobalTransform.basis.Xform(-Vector3.Left) * muzzleVelocity;
             
             ProjectileProvider p = EasyInstancer.Instance<ProjectileProvider>(projectileScene);
+            Projectiles.AddChild(p);
             p.Rpc("Init",Muzzle.GlobalTransform.origin, velocity);
         }
 

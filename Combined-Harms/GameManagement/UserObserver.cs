@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-
+using ReplicationAbstractions;
 //Overall root node for the player,
 //whether they are in the menu, spectating, or currently playing.
 
@@ -24,6 +24,7 @@ public class UserObserver : Node, IObserver
         PackedScene menuScene = GD.Load<PackedScene>("res://BasicScenes/GUI/MainMenu.tscn");
         MainMenu = (CanvasItem) GetNode("MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
+        MainMenu.GetNode("TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
         
     }
 
@@ -35,13 +36,13 @@ public class UserObserver : Node, IObserver
         OnTeamChanged();
         this.provider.Connect(nameof(UserProvider.TeamChanged),this,nameof(OnTeamChanged));
         MainMenu.GetNode("TabContainer/TDM/VBoxContainer/TeamChoice/Option").Connect("item_selected",provider, nameof(UserProvider.SetTeam));
-        MainMenu.GetNode("TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
     }
 
     public void OnTeamChanged()
     {
         //CurrentView may already have been freed, in which case do nothing.
-        CurrentView?.QueueFree();
+        if(IsInstanceValid(CurrentView))
+            CurrentView.QueueFree();
         var spectatorScene = GD.Load<PackedScene>("res://BasicScenes/Player/Spectator/Spectator.tscn");
         CurrentView = spectatorScene.Instance();
         GetNode("/root/GameRoot/Map").AddChild(CurrentView);
@@ -51,10 +52,11 @@ public class UserObserver : Node, IObserver
     {
         if(provider.ThisTeam == UserProvider.Team.Unassigned) return;
 
-        CurrentView?.QueueFree();
+        if(IsInstanceValid(CurrentView))
+            CurrentView.QueueFree();
         CurrentView = PlayerCharacterProvider.Factory.Instance();
+        CurrentView.SetNetworkMaster(GetTree().GetNetworkUniqueId());
         GetNode("/root/GameRoot/PlayerCharacters").AddChild(CurrentView);
-        
         provider.Rpc(nameof(UserProvider.SetCharacter),CurrentView.GetPath());
     }
 

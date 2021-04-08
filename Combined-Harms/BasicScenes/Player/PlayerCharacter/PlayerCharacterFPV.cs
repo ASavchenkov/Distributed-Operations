@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+using ReplicationAbstractions;
+
 //Specifically for controlling first person movement.
 public class PlayerCharacterFPV : Node, IObserver
 {
@@ -48,14 +50,14 @@ public class PlayerCharacterFPV : Node, IObserver
     public void SetHandItem(RifleProvider p)
     {
         GD.Print("setting hand item to rifle");
-        ItemInHands?.QueueFree();
+        if(IsInstanceValid(ItemInHands))
+            ItemInHands.QueueFree();
         ItemInHands = (RifleFPV) EasyInstancer.GenObserver(p, p.ObserverPathFPV);
         GetNode("Body/LookYaw/LookPitch/Camera/").AddChild(ItemInHands);
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
-
         if(@event is InputEventMouseMotion mouseEvent && inputEnabled)
         {
             //Yes these look flipped. It's correct.
@@ -129,7 +131,7 @@ public class PlayerCharacterFPV : Node, IObserver
         Body.AddCentralForce((globalMove-horizontalVelocity)*authority);
     }
 
-    public void OnTorsoHit()
+    public void TakeDamage(int damage, int penetration)
     {
         GD.Print("torso was hit");
     }

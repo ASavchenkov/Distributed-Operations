@@ -34,8 +34,6 @@ public class TDMMenu : Node
         BlueTeam = (ItemList) GetNode(BluePath);
         VoteCounter = (Label) GetNode(VoteCounterPath);
 
-        UserManager = GetNode("/root/GameRoot/Users");
-
         UpdateLists();
     }
 
@@ -45,6 +43,8 @@ public class TDMMenu : Node
         RedTeam.Clear();
         BlueTeam.Clear();
 
+
+        UserManager = GetNode("/root/GameRoot/Users");
         Godot.Collections.Array users = UserManager.GetChildren();
 
         foreach( Node p in users)

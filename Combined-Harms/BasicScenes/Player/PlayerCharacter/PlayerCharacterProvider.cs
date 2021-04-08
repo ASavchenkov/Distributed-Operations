@@ -2,14 +2,17 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
 public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
 {
+
+    public ReplicationMember rMember {get; set;}
 
     public static NodeFactory<PlayerCharacterProvider> Factory = 
         new NodeFactory<PlayerCharacterProvider> ("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
     
     public string ScenePath {get => Factory.ScenePath;}
-    public HashSet<int> Unconfirmed {get; set;}
+
 
     [Export]
     public string ObserverPathFPV { get; set;}
@@ -42,8 +45,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
 
     public override void _Ready()
     {
-        ((IReplicable) this).ready();
-        
+        this.ReplicableReady();
         var MapNode = GetNode("/root/GameRoot/Map");
         //If we're not the network master,
         //use the simplified observer.
@@ -53,12 +55,6 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
         RifleProvider M4A1 = (RifleProvider) GD.Load<PackedScene>(GunPath).Instance();
         GetNode("/root/GameRoot/Loot").AddChild(M4A1);
         SetHandItem(M4A1);
-
-        if(!IsNetworkMaster())
-        {
-            NOKManager.Instance.Subscribe(this);
-        }
-        
     }
 
     public void OnNOKTransfer(int uid)

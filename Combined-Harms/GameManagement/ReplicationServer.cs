@@ -3,6 +3,8 @@ using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
+
 public class ReplicationServer : Node
 {
 
@@ -15,18 +17,27 @@ public class ReplicationServer : Node
 
     public void Replicate(IReplicable n)
     {
-        Rpc(nameof(Replicate), n.GetParent().GetPath(), n.Name, n.ScenePath);
+        Rpc(nameof(ReplicateRPC), n.GetParent().GetPath(), n.Name, n.ScenePath);
     }
 
     public void ReplicateID(IReplicable n, int uid)
     {
-        RpcId(uid, nameof(Replicate), n.GetParent().GetPath(), n.Name, n.ScenePath);     
+        RpcId(uid, nameof(ReplicateRPC), n.GetParent().GetPath(), n.Name, n.ScenePath);     
+    }
+
+    //No checking here yet
+    [RemoteSync]
+    public void Despawn(string path)
+    {
+        GD.Print("Despawning: ", path);
+        GetNode(path).QueueFree();
     }
     
     [Remote]
-    public void Replicate(string parent, string name, string scenePath)
+    public void ReplicateRPC(string parent, string name, string scenePath)
     {
-        
+        GD.Print("Replicating: ", parent, "; ", name, "; ", scenePath);
+        GD.Print("Peer ID: ", GetTree().GetRpcSenderId());
         var parentNode = GetNode(parent);
         if(parentNode is null)
         {
@@ -34,32 +45,25 @@ public class ReplicationServer : Node
             return;
         }
         
-
-        var childNode = (IReplicable) GetNode(parent + "/" + name);
-        if(!(childNode is null))
-        {
-            //check if someone is simply confirming replication
-            //Due to the loss of the ACK packet, or NOK transfer.
-            if(childNode.ScenePath == scenePath 
-                &&childNode.GetNetworkMaster() == GetTree().GetRpcSenderId())
-            {
-                childNode.Rpc(nameof(IReplicable.AckRPC));
-            }
-            else GD.Print("Replication Error: Node path collision/ non-master call");
-            //purely for debugging. Shouldn't happen.
-            //Don't know how to deal with this in production.
-        }
-        else
+        string childPath = parent+ "/" + name;
+        var childNode = (IReplicable) GetNodeOrNull(childPath);
+        if(childNode is null)
         {
             //If it doesn't exist yet, then just replicate it.
             //Easiest case to handle.
             PackedScene scene = GD.Load<PackedScene>(scenePath);
             childNode = (IReplicable) scene.Instance();
-            parentNode.AddChild((Node) childNode);
 
             childNode.Name = name;
             childNode.SetNetworkMaster(GetTree().GetRpcSenderId());
-            childNode.Rpc(nameof(IReplicable.AckRPC));   
+            parentNode.AddChild((Node) childNode);
+
+        }
+        else
+        {
+            GD.PrintErr("Replication Error: Node path collision/ non-master call");
+            //purely for debugging. Shouldn't happen.
+            //Don't know how to deal with this in production.
         }
     
     }

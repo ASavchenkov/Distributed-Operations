@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
 /*
 Base class for small fast moving objects
 that do something when they hit something else.
@@ -12,10 +13,11 @@ If the master disappears, so does the projectile.
 
 public class ProjectileProvider : Node, IReplicable, IFPV, I3PV
 {
+
     //Replicable boilerplate
+    public ReplicationMember rMember {get; set;}
     [Export]
     public string ScenePath {get;set;}
-    public HashSet<int> Unconfirmed {get;set;}
     //Observer boilerplate
     [Export]
     public string ObserverPathFPV {get;set;}
@@ -39,26 +41,8 @@ public class ProjectileProvider : Node, IReplicable, IFPV, I3PV
 
     public override void _Ready()
     {
-        ((IReplicable) this).ready();
+        this.ReplicableReady();
     }
-
-    public virtual void DefaultImpact()
-    {
-        //default functionality is to simply delete self
-        //We need to make sure this deletion happens on all peers.
-        Rpc(nameof(IReplicable.Despawn));
-    }
-
-    // public void ComputeImpact(BallisticTarget target)
-    // {
-    //     ImpactFunction matchedFunction;
-    //     if(target is null)
-    //         DefaultImpact();
-    //     else if ( ImpactFunctions.TryGetValue(target.GetType(), out matchedFunction))
-    //         matchedFunction(target);
-    //     else if (!target.ComputeImpact(this))
-    //         DefaultImpact();
-    // }
 
     [PuppetSync]
     public void UpdateTrajectory(Vector3 translation, Vector3 velocity)
@@ -66,10 +50,4 @@ public class ProjectileProvider : Node, IReplicable, IFPV, I3PV
         Translation = translation;
         LinearVelocity = velocity;
     }
-
-    //The base function handles hit detection
-    //Additional ballistics are left to the engine
-    //as well as the deriving class.
-    
-
 }

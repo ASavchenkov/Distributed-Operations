@@ -2,13 +2,16 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
+
 public class RifleProvider : Node, IReplicable, IFPV
 {
 
     //IReplicable boilerplate
+    public ReplicationMember rMember {get; set;}
+    
     [Export]
     public string ScenePath {get;set;}
-    public HashSet<int> Unconfirmed {get;set;}
 
     //IFPV boilerplate
     [Export]
@@ -21,12 +24,16 @@ public class RifleProvider : Node, IReplicable, IFPV
     //Observers are responsible for properly inserting attachments
     //into their own node structures.
 
+    public Magazine Mag;
+
     [Signal]
     public delegate void AttachmentUpdated(string attachPoint, Node attachment);
 
     public override void _Ready()
     {
-        ((IReplicable) this).ready();
+        this.ReplicableReady();
+        Mag = Magazine.Factory.Instance();
+        SetAttachment("magwell", Mag);
     }
 
     public void SetAttachment(string attachPoint, Node attachment)

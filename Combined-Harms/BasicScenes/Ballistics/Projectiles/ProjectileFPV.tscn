@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://BasicScenes/Projectiles/ProjectileFPV.cs" type="Script" id=1]
+[ext_resource path="res://BasicScenes/Ballistics/Projectiles/ProjectileFPV.cs" type="Script" id=1]
 
 [sub_resource type="SphereMesh" id=1]
 
@@ -17,7 +17,7 @@ __meta__ = {
 }
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, 0, 0, 0 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0 )
 mesh = SubResource( 1 )
 material/0 = null
 

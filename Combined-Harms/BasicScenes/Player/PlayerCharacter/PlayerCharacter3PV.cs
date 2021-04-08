@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+using ReplicationAbstractions;
+
 public class PlayerCharacter3PV : Spatial, IObserver
 {
     private PlayerCharacterProvider provider = null;
@@ -8,7 +10,7 @@ public class PlayerCharacter3PV : Spatial, IObserver
     public void Subscribe(Node provider)
     {
         this.provider = (PlayerCharacterProvider) provider;
-        provider.Connect("tree_exiting", this, "queue_free");
+        this.DefaultSubscribe(this.provider);
         provider.Connect(nameof(PlayerCharacterProvider.TrajectoryUpdated), this, nameof(OnTrajectoryUpdated));
     }
 

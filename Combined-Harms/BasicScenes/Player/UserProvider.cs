@@ -2,25 +2,26 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using ReplicationAbstractions;
 
 //Provider with the "authoritative" version of user data
 //Stores some game specific information too for specators.
 
 public class UserProvider : Node, IReplicable, IFPV
 {
-    
+
+    public ReplicationMember rMember {get; set;}
+
     public static NodeFactory<UserProvider> Factory = 
         new NodeFactory<UserProvider>("res://BasicScenes/Player/UserProvider.tscn");
     
     public string ScenePath {get => Factory.ScenePath;}
 
-    public HashSet<int> Unconfirmed {get;set;}
-
     [Export]
     public string ObserverPathFPV {get;set;}
 
     public enum Team {Unassigned, Red, Blue};
-    public Team ThisTeam = Team.Unassigned;
+    public Team ThisTeam = Team.Red;
     
     [Signal]
     public delegate void TeamChanged();
@@ -34,21 +35,21 @@ public class UserProvider : Node, IReplicable, IFPV
     public Node CurrentCharacter = null;
 
     public string Alias;
-    //When the peer disconnects, this will be used to determine
-    //who to set as the master for this peers providers.
     
     public override void _Ready()
     {
-        ((IReplicable) this).ready();
+        GD.Print("Master UID: ", GetNetworkMaster());
+        this.ReplicableReady();
+        
         Alias = this.Name;  //Let player change it if they so wish.
                             //this.Name is a good default though.
-
-        var menu = GetNode("/root/GameRoot/UserObserver_1/MainMenu/TabContainer/TDM");
-        Connect(nameof(TeamChanged), menu, nameof(TDMMenu.UpdateLists));
+        GD.Print("Alias: ", Alias);
+        var menu = GetNode("/root/UserObserver_1/MainMenu/TabContainer/TDM");
         
+        Connect(nameof(TeamChanged), menu, nameof(TDMMenu.UpdateLists));
         if(!IsNetworkMaster())
         {
-            RpcId(GetNetworkMaster(), nameof(RequestInit));
+            Rpc(nameof(RequestInit));
         }
         
     }
@@ -60,7 +61,7 @@ public class UserProvider : Node, IReplicable, IFPV
         Score = score;
         VoteRestart = vote;
         Alias = alias;
-        EmitSignal(nameof(TeamChanged));
+        EmitSignal("TeamChanged");
     }
 
     [Master]
@@ -70,11 +71,14 @@ public class UserProvider : Node, IReplicable, IFPV
         RpcId(uid, nameof(RemoteInit), ThisTeam, Score, VoteRestart, Alias);
     }
 
+    //Call locally
     public void SetTeam(int team)
     {
         if(ThisTeam == (UserProvider.Team) team) return;
 
-        CurrentCharacter?.QueueFree();
+        if(IsInstanceValid(CurrentCharacter))
+            CurrentCharacter.QueueFree();
+            
         CurrentCharacter = null;
         Rpc(nameof(UpdateTeam), team);
     }
@@ -82,6 +86,7 @@ public class UserProvider : Node, IReplicable, IFPV
     [PuppetSync]
     public void UpdateTeam(int team)
     {
+        GD.Print(Name, ": Changed team");
         ThisTeam = (Team) team;
         CurrentCharacter = null;
         EmitSignal(nameof(TeamChanged));
@@ -97,6 +102,6 @@ public class UserProvider : Node, IReplicable, IFPV
     {
         //This particular object can just be deleted (safely)
         //if the peer DCs.
-        QueueFree();
+        rMember.MasterDespawn();
     }
 }

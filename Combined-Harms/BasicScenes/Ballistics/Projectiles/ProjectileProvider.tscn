@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://BasicScenes/Ballistics/Projectiles/ProjectileProvider.cs" type="Script" id=1]
+
+[node name="Node" type="Node"]
+script = ExtResource( 1 )
+ScenePath = "res://BasicScenes/Ballistics/Projectiles/ProjectileProvider.tscn"
+ObserverPathFPV = "res://BasicScenes/Ballistics/Projectiles/ProjectileFPV.tscn"
+ObserverPath3PV = "res://BasicScenes/Ballistics/Projectiles/Projectile3PV.tscn"
