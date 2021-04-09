@@ -53,20 +53,12 @@ public class NOKManager : Node
     public void OnPeerConnected(int uid)
     {
         NOKs[uid] = new NOKSignaller();
-        RpcId(uid, nameof(RequestNOK));
+        RpcId(uid, nameof(UpdateNOK), ThisNOK);
     }
     public void OnPeerDC(int uid)
     {
         NOKs[uid].trigger();
         NOKs.Remove(uid);
-    }
-
-    //Peers call this when they first connect to us.
-    [Remote]
-    public void RequestNOK()
-    {
-        int sender = GetTree().GetRpcSenderId();
-        RpcId(sender, nameof(UpdateNOK), ThisNOK);
     }
 
     [Remote]
