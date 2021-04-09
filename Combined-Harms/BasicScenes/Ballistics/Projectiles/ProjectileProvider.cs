@@ -24,19 +24,20 @@ public class ProjectileProvider : Node, IReplicable, IFPV, I3PV
     [Export]
     public string ObserverPath3PV {get;set;}
 
+    public Vector3 LastTranslation;
+    public Vector3 LastLinearVelocity;
 
-    public Vector3 Translation;
-    public Vector3 LinearVelocity;
+
+    [Signal]
+    public delegate void TrajectoryUpdated( Vector3 translation, Vector3 velocity);
 
     [PuppetSync]
-    public void Init(Vector3 Translation, Vector3 LinearVelocity)
+    public void Init(Vector3 translation, Vector3 velocity)
     {
-        this.Translation = Translation;
-        this.LinearVelocity = LinearVelocity;
-        
-        Node observer = EasyInstancer.GenObserver(this, (IsNetworkMaster()) ?  ObserverPathFPV: ObserverPath3PV);
+        LastTranslation = translation;
+        LastLinearVelocity = velocity;
+        RigidBody observer = (RigidBody) EasyInstancer.GenObserver(this, (IsNetworkMaster()) ?  ObserverPathFPV: ObserverPath3PV);
         GetNode("/root/GameRoot/Map").AddChild(observer);
-
     }
 
     public override void _Ready()
@@ -47,7 +48,8 @@ public class ProjectileProvider : Node, IReplicable, IFPV, I3PV
     [PuppetSync]
     public void UpdateTrajectory(Vector3 translation, Vector3 velocity)
     {
-        Translation = translation;
-        LinearVelocity = velocity;
+        LastTranslation = translation;
+        LastLinearVelocity = velocity;
+        EmitSignal(nameof(TrajectoryUpdated), translation, velocity);
     }
 }

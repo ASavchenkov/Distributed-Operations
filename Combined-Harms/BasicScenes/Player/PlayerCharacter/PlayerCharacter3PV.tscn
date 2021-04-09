@@ -4,10 +4,6 @@
 [ext_resource path="res://BasicScenes/Player/PlayerCharacter/PlayerCharacter3PV.cs" type="Script" id=2]
 [ext_resource path="res://BasicScenes/Player/PlayerCharacter/Model/Soldier.tscn" type="PackedScene" id=3]
 
-
-
-
-
 [node name="PlayerCharacter3PV" type="Spatial"]
 script = ExtResource( 2 )
 

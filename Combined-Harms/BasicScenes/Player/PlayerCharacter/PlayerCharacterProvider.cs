@@ -47,14 +47,9 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
     {
         this.ReplicableReady();
         var MapNode = GetNode("/root/GameRoot/Map");
-        //If we're not the network master,
-        //use the simplified observer.
+        
         Node observer = EasyInstancer.GenObserver(this, IsNetworkMaster() ? ObserverPathFPV : ObserverPath3PV);
         MapNode.AddChild(observer);
-
-        RifleProvider M4A1 = (RifleProvider) GD.Load<PackedScene>(GunPath).Instance();
-        GetNode("/root/GameRoot/Loot").AddChild(M4A1);
-        SetHandItem(M4A1);
     }
 
     public void OnNOKTransfer(int uid)

@@ -30,6 +30,8 @@ public class RifleFPV : Spatial, IObserver
     [Signal]
     public delegate void Recoil(float x, float y);
 
+    [Export]
+    Vector3 GlobalMuzzle;
     
     public override void _Ready()
     {
@@ -37,6 +39,7 @@ public class RifleFPV : Spatial, IObserver
         Projectiles = GetNode("/root/GameRoot/Projectiles");
         MainSight = (SightFPVObserver) GetNode("Origin/Gun/FrontPostRail/IronSights");
         HipFireTransform = (Position3D) GetNode("Origin/Gun/HipFireTransform");
+        Muzzle = (Spatial) GetNode("Origin/Gun/Muzzle");
     }
 
     public void Subscribe(Node provider)
@@ -45,25 +48,23 @@ public class RifleFPV : Spatial, IObserver
         this.provider = (RifleProvider) provider;
         this.provider.Connect(nameof(RifleProvider.AttachmentUpdated), this, nameof(OnAttachmentUpdated));
         source = this.provider.Mag;
-        Muzzle = (Spatial) GetNode("Origin/Gun/Muzzle");
     }
 
     //Default code for firing a projectile.
     //Unlikely anyone will need to modify this very much.
+    //But you can!
     public virtual void Fire()
     {
-        
         string projectileScene = source.DequeueMunition();
         if(!(projectileScene is null))
         {
             Vector3 velocity = Muzzle.GlobalTransform.basis.Xform(-Vector3.Left) * muzzleVelocity;
             
             ProjectileProvider p = EasyInstancer.Instance<ProjectileProvider>(projectileScene);
+            p.SetNetworkMaster(GetTree().GetNetworkUniqueId());
             Projectiles.AddChild(p);
             p.Rpc("Init",Muzzle.GlobalTransform.origin, velocity);
         }
-
-        
     }
 
     public void OnAttachmentUpdated(string attachPoint, IFPV attachment)

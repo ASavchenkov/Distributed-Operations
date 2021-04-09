@@ -7,34 +7,32 @@
 
 [sub_resource type="SphereShape" id=2]
 
-[node name="PlayerCharacterFPV" type="Node"]
-script = ExtResource( 2 )
-
-[node name="Body" type="RigidBody" parent="."]
+[node name="PlayerCharacterFPV" type="RigidBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 collision_layer = 2
 collision_mask = 3
 mode = 2
+script = ExtResource( 2 )
 
-[node name="BodyCollider" type="CollisionShape" parent="Body"]
+[node name="BodyCollider" type="CollisionShape" parent="."]
 transform = Transform( 0.5, 0, 0, 0, -2.18557e-08, -0.6, 0, 0.5, -2.62268e-08, 0, -0.094, 0 )
 shape = SubResource( 1 )
 
-[node name="LookYaw" type="Spatial" parent="Body"]
+[node name="LookYaw" type="Spatial" parent="."]
 
-[node name="LookPitch" type="Spatial" parent="Body/LookYaw"]
+[node name="LookPitch" type="Spatial" parent="LookYaw"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
 
-[node name="Camera" type="Camera" parent="Body/LookYaw/LookPitch"]
+[node name="Camera" type="Camera" parent="LookYaw/LookPitch"]
 fov = 90.0
 near = 0.1
 
-[node name="BallisticTorso" parent="Body" instance=ExtResource( 5 )]
+[node name="BallisticTorso" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0896798, 0 )
 collision_layer = 0
 collision_mask = 1
 
-[node name="FEET" type="Area" parent="Body"]
+[node name="FEET" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.447863, 0 )
 collision_layer = 0
 collision_mask = 2147483649
@@ -42,7 +40,6 @@ __meta__ = {
 "_editor_description_": "Used to determine if the player should be able to walk/jump"
 }
 
-[node name="CollisionShape" type="CollisionShape" parent="Body/FEET"]
+[node name="CollisionShape" type="CollisionShape" parent="FEET"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, -0.0620419, 0 )
 shape = SubResource( 2 )
-[connection signal="Hit" from="Body/BallisticTorso" to="." method="TakeDamage"]

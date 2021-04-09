@@ -17,9 +17,9 @@ public abstract class ProjectileFPV : RigidBody, IObserver
     public void Subscribe(Node provider)
     {
         this.provider = (ProjectileProvider) provider;
+        Translation = this.provider.LastTranslation;
+        LinearVelocity = this.provider.LastLinearVelocity;
         this.DefaultSubscribe(this.provider);
-        Translation = this.provider.Translation;
-        LinearVelocity = this.provider.LinearVelocity;
     }
 
     public override void _Ready()

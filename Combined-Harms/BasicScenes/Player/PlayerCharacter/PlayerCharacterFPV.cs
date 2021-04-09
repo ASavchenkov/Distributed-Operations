@@ -4,14 +4,13 @@ using System;
 using ReplicationAbstractions;
 
 //Specifically for controlling first person movement.
-public class PlayerCharacterFPV : Node, IObserver
+public class PlayerCharacterFPV : RigidBody, IObserver
 {
 
     private PlayerCharacterProvider provider = null;
 
     public Spatial LookYaw;
     public Spatial LookPitch;
-    public RigidBody Body;
     public Camera camera;
     public Area FEET;
 
@@ -28,14 +27,18 @@ public class PlayerCharacterFPV : Node, IObserver
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        Body = (RigidBody) GetNode("Body");
-        LookYaw = (Spatial) Body.GetNode("LookYaw");
+        LookYaw = (Spatial) GetNode("LookYaw");
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
 
-        FEET = (Area) Body.GetNode("FEET");
+        FEET = (Area) GetNode("FEET");
         FEET.Connect("body_entered",this,"GroundEncountered");
         FEET.Connect("body_exited", this, "GroundLeft");
+
+        RifleProvider M4A1 = EasyInstancer.Instance<RifleProvider>(provider.GunPath);
+        GetNode("/root/GameRoot/Loot").AddChild(M4A1);
+        provider.SetHandItem(M4A1);
+
     }
 
     public void Subscribe(Node provider)
@@ -53,7 +56,7 @@ public class PlayerCharacterFPV : Node, IObserver
         if(IsInstanceValid(ItemInHands))
             ItemInHands.QueueFree();
         ItemInHands = (RifleFPV) EasyInstancer.GenObserver(p, p.ObserverPathFPV);
-        GetNode("Body/LookYaw/LookPitch/Camera/").AddChild(ItemInHands);
+        GetNode("LookYaw/LookPitch/Camera/").AddChild(ItemInHands);
     }
 
     public override void _UnhandledInput(InputEvent @event)
@@ -71,7 +74,7 @@ public class PlayerCharacterFPV : Node, IObserver
         else if (@event is InputEventKey keyPress && inputEnabled  && keyPress.IsActionPressed("Jump") && groundCounter!=0)
         {
             GD.Print(groundCounter);
-            Body.ApplyCentralImpulse(provider.jumpImpulse * Vector3.Up);
+            ApplyCentralImpulse(provider.jumpImpulse * Vector3.Up);
         }
     }
 
@@ -85,7 +88,7 @@ public class PlayerCharacterFPV : Node, IObserver
     public override void _PhysicsProcess(float delta)
     {
         handleStrafing();
-        provider.Rpc("UpdateTrajectory", Body.Translation, LookYaw.Rotation, LookPitch.Rotation);
+        provider.Rpc("UpdateTrajectory", Translation, LookYaw.Rotation, LookPitch.Rotation);
     }
 
     public void GroundEncountered(Node body)
@@ -123,12 +126,12 @@ public class PlayerCharacterFPV : Node, IObserver
         //desiredMove is still in local space.
         //We want to convert it to global space.
         Vector3 globalMove = LookYaw.GlobalTransform.basis.Xform(desiredMove);
-        Vector3 horizontalVelocity = Body.LinearVelocity;
+        Vector3 horizontalVelocity = LinearVelocity;
         horizontalVelocity.y = 0;
         
         //If we're not on the ground, reduce our control authority.
         float authority = groundCounter == 0 ? provider.acceleration/10 : provider.acceleration; 
-        Body.AddCentralForce((globalMove-horizontalVelocity)*authority);
+        AddCentralForce((globalMove-horizontalVelocity)*authority);
     }
 
     public void TakeDamage(int damage, int penetration)
