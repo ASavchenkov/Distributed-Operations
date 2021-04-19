@@ -88,7 +88,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
     public override void _PhysicsProcess(float delta)
     {
         handleStrafing();
-        provider.Rpc("UpdateTrajectory", Translation, LookYaw.Rotation, LookPitch.Rotation);
+        provider.Rpc("UpdateTrajectory", Translation, LinearVelocity, LookYaw.Rotation, LookPitch.Rotation);
     }
 
     public void GroundEncountered(Node body)

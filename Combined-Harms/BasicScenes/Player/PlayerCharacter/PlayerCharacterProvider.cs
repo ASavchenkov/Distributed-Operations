@@ -21,7 +21,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
     //For generating observers
 
     [Signal]
-    public delegate void TrajectoryUpdated(Vector3 translation, Vector3 yaw, Vector3 pitch);
+    public delegate void TrajectoryUpdated(Vector3 translation, Vector3 yaw, Vector3 pitch, Vector3 velocity);
 
     Vector3 Translation = new Vector3();
     Vector3 YawRotation = new Vector3();
@@ -64,13 +64,13 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
     }
 
     [PuppetSync]
-    public void UpdateTrajectory(Vector3 translation, Vector3 yaw, Vector3 pitch)
+    public void UpdateTrajectory(Vector3 translation, Vector3 yaw, Vector3 pitch, Vector3 velocity)
     {
         Translation = translation;
         YawRotation = yaw;
         PitchRotation = pitch;
 
-        EmitSignal(nameof(TrajectoryUpdated), translation, yaw, pitch);
+        EmitSignal(nameof(TrajectoryUpdated), translation, yaw, pitch, velocity);
         // Body.Translation = translation;
         // LookYaw.Rotation = yaw;
         // LookPitch.Rotation = pitch;
