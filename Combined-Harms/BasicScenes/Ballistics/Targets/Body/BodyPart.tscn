@@ -2,13 +2,17 @@
 
 [ext_resource path="res://BasicScenes/Ballistics/Targets/Body/BodyPart.cs" type="Script" id=1]
 
-[sub_resource type="CapsuleShape" id=1]
+[sub_resource type="BoxShape" id=1]
 
-[node name="BallisticTorso" type="Area"]
+[node name="BodyPart" type="Area"]
 collision_layer = 4
 collision_mask = 4
 script = ExtResource( 1 )
+DamageModifier = 1.0
 
-[node name="Centercollider" type="CollisionShape" parent="."]
+[node name="Collider" type="CollisionShape" parent="."]
 transform = Transform( 0.5, 0, 0, 0, -2.18557e-08, -0.6, 0, 0.5, -2.62268e-08, 0, 0, 0 )
 shape = SubResource( 1 )
+__meta__ = {
+"_editor_description_": "default to box since that's what's used for hitboxes generally."
+}
