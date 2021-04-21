@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://BasicScenes/Ballistics/Targets/Body/BodyPart.tscn" type="PackedScene" id=1]
+[ext_resource path="res://BasicScenes/Ballistics/Targets/Body/BodyPart.cs" type="Script" id=2]
+
+[node name="LowerLeg" type="BoneAttachment"]
+transform = Transform( -1, 2.52514e-08, 1.26502e-09, -2.51206e-08, -0.986659, -0.162801, -2.8656e-09, -0.162805, 0.986676, -0.112535, -0.503929, 0.0344248 )
+bone_name = "lower_leg_r"
+
+[node name="BodyPart" type="Area" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.121, 0, 0, 0, 0.392, 0, 0, 0, 0.167, 0, 0.17, 0 )
+collision_layer = 4
+collision_mask = 4
+script = ExtResource( 2 )
+DamageModifier = 1.0

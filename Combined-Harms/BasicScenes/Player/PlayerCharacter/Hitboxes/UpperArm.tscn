@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://BasicScenes/Ballistics/Targets/Body/BodyPart.tscn" type="PackedScene" id=1]
+
+[node name="UpperArm" type="BoneAttachment"]
+transform = Transform( -0.546313, -0.830023, -0.112271, 0.837581, -0.541501, -0.0723564, -0.000737382, -0.133565, 0.99104, -0.213641, 0.5754, -0.0692973 )
+bone_name = "upper_arm_r"
+
+[node name="BodyPart" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.107, 0, 0, 0, 0.288, 0, 0, 0, 0.137, 0, 0.101, 0 )

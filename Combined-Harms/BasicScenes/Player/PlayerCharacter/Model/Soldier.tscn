@@ -1,7 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://BasicScenes/Player/PlayerCharacter/Model/Soldier.glb" type="PackedScene" id=1]
 [ext_resource path="res://BasicScenes/Ballistics/Targets/Body/BodyPart.tscn" type="PackedScene" id=2]
+[ext_resource path="res://BasicScenes/Player/PlayerCharacter/Hitboxes/UpperArm.tscn" type="PackedScene" id=3]
+[ext_resource path="res://BasicScenes/Player/PlayerCharacter/Hitboxes/LowerArm.tscn" type="PackedScene" id=4]
+[ext_resource path="res://BasicScenes/Player/PlayerCharacter/Hitboxes/UpperLeg.tscn" type="PackedScene" id=5]
+[ext_resource path="res://BasicScenes/Player/PlayerCharacter/Hitboxes/LowerLeg.tscn" type="PackedScene" id=6]
 
 [sub_resource type="AnimationNodeAnimation" id=1]
 animation = "standing-loop"
@@ -41,13 +45,57 @@ node_connections = [ "output", 0, "locomotion" ]
 
 [node name="Skeleton" parent="Armature" index="0"]
 bones/1/bound_children = [ NodePath("Chest") ]
+bones/3/bound_children = [ NodePath("Head") ]
+bones/5/bound_children = [ NodePath("UpperArm_l") ]
+bones/6/bound_children = [ NodePath("LowerArm_l") ]
+bones/9/bound_children = [ NodePath("UpperArm_r") ]
+bones/10/bound_children = [ NodePath("LowerArm_r") ]
+bones/12/bound_children = [ NodePath("UpperLeg_l") ]
+bones/13/bound_children = [ NodePath("LowerLeg_l") ]
+bones/15/bound_children = [ NodePath("UpperLeg_r") ]
+bones/16/bound_children = [ NodePath("LowerLeg_r") ]
 
 [node name="Chest" type="BoneAttachment" parent="Armature/Skeleton" index="1"]
 transform = Transform( 1, -3.55271e-15, -1.44664e-07, 1.34157e-08, 0.995691, 0.0927366, 1.44041e-07, -0.0927366, 0.995691, -2.53504e-15, 0.262844, 0.0397817 )
 bone_name = "chest"
 
 [node name="BodyPart" parent="Armature/Skeleton/Chest" index="0" instance=ExtResource( 2 )]
-transform = Transform( 0.306, 0, 0, 0, 0.498, 0, 0, 0, 0.226, 0, 0.101, -0.027 )
+transform = Transform( 0.344, 0, 0, 0, 0.498, 0, 0, 0, 0.226, 0, 0.105, -0.05 )
+
+[node name="Head" type="BoneAttachment" parent="Armature/Skeleton" index="2"]
+transform = Transform( 1, -5.32907e-15, 2.84217e-14, 5.32907e-15, 1, 1.3411e-07, -9.9476e-14, -1.41561e-07, 1, -2.53323e-15, 0.774976, -1.1325e-07 )
+bone_name = "head"
+
+[node name="BodyPart" parent="Armature/Skeleton/Head" index="0" instance=ExtResource( 2 )]
+transform = Transform( 0.131, 0, 0, 0, 0.199, 0, 0, 0, 0.2, 0, 0.101, 0.01 )
+
+[node name="UpperArm_r" parent="Armature/Skeleton" index="3" instance=ExtResource( 3 )]
+transform = Transform( -0.546313, -0.830023, -0.112271, 0.837581, -0.541501, -0.0723563, -0.000737412, -0.133565, 0.991039, -0.213641, 0.5754, -0.0692973 )
+
+[node name="UpperArm_l" parent="Armature/Skeleton" index="4" instance=ExtResource( 3 )]
+transform = Transform( -0.546313, 0.830023, 0.112271, -0.837581, -0.5415, -0.0723567, 0.000737129, -0.133565, 0.99104, 0.213641, 0.5754, -0.0692973 )
+bone_name = "upper_arm_l"
+
+[node name="LowerArm_r" parent="Armature/Skeleton" index="5" instance=ExtResource( 4 )]
+transform = Transform( -0.544736, -0.820329, 0.174135, 0.838607, -0.53268, 0.113973, -0.000737354, 0.208116, 0.978103, -0.428957, 0.43493, -0.103945 )
+
+[node name="LowerArm_l" parent="Armature/Skeleton" index="6" instance=ExtResource( 4 )]
+transform = Transform( -0.544736, 0.82033, -0.174136, -0.838608, -0.53268, 0.113973, 0.000737084, 0.208117, 0.978104, 0.428957, 0.43493, -0.103946 )
+bone_name = "lower_arm_l"
+
+[node name="UpperLeg_r" parent="Armature/Skeleton" index="7" instance=ExtResource( 5 )]
+transform = Transform( -1, 6.42639e-09, 7.92104e-08, -2.78987e-09, -0.99895, 0.045826, 7.94204e-08, 0.0458253, 0.998967, -0.112535, 0.0198699, 0.0103963 )
+
+[node name="UpperLeg_l" parent="Armature/Skeleton" index="8" instance=ExtResource( 5 )]
+transform = Transform( -1, -9.15405e-09, -6.32258e-08, 6.24713e-09, -0.99895, 0.045826, -6.35778e-08, 0.0458253, 0.998967, 0.112535, 0.0198699, 0.0103963 )
+bone_name = "upper_leg_l"
+
+[node name="LowerLeg_r" parent="Armature/Skeleton" index="9" instance=ExtResource( 6 )]
+transform = Transform( -1, 2.5251e-08, 1.26492e-09, -2.51202e-08, -0.986659, -0.162801, -2.86565e-09, -0.162805, 0.986676, -0.112535, -0.503929, 0.0344248 )
+
+[node name="LowerLeg_l" parent="Armature/Skeleton" index="10" instance=ExtResource( 6 )]
+transform = Transform( -1, -9.93893e-09, -8.29326e-08, 2.3308e-08, -0.986659, -0.162801, -8.02073e-08, -0.162805, 0.986676, 0.112535, -0.503929, 0.0344248 )
+bone_name = "lower_leg_l"
 
 [node name="AnimationPlayer" parent="." index="1"]
 autoplay = "Fidgeting-loop"
