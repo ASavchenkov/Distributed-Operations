@@ -18,7 +18,6 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="addons\PurePeerSignaling\Example.cs" />
     <Compile Include="addons\PurePeerSignaling\Scripts\GUI\NetworkingMenu.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\GUI\PeerItem.cs" />
     <Compile Include="addons\PurePeerSignaling\scripts\Networking.cs" />
@@ -56,8 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MessagePack" Version="2.2.85" />
-    <!-- <PackageReference Include="MessagePack">
-      <Version>2.1.115</Version>
-    </PackageReference> -->
+    <PackageReference Include="Serilog" Version="2.10.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
   </ItemGroup>
 </Project>
