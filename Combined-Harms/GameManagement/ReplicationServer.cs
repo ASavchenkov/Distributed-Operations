@@ -25,7 +25,9 @@ public class ReplicationServer : Node
         RpcId(uid, nameof(ReplicateRPC), n.GetParent().GetPath(), n.Name, n.ScenePath);     
     }
 
-    //No checking here yet
+    //Not necessary to call this for every object.
+    //Most projectiles, for example, will have their own function for despawning.
+    //That way they don't get deleted before they can make their visual effects.
     [RemoteSync]
     public void Despawn(string path)
     {
@@ -58,8 +60,6 @@ public class ReplicationServer : Node
             childNode.Name = name;
             childNode.SetNetworkMaster(GetTree().GetRpcSenderId());
             parentNode.AddChild((Node) childNode);
-
-            BufRPCServer.Instance.NotifyNewNode(childPath);
 
         }
         else
