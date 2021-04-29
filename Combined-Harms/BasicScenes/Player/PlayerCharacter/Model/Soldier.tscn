@@ -43,58 +43,46 @@ node_connections = [ "output", 0, "locomotion" ]
 
 [node name="Soldier" instance=ExtResource( 1 )]
 
-[node name="Skeleton" parent="Armature" index="0"]
-bones/1/bound_children = [ NodePath("Chest") ]
-bones/3/bound_children = [ NodePath("Head") ]
-bones/5/bound_children = [ NodePath("UpperArm_l") ]
-bones/6/bound_children = [ NodePath("LowerArm_l") ]
-bones/9/bound_children = [ NodePath("UpperArm_r") ]
-bones/10/bound_children = [ NodePath("LowerArm_r") ]
-bones/12/bound_children = [ NodePath("UpperLeg_l") ]
-bones/13/bound_children = [ NodePath("LowerLeg_l") ]
-bones/15/bound_children = [ NodePath("UpperLeg_r") ]
-bones/16/bound_children = [ NodePath("LowerLeg_r") ]
-
 [node name="Chest" type="BoneAttachment" parent="Armature/Skeleton" index="1"]
-transform = Transform( 1, -3.55271e-15, -1.44664e-07, 1.34157e-08, 0.995691, 0.0927366, 1.44041e-07, -0.0927366, 0.995691, -2.53504e-15, 0.262844, 0.0397817 )
+transform = Transform( 0.937896, 0.0321718, -0.345421, 7.07805e-08, 0.99569, 0.0927366, 0.346916, -0.0869773, 0.933854, -0.0205001, 0.144625, 0.0340929 )
 bone_name = "chest"
 
 [node name="BodyPart" parent="Armature/Skeleton/Chest" index="0" instance=ExtResource( 2 )]
 transform = Transform( 0.344, 0, 0, 0, 0.498, 0, 0, 0, 0.226, 0, 0.105, -0.05 )
 
 [node name="Head" type="BoneAttachment" parent="Armature/Skeleton" index="2"]
-transform = Transform( 1, -5.32907e-15, 2.84217e-14, 5.32907e-15, 1, 1.3411e-07, -9.9476e-14, -1.41561e-07, 1, -2.53323e-15, 0.774976, -1.1325e-07 )
+transform = Transform( 0.937896, 1.14056e-09, -0.346916, 5.73649e-08, 1, 1.3411e-07, 0.346916, -1.56925e-07, 0.937896, -0.00669916, 0.656757, -0.00321824 )
 bone_name = "head"
 
 [node name="BodyPart" parent="Armature/Skeleton/Head" index="0" instance=ExtResource( 2 )]
 transform = Transform( 0.131, 0, 0, 0, 0.199, 0, 0, 0, 0.2, 0, 0.101, 0.01 )
 
 [node name="UpperArm_r" parent="Armature/Skeleton" index="3" instance=ExtResource( 3 )]
-transform = Transform( -0.546313, -0.830023, -0.112271, 0.837581, -0.541501, -0.0723563, -0.000737412, -0.133565, 0.991039, -0.213641, 0.5754, -0.0692973 )
+transform = Transform( -0.827966, -0.449612, 0.335144, 0.558376, -0.71625, 0.418571, 0.0518526, 0.5337, 0.844082, -0.183032, 0.457181, -0.142327 )
 
 [node name="UpperArm_l" parent="Armature/Skeleton" index="4" instance=ExtResource( 3 )]
-transform = Transform( -0.546313, 0.830023, 0.112271, -0.837581, -0.5415, -0.0723567, 0.000737129, -0.133565, 0.99104, 0.213641, 0.5754, -0.0692973 )
+transform = Transform( -0.807789, -0.572783, -0.13927, -0.132951, -0.0531422, 0.989697, -0.574283, 0.817982, -0.0332244, 0.217714, 0.457181, 0.00590365 )
 bone_name = "upper_arm_l"
 
 [node name="LowerArm_r" parent="Armature/Skeleton" index="5" instance=ExtResource( 4 )]
-transform = Transform( -0.544736, -0.820329, 0.174135, 0.838607, -0.53268, 0.113973, -0.000737354, 0.208116, 0.978103, -0.428957, 0.43493, -0.103945 )
+transform = Transform( -0.827812, 0.431426, 0.358607, 0.559338, 0.585464, 0.586832, 0.0432226, 0.686368, -0.725967, -0.299665, 0.271379, -0.00388017 )
 
 [node name="LowerArm_l" parent="Armature/Skeleton" index="6" instance=ExtResource( 4 )]
-transform = Transform( -0.544736, 0.82033, -0.174136, -0.838608, -0.53268, 0.113973, 0.000737084, 0.208117, 0.978104, 0.428957, 0.43493, -0.103946 )
+transform = Transform( -0.808815, -0.586119, 0.0477891, -0.132836, 0.261262, 0.956084, -0.572864, 0.766946, -0.289171, 0.0691282, 0.443396, 0.218096 )
 bone_name = "lower_arm_l"
 
 [node name="UpperLeg_r" parent="Armature/Skeleton" index="7" instance=ExtResource( 5 )]
-transform = Transform( -1, 6.42639e-09, 7.92104e-08, -2.78987e-09, -0.99895, 0.045826, 7.94204e-08, 0.0458253, 0.998967, -0.112535, 0.0198699, 0.0103963 )
+transform = Transform( -0.862491, -0.24658, -0.441946, 0.237616, -0.968338, 0.0765513, -0.446819, -0.0389865, 0.893788, -0.1018, -0.0983494, -0.0490811 )
 
 [node name="UpperLeg_l" parent="Armature/Skeleton" index="8" instance=ExtResource( 5 )]
-transform = Transform( -1, -9.15405e-09, -6.32258e-08, 6.24713e-09, -0.99895, 0.045826, -6.35778e-08, 0.0458253, 0.998967, 0.112535, 0.0198699, 0.0103963 )
+transform = Transform( -0.971252, 0.0698116, -0.227596, -0.184659, -0.824301, 0.535191, -0.150231, 0.561831, 0.813515, 0.091085, -0.0983493, 0.0669004 )
 bone_name = "upper_leg_l"
 
 [node name="LowerLeg_r" parent="Armature/Skeleton" index="9" instance=ExtResource( 6 )]
-transform = Transform( -1, 2.5251e-08, 1.26492e-09, -2.51202e-08, -0.986659, -0.162801, -2.86565e-09, -0.162805, 0.986676, -0.112535, -0.503929, 0.0344248 )
+transform = Transform( -0.862491, 0.146957, -0.484277, 0.237616, -0.727282, -0.643895, -0.446819, -0.670429, 0.592372, -0.231094, -0.606097, -0.0695236 )
 
 [node name="LowerLeg_l" parent="Armature/Skeleton" index="10" instance=ExtResource( 6 )]
-transform = Transform( -1, -9.93893e-09, -8.29326e-08, 2.3308e-08, -0.986659, -0.162801, -8.02073e-08, -0.162805, 0.986676, 0.112535, -0.503929, 0.0344248 )
+transform = Transform( -0.971252, 0.226544, -0.0731518, -0.184659, -0.910861, -0.369088, -0.150231, -0.344983, 0.926532, 0.127691, -0.530571, 0.361496 )
 bone_name = "lower_leg_l"
 
 [node name="AnimationPlayer" parent="." index="1"]
@@ -103,4 +91,5 @@ autoplay = "Fidgeting-loop"
 [node name="AnimationTree" type="AnimationTree" parent="." index="2"]
 tree_root = SubResource( 7 )
 anim_player = NodePath("../AnimationPlayer")
+active = true
 parameters/locomotion/blend_position = Vector2( 0, 0 )

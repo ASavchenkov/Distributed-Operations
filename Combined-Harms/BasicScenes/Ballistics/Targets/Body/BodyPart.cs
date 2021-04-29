@@ -13,6 +13,6 @@ public class BodyPart : Node, IBallisticTarget
     {
         BooletFPV p = (BooletFPV) _p;
         if(p != null)
-            EmitSignal(nameof(Hit), p.provider.Damage * DamageModifier, p.provider.Penetration);
+            EmitSignal(nameof(Hit), p.provider.Damage * DamageModifier, p.provider.Penetration, GetParent().Name);
     }
 }

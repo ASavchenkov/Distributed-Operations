@@ -43,6 +43,11 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
 
     RifleProvider ItemInHands = null;
 
+    [Export]
+    public float HP = 100;
+    [Export]
+    public float Armor = 50;
+
     public override void _Ready()
     {
         this.ReplicableReady();
@@ -74,5 +79,27 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
         // Body.Translation = translation;
         // LookYaw.Rotation = yaw;
         // LookPitch.Rotation = pitch;
+    }
+
+    [Master]
+    public void HitRPC( float damage, float pen, string part)
+    {
+        GD.Print("Got hit from: ", part);
+        var armorDamage = damage * (1-pen);
+        Armor -= armorDamage;
+        if(Armor < 0)
+        {
+            HP += Armor;
+            Armor = 0;
+        }
+        HP -= (damage * pen);
+
+    }
+
+    [Puppet]
+    public void UpdateHP( float hp, float armor)
+    {
+        HP = hp;
+        Armor = armor;
     }
 }

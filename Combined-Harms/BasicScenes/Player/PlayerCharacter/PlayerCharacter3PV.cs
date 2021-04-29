@@ -7,11 +7,24 @@ public class PlayerCharacter3PV : Spatial, IObserver
 {
     private PlayerCharacterProvider provider = null;
     private AnimationTree animTree;
+    
 
     public override void _Ready()
     {
         animTree = (AnimationTree) GetNode("Soldier/AnimationTree");
-        GD.Print(animTree.GetPropertyList());
+        
+        //Hooking hit signals up to provider.
+        var skeleton = GetNode("Soldier/Armature/Skeleton");
+        foreach(Node n in skeleton.GetChildren())
+        {
+            if(n is BoneAttachment)
+            {
+                BodyPart p = (BodyPart) n.GetNode("BodyPart");
+                p.Connect(nameof(BodyPart.Hit), this, nameof(OnHit));
+                
+            }
+        }
+
     }
     
     public void Subscribe(Node provider)
@@ -29,5 +42,10 @@ public class PlayerCharacter3PV : Spatial, IObserver
         animTree.Set("parameters/locomotion/blend_position", new Vector2(localVelocity.x, localVelocity.z));
         
         //Pitch will be used when we have IK working with the model.
+    }
+
+    public void OnHit( float damage, float pen, string part)
+    {
+        provider.Rpc(nameof(PlayerCharacterProvider.HitRPC), damage, pen, part);
     }
 }

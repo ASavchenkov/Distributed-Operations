@@ -7,8 +7,8 @@ using ReplicationAbstractions;
 
 public class ReplicationServer : Node
 {
-
     public static ReplicationServer Instance { get; private set;}
+
 
     public override void _Ready()
     {
@@ -31,6 +31,7 @@ public class ReplicationServer : Node
     {
         GD.Print("Despawning: ", path);
         GetNode(path).QueueFree();
+    
     }
     
     [Remote]
@@ -58,6 +59,8 @@ public class ReplicationServer : Node
             childNode.SetNetworkMaster(GetTree().GetRpcSenderId());
             parentNode.AddChild((Node) childNode);
 
+            BufRPCServer.Instance.NotifyNewNode(childPath);
+
         }
         else
         {
@@ -67,5 +70,4 @@ public class ReplicationServer : Node
         }
     
     }
-
 }

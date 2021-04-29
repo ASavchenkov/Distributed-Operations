@@ -27,6 +27,7 @@
     <Compile Include="BasicScenes\Ballistics\Targets\Body\BodyPart.cs" />
     <Compile Include="BasicScenes\Ballistics\Projectiles\Projectile3PV.cs" />
     <Compile Include="BasicScenes\Ballistics\Projectiles\ProjectileFPV.cs" />
+    <Compile Include="GameManagement\BufRPCServer.cs" />
     <Compile Include="GameManagement\GameManager.cs" />
     <Compile Include="GameManagement\NOKManager.cs" />
     <Compile Include="GameManagement\RandomSelector.cs" />
@@ -51,7 +52,6 @@
     <Compile Include="BasicScenes\Ballistics\Projectiles\ProjectileProvider.cs" />
     <Compile Include="BasicScenes\Ballistics\Targets\IBallisticTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SpawnManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MessagePack" Version="2.2.85" />

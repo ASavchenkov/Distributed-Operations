@@ -10,7 +10,6 @@ config_version=4
 
 _global_script_classes=[  ]
 _global_script_class_icons={
-
 }
 
 [application]
@@ -26,6 +25,7 @@ NOKManager="*res://GameManagement/NOKManager.tscn"
 ReplicationServer="*res://GameManagement/ReplicationServer.tscn"
 UserObserver_1="*res://GameManagement/UserObserver.tscn"
 GameManager="*res://GameManagement/GameManager.tscn"
+BufRpcServer="*res://GameManagement/BufRPCServer.cs"
 
 [gdnative]
 
@@ -92,10 +92,6 @@ MoveDown={
 3d_physics/layer_1="Default"
 3d_physics/layer_2="PlayerCollision"
 3d_physics/layer_3="Ballistics"
-
-[memory]
-
-limits/message_queue/max_size_kb=4096
 
 [rendering]
 
