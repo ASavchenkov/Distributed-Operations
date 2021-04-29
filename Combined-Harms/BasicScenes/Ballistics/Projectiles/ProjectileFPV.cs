@@ -31,6 +31,7 @@ public abstract class ProjectileFPV : RigidBody, IObserver
     {
         GD.Print("base OnContact");
         //Does nothing by default.
+
     }
 
     public override void _IntegrateForces(PhysicsDirectBodyState state)
@@ -50,11 +51,6 @@ public abstract class ProjectileFPV : RigidBody, IObserver
             if(IsInstanceValid((Node) target))
                 target.OnContact(this);
             OnContact(target);
-            
-            provider.Rpc(nameof(ProjectileProvider.UpdateTrajectory), Translation, state.LinearVelocity);
-            //we only update the trajectory when something of note happens to the projectile.
-            //otherwise, the 3PV observer should estimate trajectory on it's own
-            //to retain smooth visuals. (Projectile3PV is just a visualization after all)
         }
     }
 }
