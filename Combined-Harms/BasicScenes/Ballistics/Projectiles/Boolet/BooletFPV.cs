@@ -13,6 +13,7 @@ public class BooletFPV : ProjectileFPV
         //Just delete ourselves when we hit something.
         //It should have already handled damage and stuff.
         GD.Print("Boolet hit something");
+        //We should replace this with something that takes timing into effect.
         provider.rMember.MasterDespawn();
     }
 }

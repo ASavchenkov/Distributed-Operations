@@ -3,7 +3,6 @@
 [ext_resource path="res://GameManagement/NOKManager.cs" type="Script" id=1]
 [ext_resource path="res://GameManagement/RandomSelector.cs" type="Script" id=2]
 
-
 [node name="NOKManager" type="Node"]
 script = ExtResource( 1 )
 

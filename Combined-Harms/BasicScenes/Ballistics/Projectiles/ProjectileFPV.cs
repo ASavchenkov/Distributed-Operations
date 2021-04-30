@@ -24,6 +24,7 @@ public abstract class ProjectileFPV : RigidBody, IObserver
 
     public override void _Ready()
     {
+        
         rayCast = (RayCast) GetNode("RayCast");
     }
 

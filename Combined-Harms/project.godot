@@ -22,9 +22,9 @@ config/icon="res://icon.png"
 
 Networking="*res://addons/PurePeerSignaling/Networking.tscn"
 NOKManager="*res://GameManagement/NOKManager.tscn"
-ReplicationServer="*res://GameManagement/ReplicationServer.tscn"
 UserObserver_1="*res://GameManagement/UserObserver.tscn"
-GameManager="*res://GameManagement/GameManager.tscn"
+GameManager="*res://GameManagement/GameManager.cs"
+ReplicationServer="*res://GameManagement/ReplicationServer.cs"
 
 [gdnative]
 
