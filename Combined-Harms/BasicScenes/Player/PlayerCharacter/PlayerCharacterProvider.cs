@@ -94,6 +94,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
         }
         HP -= (damage * pen);
 
+        Rpc(nameof(UpdateHP), HP, Armor);
     }
 
     [Puppet]
