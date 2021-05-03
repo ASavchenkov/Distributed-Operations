@@ -40,6 +40,8 @@ public class RifleFPV : Spatial, IObserver
         MainSight = (SightFPVObserver) GetNode("Origin/Gun/FrontPostRail/IronSights");
         HipFireTransform = (Position3D) GetNode("Origin/Gun/HipFireTransform");
         Muzzle = (Spatial) GetNode("Origin/Gun/Muzzle");
+        
+        SetOrigin(HipFireTransform);
     }
 
     public void Subscribe(Node provider)
@@ -82,11 +84,11 @@ public class RifleFPV : Spatial, IObserver
         }
     }
 
-    public void SetOriginToSight(SightFPVObserver sight)
+    public void SetOrigin(Spatial newOrigin)
     {
-        Origin.Transform = sight.RemoteEyeRelief.Transform.Inverse();
-        //this will also naturally update the sights global transform.
+        Origin.Transform = newOrigin.Transform.Inverse();
     }
+
     public override void _UnhandledInput(InputEvent inputEvent)
     {
         if(inputEvent.IsActionPressed("ItemPrimary"))
@@ -95,11 +97,11 @@ public class RifleFPV : Spatial, IObserver
         }
         else if(inputEvent.IsActionPressed("ItemSecondary"))
         {
-            SetOriginToSight(MainSight);
+            SetOrigin(MainSight.RemoteEyeRelief);
         }
         else if(inputEvent.IsActionReleased("ItemSecondary"))
         {
-            Origin.Transform = HipFireTransform.Transform.Inverse();
+            SetOrigin(HipFireTransform);
         }
     }
 }

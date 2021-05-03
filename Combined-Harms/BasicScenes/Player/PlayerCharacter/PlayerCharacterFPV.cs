@@ -14,9 +14,6 @@ public class PlayerCharacterFPV : RigidBody, IObserver
     public Camera camera;
     public Area FEET;
 
-
-    private bool inputEnabled = true;
-
     [Export]
     float mouseSensitivity = 100;
     
@@ -57,11 +54,12 @@ public class PlayerCharacterFPV : RigidBody, IObserver
             ItemInHands.QueueFree();
         ItemInHands = (RifleFPV) EasyInstancer.GenObserver(p, p.ObserverPathFPV);
         GetNode("LookYaw/LookPitch/Camera/").AddChild(ItemInHands);
+
     }
 
     public override void _UnhandledInput(InputEvent @event)
     {
-        if(@event is InputEventMouseMotion mouseEvent && inputEnabled)
+        if(@event is InputEventMouseMotion mouseEvent)
         {
             //Yes these look flipped. It's correct.
             LookYaw.RotateY(-mouseEvent.Relative.x/mouseSensitivity);
@@ -71,18 +69,11 @@ public class PlayerCharacterFPV : RigidBody, IObserver
             else if (LookPitch.RotationDegrees.x < -provider.maxPitch)
                 LookPitch.RotationDegrees = new Vector3(-provider.maxPitch,0,0);
         }
-        else if (@event is InputEventKey keyPress && inputEnabled  && keyPress.IsActionPressed("Jump") && groundCounter!=0)
+        else if (@event is InputEventKey keyPress && keyPress.IsActionPressed("Jump") && groundCounter!=0)
         {
             GD.Print(groundCounter);
             ApplyCentralImpulse(provider.jumpImpulse * Vector3.Up);
         }
-    }
-
-    //some input is handled in _PhysicsProcess
-    //so we need a custom boolean
-    public void SetInputEnabled(bool enabled)
-    {
-        inputEnabled = enabled;
     }
 
     public override void _PhysicsProcess(float delta)
@@ -109,17 +100,16 @@ public class PlayerCharacterFPV : RigidBody, IObserver
         Vector3 desiredMove = new Vector3();
 
         //Add all the WASD controls to get a vector.
-        if(inputEnabled)
-        {
-            if(Input.IsActionPressed("MoveForward"))
-                desiredMove += Vector3.Forward;
-            if(Input.IsActionPressed("MoveLeft"))
-                desiredMove += Vector3.Left;
-            if(Input.IsActionPressed("MoveBack"))
-                desiredMove += Vector3.Back;
-            if(Input.IsActionPressed("MoveRight"))
-                desiredMove += Vector3.Right;
-        }
+        
+        if(Input.IsActionPressed("MoveForward"))
+            desiredMove += Vector3.Forward;
+        if(Input.IsActionPressed("MoveLeft"))
+            desiredMove += Vector3.Left;
+        if(Input.IsActionPressed("MoveBack"))
+            desiredMove += Vector3.Back;
+        if(Input.IsActionPressed("MoveRight"))
+            desiredMove += Vector3.Right;
+        
         //what's the behavior of Normalized() when desiredMove is zero?
         //I guess it's still zero?
         desiredMove = desiredMove.Normalized()*provider.maxSpeed;

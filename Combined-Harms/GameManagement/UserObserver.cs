@@ -9,9 +9,6 @@ public class UserObserver : Node, IObserver
 {
     public UserProvider provider {get; private set;}
 
-    [Signal]
-    public delegate void SetInputEnabled(bool enabled);
-
     private CanvasItem MainMenu;
     private CanvasItem currentMenuNode = null;
     
@@ -74,13 +71,11 @@ public class UserObserver : Node, IObserver
                     currentMenuNode = MainMenu;
                     currentMenuNode.Visible = true;
                     Input.SetMouseMode(Input.MouseMode.Visible);
-                    EmitSignal(nameof(SetInputEnabled), false);
                 }
                 else{
                     currentMenuNode.Visible = false;
                     currentMenuNode = null;
                     Input.SetMouseMode(Input.MouseMode.Captured);
-                    EmitSignal(nameof(SetInputEnabled), true);
                 }
             }
         }

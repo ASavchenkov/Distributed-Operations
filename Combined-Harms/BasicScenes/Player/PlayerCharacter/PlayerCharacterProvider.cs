@@ -76,9 +76,6 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
         PitchRotation = pitch;
 
         EmitSignal(nameof(TrajectoryUpdated), translation, yaw, pitch, velocity);
-        // Body.Translation = translation;
-        // LookYaw.Rotation = yaw;
-        // LookPitch.Rotation = pitch;
     }
 
     [Master]
