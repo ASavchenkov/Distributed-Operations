@@ -138,5 +138,10 @@ namespace ReplicationAbstractions
         [Export]
         string ObserverPath3PV { get; set;}
     }
+    public interface ILootPV
+    {
+        [Export]
+        string ObserverPathLootPV { get; set;}
+    }
 }
 

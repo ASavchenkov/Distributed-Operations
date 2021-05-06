@@ -17,7 +17,6 @@ public class RifleProvider : Node, IReplicable, IFPV
     [Export]
     public string ObserverPathFPV {get; set;}
 
-    [Export]
     Dictionary<string,Node> Attachments;
     //Maps name of attachment point to the actual attachment that is there.
     //Node is null if nothing is attached there.

@@ -20,6 +20,8 @@ public class PlayerCharacterFPV : RigidBody, IObserver
     int groundCounter = 0;
     
     private RifleFPV ItemInHands = null;
+
+    private InventoryMenu InvMenu;
     
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -28,38 +30,36 @@ public class PlayerCharacterFPV : RigidBody, IObserver
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
 
+        InvMenu = (InventoryMenu) camera.GetNode("InventoryMenu");
+        camera.RemoveChild(InvMenu);
+        
         FEET = (Area) GetNode("FEET");
         FEET.Connect("body_entered",this,"GroundEncountered");
         FEET.Connect("body_exited", this, "GroundLeft");
 
-        RifleProvider M4A1 = EasyInstancer.Instance<RifleProvider>(provider.GunPath);
-        GetNode("/root/GameRoot/Loot").AddChild(M4A1);
-        provider.SetHandItem(M4A1);
-
     }
 
-    public void Subscribe(Node provider)
+    public void Subscribe(Node _provider)
     {
-        this.provider = (PlayerCharacterProvider) provider;
-        this.Name = "Player_" + provider.Name + "_FPV";
+        provider = (PlayerCharacterProvider) _provider;
         
         provider.Connect("tree_exiting", this, "queue_free");
-        provider.Connect(nameof(PlayerCharacterProvider.HandItemUpdated),this,nameof(SetHandItem));
+        provider.HandItem.Connect( nameof(LootSlot.OccupantSet), this, nameof(OnHandItemSet));
     }
 
-    public void SetHandItem(RifleProvider p)
+    public void OnHandItemSet(Node node)
     {
         GD.Print("setting hand item to rifle");
         if(IsInstanceValid(ItemInHands))
             ItemInHands.QueueFree();
-        ItemInHands = (RifleFPV) EasyInstancer.GenObserver(p, p.ObserverPathFPV);
-        GetNode("LookYaw/LookPitch/Camera/").AddChild(ItemInHands);
+        ItemInHands = (RifleFPV) EasyInstancer.GenObserver(node, ((IFPV)node).ObserverPathFPV);
+        camera.AddChild(ItemInHands);
 
     }
 
-    public override void _UnhandledInput(InputEvent @event)
+    public override void _UnhandledInput(InputEvent inputEvent)
     {
-        if(@event is InputEventMouseMotion mouseEvent)
+        if(inputEvent is InputEventMouseMotion mouseEvent)
         {
             //Yes these look flipped. It's correct.
             LookYaw.RotateY(-mouseEvent.Relative.x/mouseSensitivity);
@@ -68,11 +68,24 @@ public class PlayerCharacterFPV : RigidBody, IObserver
                 LookPitch.RotationDegrees = new Vector3(provider.maxPitch,0,0);
             else if (LookPitch.RotationDegrees.x < -provider.maxPitch)
                 LookPitch.RotationDegrees = new Vector3(-provider.maxPitch,0,0);
+            GetTree().SetInputAsHandled();
         }
-        else if (@event is InputEventKey keyPress && keyPress.IsActionPressed("Jump") && groundCounter!=0)
+        else if (inputEvent is InputEventKey keyPress)
         {
-            GD.Print(groundCounter);
-            ApplyCentralImpulse(provider.jumpImpulse * Vector3.Up);
+            if(keyPress.IsActionPressed("Jump") && groundCounter!=0)
+            {
+                GD.Print(groundCounter);
+                ApplyCentralImpulse(provider.jumpImpulse * Vector3.Up);    
+                GetTree().SetInputAsHandled();
+            }
+            else if(keyPress.IsActionPressed("Inventory"))
+            {
+                if( InvMenu.IsInsideTree())
+                    RemoveChild(InvMenu);
+                else
+                    AddChild(InvMenu);
+                GetTree().SetInputAsHandled();
+            }
         }
     }
 

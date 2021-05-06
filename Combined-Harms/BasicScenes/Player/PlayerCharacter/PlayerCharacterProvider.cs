@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 using ReplicationAbstractions;
-public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
+public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV, ILootPV
 {
 
     public ReplicationMember rMember {get; set;}
@@ -18,6 +18,8 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
     public string ObserverPathFPV { get; set;}
     [Export]
     public string ObserverPath3PV { get; set;}
+    [Export]
+    public string ObserverPathLootPV {get; set;}
     //For generating observers
 
     [Signal]
@@ -27,9 +29,6 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
     Vector3 YawRotation = new Vector3();
     Vector3 PitchRotation = new Vector3();
 
-    [Signal]
-    public delegate void HandItemUpdated(string nodePath);
-
     [Export]
     public float maxSpeed {get; private set;} = 10;
     [Export]
@@ -38,15 +37,18 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
     public float jumpImpulse {get; private set;} = 10;
     [Export]
     public float maxPitch {get; private set;} = 80; //degrees
-    [Export]
-    public string GunPath{get; private set;}
-
-    RifleProvider ItemInHands = null;
 
     [Export]
     public float HP = 100;
     [Export]
     public float Armor = 50;
+
+    public LootSlot ChestItem = new LootSlot();
+    public LootSlot HandItem = new LootSlot();
+
+    //Needed to put stuff back where it belongs later.
+    //specific to PlayerCharacterProvider BC humanoids lol.
+    public LootSlot HandItemHome;
 
     public override void _Ready()
     {
@@ -55,6 +57,10 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
         
         Node observer = EasyInstancer.GenObserver(this, IsNetworkMaster() ? ObserverPathFPV : ObserverPath3PV);
         MapNode.AddChild(observer);
+
+        var rifle = EasyInstancer.Instance<RifleProvider>("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn");
+        GetNode("/root/GameRoot/Loot").AddChild(rifle);
+        SetHandItem(rifle, ChestItem);
     }
 
     public void OnNOKTransfer(int uid)
@@ -62,10 +68,18 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV
         QueueFree();
     }
 
-    public void SetHandItem(RifleProvider item)
+    public void SetHandItem(Node item, LootSlot home)
     {
-        ItemInHands = item;
-        EmitSignal(nameof(HandItemUpdated),ItemInHands);
+        //I wish this was simpler but it isn't.
+        //Just swapping items around.
+        //This might actually have to happen slower for gameplay reasons.
+        //(so it'l be even more complicated.)
+        if(HandItem.Occupant != null && HandItemHome != null)
+            HandItemHome.Occupant = HandItem.Occupant;
+        HandItem.Occupant = item;
+        if(home != null)
+            HandItemHome = home;
+        HandItemHome.Occupant = null;
     }
 
     [PuppetSync]
