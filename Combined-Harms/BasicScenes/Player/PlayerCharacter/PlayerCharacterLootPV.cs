@@ -5,8 +5,7 @@ using ReplicationAbstractions;
 
 public class PlayerCharacterLootPV : Spatial, IObserver
 {
-
-
+    
     private PlayerCharacterProvider provider;
 
     public void Subscribe(Node _provider)

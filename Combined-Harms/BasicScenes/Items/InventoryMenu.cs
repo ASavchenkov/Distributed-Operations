@@ -1,18 +1,19 @@
 using Godot;
 using System;
 
+using ReplicationAbstractions;
+
 public class InventoryMenu : Spatial
 {
-    public override void _Ready()
+
+    ILootPV root = null;
+    Node rootObserver;
+
+    public void Subscribe(ILootPV _root)
     {
-        
+        root = _root;
+        rootObserver = EasyInstancer.GenObserver( (Node)root, root.ObserverPathLootPV);
+        AddChild(rootObserver);
     }
 
-    public override void _UnhandledInput(InputEvent inputEvent)
-    {
-        // if( inputEvent.IsActionPressed("ItemPrimary")
-        // {
-
-        // }
-    }
 }

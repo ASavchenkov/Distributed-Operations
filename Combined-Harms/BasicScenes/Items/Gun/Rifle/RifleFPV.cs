@@ -6,9 +6,6 @@ using ReplicationAbstractions;
 
 public class RifleFPV : Spatial, IObserver
 {
-    
-    [Export]
-    Dictionary<string,NodePath> attachmentMap;
 
     RifleProvider provider;
 
@@ -17,7 +14,7 @@ public class RifleFPV : Spatial, IObserver
     protected IMunitionSource source;
     protected Spatial Origin;
     protected Position3D HipFireTransform;
-    protected SightFPVObserver MainSight;
+    protected SightFPV MainSight;
     //When we start to do things like canted sights
     //we will need to revisit this.
 
@@ -37,19 +34,18 @@ public class RifleFPV : Spatial, IObserver
     {
         Origin = (Spatial) GetNode("Origin");
         Projectiles = GetNode("/root/GameRoot/Projectiles");
-        MainSight = (SightFPVObserver) GetNode("Origin/Gun/FrontPostRail/IronSights");
+        MainSight = (SightFPV) GetNode("Origin/Gun/FrontPostRail/IronSights");
         HipFireTransform = (Position3D) GetNode("Origin/Gun/HipFireTransform");
         Muzzle = (Spatial) GetNode("Origin/Gun/Muzzle");
         
         SetOrigin(HipFireTransform);
     }
 
-    public void Subscribe(Node provider)
+    public void Subscribe(Node _provider)
     {
-        this.DefaultSubscribe(provider);
-        this.provider = (RifleProvider) provider;
-        this.provider.Connect(nameof(RifleProvider.AttachmentUpdated), this, nameof(OnAttachmentUpdated));
-        source = this.provider.Mag;
+        this.DefaultSubscribe(_provider);
+        provider = (RifleProvider) _provider;
+        source = provider.Mag;
     }
 
     //Default code for firing a projectile.
@@ -66,21 +62,6 @@ public class RifleFPV : Spatial, IObserver
             p.SetNetworkMaster(GetTree().GetNetworkUniqueId());
             Projectiles.AddChild(p);
             p.Rpc("Init",Muzzle.GlobalTransform.origin, velocity);
-        }
-    }
-
-    public void OnAttachmentUpdated(string attachPoint, IFPV attachment)
-    {
-        Node parentNode = GetNode(attachmentMap[attachPoint]);
-        for(int i = 0; i<parentNode.GetChildCount(); i++)
-        {
-            parentNode.GetChild(i).QueueFree();
-        }
-        //If null was passed, there is no attachment.
-        if(!(attachment is null))
-        {
-            var observer = EasyInstancer.Instance<Node>(attachment.ObserverPathFPV);
-            parentNode.AddChild(EasyInstancer.GenObserver((Node) attachment, attachment.ObserverPathFPV));
         }
     }
 

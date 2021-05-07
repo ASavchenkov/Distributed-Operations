@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class SightFPVObserver : Spatial
+public class SightFPV : Spatial
 {
     //These may be the same node, or different ones
     //for ironsights "RotationNode" will probably be the front post

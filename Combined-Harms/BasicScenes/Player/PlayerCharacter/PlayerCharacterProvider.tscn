@@ -6,5 +6,5 @@
 script = ExtResource( 1 )
 ObserverPathFPV = "res://BasicScenes/Player/PlayerCharacter/PlayerCharacterFPV.tscn"
 ObserverPath3PV = "res://BasicScenes/Player/PlayerCharacter/PlayerCharacter3PV.tscn"
+ObserverPathLootPV = "res://BasicScenes/Player/PlayerCharacter/PlayerCharacterLootPV.tscn"
 maxSpeed = 1.0
-GunPath = "res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn"

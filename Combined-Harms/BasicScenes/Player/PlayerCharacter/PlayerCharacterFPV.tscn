@@ -29,6 +29,7 @@ fov = 90.0
 near = 0.1
 
 [node name="InventoryMenu" parent="LookYaw/LookPitch/Camera" instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.37907 )
 
 [node name="BallisticTorso" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0896798, 0 )

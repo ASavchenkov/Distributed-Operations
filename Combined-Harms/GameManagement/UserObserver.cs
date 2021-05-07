@@ -77,6 +77,7 @@ public class UserObserver : Node, IObserver
                     currentMenuNode = null;
                     Input.SetMouseMode(Input.MouseMode.Captured);
                 }
+                GetTree().SetInputAsHandled();
             }
         }
     }

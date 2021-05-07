@@ -41,7 +41,7 @@
     <Compile Include="BasicScenes\Items\Gun\MunitionSource.cs" />
     <Compile Include="BasicScenes\Items\Gun\Rifle\RifleFPV.cs" />
     <Compile Include="BasicScenes\Items\Gun\Rifle\RifleProvider.cs" />
-    <Compile Include="BasicScenes\Items\Gun\SightFPVObserver.cs" />
+    <Compile Include="BasicScenes\Items\Gun\SightFPV.cs" />
     <Compile Include="GameManagement\Abstractions.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\AnimTree.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacter3PV.cs" />

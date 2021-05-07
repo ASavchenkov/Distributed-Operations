@@ -74,7 +74,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV, ILootPV
         //Just swapping items around.
         //This might actually have to happen slower for gameplay reasons.
         //(so it'l be even more complicated.)
-        if(HandItem.Occupant != null && HandItemHome != null)
+        if(HandItemHome != null)
             HandItemHome.Occupant = HandItem.Occupant;
         HandItem.Occupant = item;
         if(home != null)

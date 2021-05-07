@@ -31,6 +31,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
         camera = (Camera) LookPitch.GetNode("Camera");
 
         InvMenu = (InventoryMenu) camera.GetNode("InventoryMenu");
+        InvMenu.Subscribe(provider);
         camera.RemoveChild(InvMenu);
         
         FEET = (Area) GetNode("FEET");
@@ -42,9 +43,8 @@ public class PlayerCharacterFPV : RigidBody, IObserver
     public void Subscribe(Node _provider)
     {
         provider = (PlayerCharacterProvider) _provider;
-        
-        provider.Connect("tree_exiting", this, "queue_free");
         provider.HandItem.Connect( nameof(LootSlot.OccupantSet), this, nameof(OnHandItemSet));
+        this.DefaultSubscribe(provider);
     }
 
     public void OnHandItemSet(Node node)
@@ -80,10 +80,11 @@ public class PlayerCharacterFPV : RigidBody, IObserver
             }
             else if(keyPress.IsActionPressed("Inventory"))
             {
+                GD.Print("Tab got pressed");
                 if( InvMenu.IsInsideTree())
                     RemoveChild(InvMenu);
                 else
-                    AddChild(InvMenu);
+                    camera.AddChild(InvMenu);
                 GetTree().SetInputAsHandled();
             }
         }
