@@ -30,7 +30,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
 
-        InvMenu = (InventoryMenu) EasyInstancer.Instance<InventoryMenu>("res://BasicScenes/Items/InventoryMenu.tscn");
+        InvMenu = InventoryMenu.Factory.Instance();
         InvMenu.Subscribe(provider);
         
         FEET = (Area) GetNode("FEET");

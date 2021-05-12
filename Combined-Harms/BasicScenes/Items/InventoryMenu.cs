@@ -6,6 +6,9 @@ using ReplicationAbstractions;
 public class InventoryMenu : Spatial
 {
 
+    public static NodeFactory<InventoryMenu> Factory
+        = new NodeFactory<InventoryMenu>("res://BasicScenes/Items/InventoryMenu.tscn");
+    
     ILootPV root = null;
     Spatial rootObserver;
     Camera cam;
