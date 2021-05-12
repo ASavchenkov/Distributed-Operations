@@ -30,9 +30,8 @@ public class PlayerCharacterFPV : RigidBody, IObserver
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
 
-        InvMenu = (InventoryMenu) camera.GetNode("InventoryMenu");
+        InvMenu = (InventoryMenu) EasyInstancer.Instance<InventoryMenu>("res://BasicScenes/Items/InventoryMenu.tscn");
         InvMenu.Subscribe(provider);
-        camera.RemoveChild(InvMenu);
         
         FEET = (Area) GetNode("FEET");
         FEET.Connect("body_entered",this,"GroundEncountered");
@@ -80,9 +79,8 @@ public class PlayerCharacterFPV : RigidBody, IObserver
             }
             else if(keyPress.IsActionPressed("Inventory"))
             {
-                GD.Print("Tab got pressed");
                 if( InvMenu.IsInsideTree())
-                    RemoveChild(InvMenu);
+                    camera.RemoveChild(InvMenu);
                 else
                     camera.AddChild(InvMenu);
                 GetTree().SetInputAsHandled();

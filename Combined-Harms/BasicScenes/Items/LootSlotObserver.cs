@@ -3,7 +3,7 @@ using System;
 
 using ReplicationAbstractions;
 
-public class LootSlotObserver : Spatial
+public class LootSlotObserver : Area
 {
 
     public LootSlot Slot;
@@ -30,18 +30,31 @@ public class LootSlotObserver : Spatial
 
         if(n != null)
         {
-            observer = (Spatial) EasyInstancer.GenObserver(n, ((ILootPV)n).ObserverPathLootPV);
-            AddChild(observer);
+            // observer = (Spatial) EasyInstancer.GenObserver(n, ((ILootPV)n).ObserverPathLootPV);
+            // AddChild(observer);
         }
     }
     public void OnTranslationSet(Vector3 t)
     {
-        observer.Translation = t;
+        GD.Print("trying to set translation");
+        Translation = t;
+        GD.Print("set translation successfully");
+    }
+
+
+    public void MouseOn()
+    {
+        GD.Print(Name, ": Moused on");
+    }
+
+    public void MouseOff()
+    {
+        GD.Print(Name, ": Moused off");
     }
 }
 
 //A Godot.Object that alerts others when its occupant or positon is changed.
-//Used on providers to store
+//Used on providers to store what loot is in their slots.
 public class LootSlot : Godot.Object
 {
     private Node _Occupant = null;
