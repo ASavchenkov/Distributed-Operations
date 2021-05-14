@@ -67,9 +67,10 @@ public class InventoryMenu : Spatial
 
     public override void _EnterTree()
     {
-        cam = (Camera) GetParent();
-        base._EnterTree();
+        if(cam is null)
+            cam = (Camera) GetParent();
         Input.SetMouseMode(Input.MouseMode.Visible);
+        base._EnterTree();
     }
 
     public override void _ExitTree()

@@ -12,15 +12,18 @@ public class LootSlotObserver : Area
 
     public void Subscribe(LootSlot slot)
     {
+
         Slot = slot;
         slot.Connect(nameof(LootSlot.OccupantSet), this, nameof(OnOccupantSet));
         slot.Connect(nameof(LootSlot.TranslationSet), this, nameof(OnTranslationSet));
-
-        if(Slot.Occupant != null)
+        
+        if(!(Slot.Occupant is null))
         {
+            GD.Print("occupant not null");
             OnOccupantSet(Slot.Occupant);
-            OnTranslationSet(Slot.Translation);
         }
+        
+        OnTranslationSet(Slot.Translation);
     }
 
     public void OnOccupantSet(Node n)
