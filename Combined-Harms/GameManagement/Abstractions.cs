@@ -127,18 +127,19 @@ namespace ReplicationAbstractions
         }   
     }
 
-    public interface IFPV
+    public interface IHasFPV
     {
         [Export]
         string ObserverPathFPV { get; set;}
     }
 
-    public interface I3PV
+    public interface IHas3PV
     {
         [Export]
         string ObserverPath3PV { get; set;}
     }
-    public interface ILootPV
+
+    public interface IHasLootPV
     {
         [Export]
         string ObserverPathLootPV { get; set;}

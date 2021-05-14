@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 using ReplicationAbstractions;
-public class PlayerCharacterProvider : Node, IReplicable, IFPV, I3PV, ILootPV
+public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IHasLootPV
 {
 
     public ReplicationMember rMember {get; set;}

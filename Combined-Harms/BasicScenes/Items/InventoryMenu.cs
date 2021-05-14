@@ -9,7 +9,7 @@ public class InventoryMenu : Spatial
     public static NodeFactory<InventoryMenu> Factory
         = new NodeFactory<InventoryMenu>("res://BasicScenes/Items/InventoryMenu.tscn");
     
-    ILootPV root = null;
+    IHasLootPV root = null;
     Spatial rootObserver;
     Camera cam;
     RayCast mouseRay;
@@ -17,7 +17,7 @@ public class InventoryMenu : Spatial
     //Need to keep track of this for when we leave the mouseover.
     LootSlotObserver currentMouseOver = null;
 
-    public void Subscribe(ILootPV _root)
+    public void Subscribe(IHasLootPV _root)
     {
         root = _root;
         rootObserver = (Spatial) EasyInstancer.GenObserver( (Node) root, root.ObserverPathLootPV);
@@ -46,6 +46,10 @@ public class InventoryMenu : Spatial
         }
         else if(inputEvent.IsActionPressed("ItemPrimary"))
         {
+            if(!(currentMouseOver is null))
+            {
+
+            }
             GD.Print("Clicky clicky lol");
             GetTree().SetInputAsHandled();
         }

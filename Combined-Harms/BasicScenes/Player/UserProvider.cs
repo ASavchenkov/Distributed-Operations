@@ -7,7 +7,7 @@ using ReplicationAbstractions;
 //Provider with the "authoritative" version of user data
 //Stores some game specific information too for specators.
 
-public class UserProvider : Node, IReplicable, IFPV
+public class UserProvider : Node, IReplicable, IHasFPV
 {
 
     public ReplicationMember rMember {get; set;}

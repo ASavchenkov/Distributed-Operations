@@ -11,7 +11,7 @@ These never change masters.
 If the master disappears, so does the projectile.
 */
 
-public class ProjectileProvider : Node, IReplicable, IFPV, I3PV
+public class ProjectileProvider : Node, IReplicable, IHasFPV, IHas3PV
 {
 
     //Replicable boilerplate

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using ReplicationAbstractions;
 
-public class RifleProvider : Node, IReplicable, IFPV, ILootPV
+public class RifleProvider : Node, IReplicable, IHasFPV, IHasLootPV
 {
 
     //IReplicable boilerplate

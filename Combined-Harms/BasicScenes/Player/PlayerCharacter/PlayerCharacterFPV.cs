@@ -51,7 +51,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
         GD.Print("setting hand item to rifle");
         if(IsInstanceValid(ItemInHands))
             ItemInHands.QueueFree();
-        ItemInHands = (RifleFPV) EasyInstancer.GenObserver(node, ((IFPV)node).ObserverPathFPV);
+        ItemInHands = (RifleFPV) EasyInstancer.GenObserver(node, ((IHasFPV)node).ObserverPathFPV);
         camera.AddChild(ItemInHands);
 
     }

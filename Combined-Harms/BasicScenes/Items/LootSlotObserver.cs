@@ -23,7 +23,12 @@ public class LootSlotObserver : Area
             OnOccupantSet(Slot.Occupant);
         }
         
-        OnTranslationSet(Slot.Translation);
+        //Default position is where it is in this scene.
+        //Otherwise, configure ourselves based on the Slot.
+        if(Slot.Occupant is null)
+            Slot.Translation = Translation;
+        else
+            OnTranslationSet(Slot.Translation);
     }
 
     public void OnOccupantSet(Node n)
@@ -33,8 +38,8 @@ public class LootSlotObserver : Area
 
         if(n != null)
         {
-            // observer = (Spatial) EasyInstancer.GenObserver(n, ((ILootPV)n).ObserverPathLootPV);
-            // AddChild(observer);
+            observer = (Spatial) EasyInstancer.GenObserver(n, ((IHasLootPV)n).ObserverPathLootPV);
+            AddChild(observer);
         }
     }
     public void OnTranslationSet(Vector3 t)
