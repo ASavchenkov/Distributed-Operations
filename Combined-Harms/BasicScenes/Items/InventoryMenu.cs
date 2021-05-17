@@ -13,9 +13,18 @@ public class InventoryMenu : Spatial
     Spatial rootObserver;
     Camera cam;
     RayCast mouseRay;
+    Spatial rootHandle;
 
     //Need to keep track of this for when we leave the mouseover.
-    LootSlotObserver currentMouseOver = null;
+    ILootPickable currentMouseOver = null;
+
+    //Initing these to zero is fine
+    //because 
+    Vector3 clickOnPos = new Vector3();
+    uint clickOnTime = 0;
+
+    [Signal]
+    public delegate void RayUpdated(Vector3 castTo);    
 
     public void Subscribe(IHasLootPV _root)
     {
@@ -25,7 +34,8 @@ public class InventoryMenu : Spatial
         //These should stay valid as it gets moved in and out of the tree.
         //So we do it here instead of _Ready()
         mouseRay = (RayCast) GetNode("MouseRay");
-        GetNode("RootHandle").AddChild(rootObserver);
+        rootHandle = GetNode<Spatial>("RootHandle");
+        rootHandle.AddChild(rootObserver);
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)
@@ -40,7 +50,11 @@ public class InventoryMenu : Spatial
             PollRayCast();
 
             var to = cam.ProjectLocalRayNormal(mouseMoveEvent.Position);
-            mouseRay.CastTo = to  * 10;
+            
+            //scale so that it's always ending exactly on the z plane of the inventory.
+            mouseRay.CastTo = to  * rootHandle.Translation.z / to.z;
+            GD.Print(mouseRay.CastTo);
+            EmitSignal(nameof(RayUpdated), mouseRay.CastTo);
 
             GetTree().SetInputAsHandled();
         }
@@ -48,24 +62,29 @@ public class InventoryMenu : Spatial
         {
             if(!(currentMouseOver is null))
             {
-
+                clickOnTime = OS.GetTicksMsec();
+                clickOnPos = mouseRay.CastTo;
+                currentMouseOver.pMember.Press(this);
             }
-            GD.Print("Clicky clicky lol");
             GetTree().SetInputAsHandled();
+        }
+        else if (inputEvent.IsActionReleased("ItemPrimary"))
+        {
+
         }
     }
 
     private void PollRayCast()
     {
-        LootSlotObserver pickedSlot = mouseRay.GetCollider() as LootSlotObserver;
+        ILootPickable pickedSlot = mouseRay.GetCollider() as ILootPickable;
 
         //The use of "null" as "not colliding with anything makes
         //null conditional operators very convenient.
         if(pickedSlot != currentMouseOver)
         {
-            currentMouseOver?.MouseOff();
+            currentMouseOver?.pMember?.MouseOff();
             currentMouseOver = pickedSlot;
-            currentMouseOver?.MouseOn();
+            currentMouseOver?.pMember?.MouseOn();
         }
     }
 

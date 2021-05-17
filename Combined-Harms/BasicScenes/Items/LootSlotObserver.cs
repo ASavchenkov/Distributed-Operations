@@ -3,12 +3,12 @@ using System;
 
 using ReplicationAbstractions;
 
-public class LootSlotObserver : Area
+public class LootSlotObserver : Area, ILootPickable
 {
 
     public LootSlot Slot;
     public Spatial observer = null;
-
+    public PickingMember pMember {get; set;}
 
     public void Subscribe(LootSlot slot)
     {
@@ -29,6 +29,8 @@ public class LootSlotObserver : Area
             Slot.Translation = Translation;
         else
             OnTranslationSet(Slot.Translation);
+
+        pMember = new PickingMember(this, this);
     }
 
     public void OnOccupantSet(Node n)
@@ -49,16 +51,6 @@ public class LootSlotObserver : Area
         GD.Print("set translation successfully");
     }
 
-
-    public void MouseOn()
-    {
-        GD.Print(Name, ": Moused on");
-    }
-
-    public void MouseOff()
-    {
-        GD.Print(Name, ": Moused off");
-    }
 }
 
 //A Godot.Object that alerts others when its occupant or positon is changed.
@@ -90,4 +82,49 @@ public class LootSlot : Godot.Object
     public delegate void OccupantSet(Node n);
     [Signal]
     public delegate void TranslationSet(Vector3 pos);
+}
+
+//Interface to let the InventoryMenu interact with these things
+//clicking on them and moving them around.
+public interface ILootPickable
+{
+    PickingMember pMember {get; set;}
+}
+
+//Inherits Godot.Object to get access to signals.
+public class PickingMember : Godot.Object
+{
+    private Spatial owner;
+    private Area area;
+    public PickingMember(Spatial _owner, Area _area)
+    {
+        owner = _owner;
+        area = _area;
+    }
+
+    //When we're clicked on but not yet clicked off
+    //assume being dragged, since dragging can be very fast.
+    public void Press(InventoryMenu menu)
+    {
+        menu.Connect(nameof(InventoryMenu.RayUpdated), this, nameof(UpdateTranslation));
+        
+        //functionally disable so the ray can look at where it's gonna drop stuff
+        //and not get blocked by us. We will enable it again when we're done being held.
+        area.InputRayPickable = false;
+    }
+
+    public void UpdateTranslation(Vector3 t)
+    {
+        owner.Translation = t;
+    }
+
+    public void MouseOn()
+    {
+        GD.Print(owner.Name, ": Moused on");
+    }
+
+    public void MouseOff()
+    {
+        GD.Print(owner.Name, ": Moused off");
+    }
 }
