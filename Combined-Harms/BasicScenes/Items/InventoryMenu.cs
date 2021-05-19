@@ -17,11 +17,11 @@ public class InventoryMenu : Spatial
 
     //Need to keep track of this for when we leave the mouseover.
     ILootPickable currentMouseOver = null;
-
     //Initing these to zero is fine
     //because 
     Vector3 clickOnPos = new Vector3();
     uint clickOnTime = 0;
+    ILootPickable clickOnNode = null;
 
     [Signal]
     public delegate void RayUpdated(Vector3 castTo);    
@@ -54,7 +54,7 @@ public class InventoryMenu : Spatial
             //scale so that it's always ending exactly on the z plane of the inventory.
             mouseRay.CastTo = to  * rootHandle.Translation.z / to.z;
             GD.Print(mouseRay.CastTo);
-            EmitSignal(nameof(RayUpdated), mouseRay.CastTo);
+            EmitSignal(nameof(RayUpdated), mouseRay.CastTo - rootHandle.Translation);
 
             GetTree().SetInputAsHandled();
         }
@@ -63,14 +63,46 @@ public class InventoryMenu : Spatial
             if(!(currentMouseOver is null))
             {
                 clickOnTime = OS.GetTicksMsec();
-                clickOnPos = mouseRay.CastTo;
-                currentMouseOver.pMember.Press(this);
+                //we want pos to be scaled to z=1
+                clickOnPos = mouseRay.CastTo /mouseRay.CastTo.z;
+                clickOnNode = currentMouseOver;
+                currentMouseOver = null;
+                clickOnNode.pMember.Press(this);
             }
             GetTree().SetInputAsHandled();
         }
-        else if (inputEvent.IsActionReleased("ItemPrimary"))
+        else if (inputEvent.IsActionReleased("ItemPrimary") && !(clickOnNode is null))
         {
+            
+            //check if its just a regular click.
+            var t = OS.GetTicksMsec() - clickOnTime;
+            var distance = (mouseRay.CastTo/mouseRay.CastTo.z).DistanceTo(clickOnPos);
+            
+            //All of this is just for ILootPV stuff, so we cast it beforehand.
 
+            var lootItem = clickOnNode as ILootPV;
+
+            if(!(lootItem is null))
+            {// The thing being released is an ILootPV
+                if(t < 100 && distance<0.1)
+                {
+                    //it was a regular click.
+                    //Might want to center UI on item when we do this
+                    //Not necessary yet though.
+                    lootItem.FullClick();
+                }
+                else
+                {
+                    //This was a click and drag
+                    //and we're dropping it on something.
+                    
+                    (currentMouseOver as IAcceptsDrop)?.Drop(lootItem);
+                }
+            }
+            
+            //Release regardless
+            clickOnNode.pMember.Release(this);
+            
         }
     }
 

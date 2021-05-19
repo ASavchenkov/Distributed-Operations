@@ -127,6 +127,8 @@ namespace ReplicationAbstractions
         }   
     }
 
+
+    //Actual observer implementation 
     public interface IHasFPV
     {
         [Export]

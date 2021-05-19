@@ -27,6 +27,7 @@
     <Compile Include="BasicScenes\Ballistics\Targets\Body\BodyPart.cs" />
     <Compile Include="BasicScenes\Ballistics\Projectiles\Projectile3PV.cs" />
     <Compile Include="BasicScenes\Ballistics\Projectiles\ProjectileFPV.cs" />
+    <Compile Include="BasicScenes\Items\InventoryAbstractions.cs" />
     <Compile Include="BasicScenes\Items\InventoryMenu.cs" />
     <Compile Include="BasicScenes\Items\LootSlotObserver.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterLootPV.cs" />
