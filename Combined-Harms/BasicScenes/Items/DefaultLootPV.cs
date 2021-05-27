@@ -1,18 +1,15 @@
 using Godot;
 using System;
 
-public class DefaultLootPV : Area, ILootPickable
+public class DefaultLootPV : PickableArea
 {
 
-    private PickingMember _pMember;
-    public PickingMember pMember{get => _pMember;}
     [Export]
     public float Radius {get;set;}
 
     public override void _Ready()
     {
-        GD.Print("ready lol");
-        _pMember = new PickingMember(this, this);
+        GD.Print(Name, " ready lol");
         
     }
 
@@ -20,7 +17,7 @@ public class DefaultLootPV : Area, ILootPickable
     {
 
     }
-    public void UpdateTransform(Transform globalTarget)
+    public override void UpdateTransform(Transform globalTarget)
     {
         GlobalTransform = globalTarget;
     }

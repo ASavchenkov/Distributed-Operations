@@ -17,12 +17,12 @@ public class InventoryMenu : Spatial
     Spatial RayEndpoint;
 
     //Need to keep track of this for when we leave the mouseover.
-    ILootPickable currentMouseOver = null;
+    PickableArea currentMouseOver = null;
     //Initing these to zero is fine
     //because 
     Vector3 clickOnPos = new Vector3();
     uint clickOnTime = 0;
-    ILootPickable clickOnNode = null;
+    PickableArea clickOnNode = null;
 
     [Signal]
     public delegate void RayUpdated(Transform ray);
@@ -69,7 +69,7 @@ public class InventoryMenu : Spatial
                 clickOnPos = mouseRay.CastTo /mouseRay.CastTo.z;
                 clickOnNode = currentMouseOver;
                 currentMouseOver = null;
-                clickOnNode.pMember.Press(this);
+                clickOnNode.Press(this);
             }
             GetTree().SetInputAsHandled();
         }
@@ -104,22 +104,22 @@ public class InventoryMenu : Spatial
             }
             
             //Release regardless
-            clickOnNode.pMember.Release(this);
+            clickOnNode.Release(this);
             
         }
     }
 
     private void PollRayCast()
     {
-        ILootPickable pickedSlot = mouseRay.GetCollider() as ILootPickable;
+        PickableArea pickedSlot = mouseRay.GetCollider() as PickableArea;
 
         //The use of "null" as "not colliding with anything makes
         //null conditional operators very convenient.
         if(pickedSlot != currentMouseOver)
         {
-            currentMouseOver?.pMember?.MouseOff();
+            currentMouseOver?.MouseOff();
             currentMouseOver = pickedSlot;
-            currentMouseOver?.pMember?.MouseOn();
+            currentMouseOver?.MouseOn();
             GD.Print((currentMouseOver as Node)?.Name);
         }
     }

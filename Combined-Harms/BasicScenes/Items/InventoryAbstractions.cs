@@ -33,56 +33,35 @@ public class LootSlot : Godot.Object
 
 }
 
-//Interface to let the InventoryMenu interact with these things
-//clicking on them and moving them around.
-//All functionality implemented in PickingMember
-public interface ILootPickable
+public abstract class PickableArea : Area
 {
-    PickingMember pMember {get;}
-    void UpdateTransform(Transform globalTarget);
-}
-
-//Inherits Godot.Object to get access to signals.
-public class PickingMember : Godot.Object
-{
-    protected Spatial owner;
-    protected Area area;
-    
-    [Signal]
-    public delegate void Released();
-    
-    public PickingMember(Spatial _owner, Area _area)
-    {
-        owner = _owner;
-        area = _area;
-    }
-
     //When we're clicked on but not yet clicked off
     //assume being dragged, since dragging can be very fast.
     public virtual void Press(InventoryMenu menu)
     {
-        menu.Connect(nameof(InventoryMenu.RayUpdated), owner, nameof(ILootPickable.UpdateTransform));
+        menu.Connect(nameof(InventoryMenu.RayUpdated), this, nameof(UpdateTransform));
         
         //functionally disable so the ray can look at where it's gonna drop stuff
         //and not get blocked by us. We will enable it again when we're done being held.
-        area.InputRayPickable = false;
+        InputRayPickable = false;
     }
 
     public virtual void Release(InventoryMenu menu)
     {
-        menu.Disconnect(nameof(InventoryMenu.RayUpdated), owner, nameof(ILootPickable.UpdateTransform));
-        area.InputRayPickable = true;
+        menu.Disconnect(nameof(InventoryMenu.RayUpdated), this, nameof(UpdateTransform));
+        InputRayPickable = true;
     }
 
     public virtual void MouseOn()
     {
-        GD.Print(owner.Name, ": Moused on");
+        GD.Print(Name, ": Moused on");
     }
 
     public virtual void MouseOff()
     {
-        GD.Print(owner.Name, ": Moused off");
+        GD.Print(Name, ": Moused off");
     }
+    public abstract void UpdateTransform(Transform globalTarget);
 }
 
 public interface IAcceptsDrop

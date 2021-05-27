@@ -3,7 +3,7 @@ using System;
 
 using ReplicationAbstractions;
 
-public class PlayerCharacterLootPV : Spatial, IObserver
+public class PlayerCharacterLootPV : DefaultLootPV, IObserver
 {
     
     private PlayerCharacterProvider provider;

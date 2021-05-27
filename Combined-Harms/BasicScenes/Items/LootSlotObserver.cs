@@ -3,14 +3,12 @@ using System;
 
 using ReplicationAbstractions;
 
-public class LootSlotObserver : Area, ILootPickable, IAcceptsDrop
+public class LootSlotObserver : PickableArea, IAcceptsDrop
 {
     public LootSlot Slot;
     public DefaultLootPV observer = null;
 
-    private PickingMember _pMember;
-    public PickingMember pMember {get => _pMember;}
-
+    
     public void Subscribe(LootSlot slot)
     {
         Slot = slot;
@@ -22,7 +20,6 @@ public class LootSlotObserver : Area, ILootPickable, IAcceptsDrop
             OnOccupantSet(Slot.Occupant);
         }
         
-        _pMember = new PickingMember(this, this);
         slot.Connect(nameof(LootSlot.TransformSet), this, nameof(UpdateTransform));
         //Default position is where it is in this scene.
         //Otherwise, configure ourselves based on the Slot.
@@ -50,7 +47,7 @@ public class LootSlotObserver : Area, ILootPickable, IAcceptsDrop
     }
 
     //Makes sure that the observer is placed the appropriate distance from the handle.
-    public void UpdateTransform(Transform globalTarget)
+    public override void UpdateTransform(Transform globalTarget)
     {
         GlobalTransform = globalTarget;
         RecomputeObserverPos();
