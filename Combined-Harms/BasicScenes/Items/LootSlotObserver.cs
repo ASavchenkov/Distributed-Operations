@@ -6,12 +6,13 @@ using ReplicationAbstractions;
 public class LootSlotObserver : Area, ILootPickable, IAcceptsDrop
 {
     public LootSlot Slot;
-    public Spatial observer = null;
-    public PickingMember pMember {get; set;}
+    public DefaultLootPV observer = null;
+
+    private PickingMember _pMember;
+    public PickingMember pMember {get => _pMember;}
 
     public void Subscribe(LootSlot slot)
     {
-
         Slot = slot;
         slot.Connect(nameof(LootSlot.OccupantSet), this, nameof(OnOccupantSet));
         
@@ -21,30 +22,43 @@ public class LootSlotObserver : Area, ILootPickable, IAcceptsDrop
             OnOccupantSet(Slot.Occupant);
         }
         
-        pMember = new PickingMember(this, this);
-        slot.Connect(nameof(LootSlot.TranslationSet), this.pMember, nameof(PickingMember.UpdateTranslation));
+        _pMember = new PickingMember(this, this);
+        slot.Connect(nameof(LootSlot.TransformSet), this, nameof(UpdateTransform));
         //Default position is where it is in this scene.
         //Otherwise, configure ourselves based on the Slot.
         if(Slot.Occupant is null)
-            Slot.Translation = Translation;
+            Slot.Transform = Transform;
         else
-            pMember.UpdateTranslation(Slot.Translation);
+            UpdateTransform(Slot.Transform);
     }
 
     public void OnOccupantSet(Node n)
     {
-        if(observer != null)
-            observer.QueueFree();
+        GD.Print("setting occupant: ", n?.Name);
+        (observer as Node)?.QueueFree();
 
         if(n != null)
         {
-            observer = (Spatial) EasyInstancer.GenObserver(n, ((IHasLootPV)n).ObserverPathLootPV);
-            AddChild(observer);
+            observer = (DefaultLootPV) EasyInstancer.GenObserver(n, ((IHasLootPV)n).ObserverPathLootPV);
+            AddChild( (Node) observer);
+            RecomputeObserverPos();
         }
     }
-    public void Drop(ILootPV item)
+    public void Drop(DefaultLootPV item)
     {
         GD.Print("LootSlotObserver drop");
+    }
+
+    //Makes sure that the observer is placed the appropriate distance from the handle.
+    public void UpdateTransform(Transform globalTarget)
+    {
+        GlobalTransform = globalTarget;
+        RecomputeObserverPos();
+    }
+    private void RecomputeObserverPos()
+    {
+        if(!(observer is null))
+            observer.Translation = Translation.Normalized() * observer.Radius;
     }
 
 }

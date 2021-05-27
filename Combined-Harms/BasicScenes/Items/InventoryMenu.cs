@@ -14,6 +14,7 @@ public class InventoryMenu : Spatial
     Camera cam;
     RayCast mouseRay;
     Spatial rootHandle;
+    Spatial RayEndpoint;
 
     //Need to keep track of this for when we leave the mouseover.
     ILootPickable currentMouseOver = null;
@@ -24,16 +25,17 @@ public class InventoryMenu : Spatial
     ILootPickable clickOnNode = null;
 
     [Signal]
-    public delegate void RayUpdated(Vector3 castTo);    
+    public delegate void RayUpdated(Transform ray);
 
     public void Subscribe(IHasLootPV _root)
     {
         root = _root;
         rootObserver = (Spatial) EasyInstancer.GenObserver( (Node) root, root.ObserverPathLootPV);
         
-        //These should stay valid as it gets moved in and out of the tree.
+        //This is needed before we enter the tree.
         //So we do it here instead of _Ready()
-        mouseRay = (RayCast) GetNode("MouseRay");
+        mouseRay = GetNode<RayCast>("MouseRay");
+        RayEndpoint = mouseRay.GetNode<Spatial>("Endpoint");
         rootHandle = GetNode<Spatial>("RootHandle");
         rootHandle.AddChild(rootObserver);
     }
@@ -53,9 +55,9 @@ public class InventoryMenu : Spatial
             
             //scale so that it's always ending exactly on the z plane of the inventory.
             mouseRay.CastTo = to  * rootHandle.Translation.z / to.z;
-            GD.Print(mouseRay.CastTo);
-            EmitSignal(nameof(RayUpdated), mouseRay.CastTo - rootHandle.Translation);
-
+            RayEndpoint.Translation = mouseRay.CastTo;
+            EmitSignal(nameof(RayUpdated),RayEndpoint.GlobalTransform);
+            
             GetTree().SetInputAsHandled();
         }
         else if(inputEvent.IsActionPressed("ItemPrimary"))
@@ -80,10 +82,11 @@ public class InventoryMenu : Spatial
             
             //All of this is just for ILootPV stuff, so we cast it beforehand.
 
-            var lootItem = clickOnNode as ILootPV;
+            var lootItem = clickOnNode as DefaultLootPV;
 
             if(!(lootItem is null))
             {// The thing being released is an ILootPV
+             // It has special behavior.
                 if(t < 100 && distance<0.1)
                 {
                     //it was a regular click.
@@ -117,6 +120,7 @@ public class InventoryMenu : Spatial
             currentMouseOver?.pMember?.MouseOff();
             currentMouseOver = pickedSlot;
             currentMouseOver?.pMember?.MouseOn();
+            GD.Print((currentMouseOver as Node)?.Name);
         }
     }
 

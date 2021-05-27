@@ -16,20 +16,20 @@ public class LootSlot : Godot.Object
         }
     }
 
-    private Vector3 _Translation = new Vector3();
-    public Vector3 Translation 
+    private Transform _Transform = new Transform();
+    public Transform Transform 
     {
-        get { return _Translation;}
+        get { return _Transform;}
         set 
         {
-            _Translation = value;
-            EmitSignal(nameof(TranslationSet), value);
+            _Transform = value;
+            EmitSignal(nameof(TransformSet), value);
         }
     }
     [Signal]
     public delegate void OccupantSet(Node n);
     [Signal]
-    public delegate void TranslationSet(Vector3 pos);
+    public delegate void TransformSet(Transform t);
 
 }
 
@@ -38,7 +38,8 @@ public class LootSlot : Godot.Object
 //All functionality implemented in PickingMember
 public interface ILootPickable
 {
-    PickingMember pMember {get; set;}
+    PickingMember pMember {get;}
+    void UpdateTransform(Transform globalTarget);
 }
 
 //Inherits Godot.Object to get access to signals.
@@ -46,6 +47,10 @@ public class PickingMember : Godot.Object
 {
     protected Spatial owner;
     protected Area area;
+    
+    [Signal]
+    public delegate void Released();
+    
     public PickingMember(Spatial _owner, Area _area)
     {
         owner = _owner;
@@ -54,24 +59,19 @@ public class PickingMember : Godot.Object
 
     //When we're clicked on but not yet clicked off
     //assume being dragged, since dragging can be very fast.
-    public void Press(InventoryMenu menu)
+    public virtual void Press(InventoryMenu menu)
     {
-        menu.Connect(nameof(InventoryMenu.RayUpdated), this, nameof(UpdateTranslation));
+        menu.Connect(nameof(InventoryMenu.RayUpdated), owner, nameof(ILootPickable.UpdateTransform));
         
         //functionally disable so the ray can look at where it's gonna drop stuff
         //and not get blocked by us. We will enable it again when we're done being held.
         area.InputRayPickable = false;
     }
 
-    public void Release(InventoryMenu menu)
+    public virtual void Release(InventoryMenu menu)
     {
-        menu.Disconnect(nameof(InventoryMenu.RayUpdated), this, nameof(UpdateTranslation));
+        menu.Disconnect(nameof(InventoryMenu.RayUpdated), owner, nameof(ILootPickable.UpdateTransform));
         area.InputRayPickable = true;
-    }
-    
-    public void UpdateTranslation(Vector3 t)
-    {
-        owner.Translation = t;
     }
 
     public virtual void MouseOn()
@@ -85,12 +85,7 @@ public class PickingMember : Godot.Object
     }
 }
 
-public interface ILootPV : ILootPickable
-{
-    void FullClick();
-}
-
 public interface IAcceptsDrop
 {
-    void Drop( ILootPV item);
+    void Drop( DefaultLootPV item);
 }

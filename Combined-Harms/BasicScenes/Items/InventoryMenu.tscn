@@ -11,5 +11,7 @@ cast_to = Vector3( 0, 0, -1 )
 collision_mask = 8
 collide_with_areas = true
 
+[node name="Endpoint" type="Position3D" parent="MouseRay"]
+
 [node name="RootHandle" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
