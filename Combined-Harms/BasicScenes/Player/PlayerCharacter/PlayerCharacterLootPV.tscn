@@ -7,6 +7,7 @@
 [sub_resource type="BoxShape" id=1]
 
 [node name="PCLootPV" type="Area"]
+gravity_vec = Vector3( 0.104, -1, 0 )
 collision_layer = 8
 collision_mask = 0
 script = ExtResource( 2 )

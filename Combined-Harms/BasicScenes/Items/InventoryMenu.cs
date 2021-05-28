@@ -105,7 +105,8 @@ public class InventoryMenu : Spatial
             
             //Release regardless
             clickOnNode.Release(this);
-            
+            clickOnNode = null;
+            GetTree().SetInputAsHandled();
         }
     }
 
