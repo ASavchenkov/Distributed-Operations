@@ -25,14 +25,14 @@ public class UserObserver : Node, IObserver
         
     }
 
-    public void Subscribe(Node provider)
+    public void Subscribe(object _provider)
     {
         GD.Print("CALL TO USEROBSERVER INIT");
-        this.provider = (UserProvider) provider;
+        provider = (UserProvider) _provider;
         //whenever a new provider is set, the team might change implicitly, even on startup.
         OnTeamChanged();
-        this.provider.Connect(nameof(UserProvider.TeamChanged),this,nameof(OnTeamChanged));
-        MainMenu.GetNode("TabContainer/TDM/VBoxContainer/TeamChoice/Option").Connect("item_selected",provider, nameof(UserProvider.SetTeam));
+        provider.Connect(nameof(UserProvider.TeamChanged),this,nameof(OnTeamChanged));
+        MainMenu.GetNode("TabContainer/TDM/VBoxContainer/TeamChoice/Option").Connect("item_selected", provider, nameof(UserProvider.SetTeam));
     }
 
     public void OnTeamChanged()

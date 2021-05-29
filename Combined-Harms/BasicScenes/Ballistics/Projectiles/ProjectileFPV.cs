@@ -14,12 +14,12 @@ public abstract class ProjectileFPV : RigidBody, IObserver
     
     public RayCast rayCast;
     
-    public void Subscribe(Node provider)
+    public void Subscribe(object _provider)
     {
-        this.provider = (ProjectileProvider) provider;
-        Translation = this.provider.LastTranslation;
-        LinearVelocity = this.provider.LastLinearVelocity;
-        this.DefaultSubscribe(this.provider);
+        provider = (ProjectileProvider) _provider;
+        Translation = provider.LastTranslation;
+        LinearVelocity = provider.LastLinearVelocity;
+        this.DefaultSubscribe(provider);
     }
 
     public override void _Ready()

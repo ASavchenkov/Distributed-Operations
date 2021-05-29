@@ -17,7 +17,7 @@ public class DefaultLootPV : PickableArea
     {
 
     }
-    public override void UpdateTransform(Transform globalTarget)
+    public override void SetGTransform(Transform globalTarget)
     {
         GlobalTransform = globalTarget;
     }

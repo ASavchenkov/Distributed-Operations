@@ -39,7 +39,7 @@ public abstract class PickableArea : Area
     //assume being dragged, since dragging can be very fast.
     public virtual void Press(InventoryMenu menu)
     {
-        menu.Connect(nameof(InventoryMenu.RayUpdated), this, nameof(UpdateTransform));
+        menu.Connect(nameof(InventoryMenu.RayUpdated), this, nameof(SetGTransform));
         
         //functionally disable so the ray can look at where it's gonna drop stuff
         //and not get blocked by us. We will enable it again when we're done being held.
@@ -48,7 +48,7 @@ public abstract class PickableArea : Area
 
     public virtual void Release(InventoryMenu menu)
     {
-        menu.Disconnect(nameof(InventoryMenu.RayUpdated), this, nameof(UpdateTransform));
+        menu.Disconnect(nameof(InventoryMenu.RayUpdated), this, nameof(SetGTransform));
         InputRayPickable = true;
     }
 
@@ -61,7 +61,7 @@ public abstract class PickableArea : Area
     {
         GD.Print(Name, ": Moused off");
     }
-    public abstract void UpdateTransform(Transform globalTarget);
+    public abstract void SetGTransform(Transform globalTarget);
 }
 
 public interface IAcceptsDrop

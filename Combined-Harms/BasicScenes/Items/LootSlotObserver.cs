@@ -3,6 +3,9 @@ using System;
 
 using ReplicationAbstractions;
 
+//Huh why isn't this an IObserver?
+//Because IObserver is named poorly!
+//
 public class LootSlotObserver : PickableArea, IAcceptsDrop
 {
     public LootSlot Slot;
@@ -20,13 +23,13 @@ public class LootSlotObserver : PickableArea, IAcceptsDrop
             OnOccupantSet(Slot.Occupant);
         }
         
-        slot.Connect(nameof(LootSlot.TransformSet), this, nameof(UpdateTransform));
+        slot.Connect(nameof(LootSlot.TransformSet), this, nameof(SetGTransform));
         //Default position is where it is in this scene.
         //Otherwise, configure ourselves based on the Slot.
         if(Slot.Occupant is null)
             Slot.Transform = Transform;
         else
-            UpdateTransform(Slot.Transform);
+            SetGTransform(Slot.Transform);
     }
 
     public void OnOccupantSet(Node n)
@@ -46,8 +49,14 @@ public class LootSlotObserver : PickableArea, IAcceptsDrop
         GD.Print("LootSlotObserver drop");
     }
 
+    public void SetLtransform(Transform localTarget)
+    {
+        Transform = localTarget;
+        RecomputeObserverPos();
+    }
+
     //Makes sure that the observer is placed the appropriate distance from the handle.
-    public override void UpdateTransform(Transform globalTarget)
+    public override void SetGTransform(Transform globalTarget)
     {
         GlobalTransform = globalTarget;
         RecomputeObserverPos();

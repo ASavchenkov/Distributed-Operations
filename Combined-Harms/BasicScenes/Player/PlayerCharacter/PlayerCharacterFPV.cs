@@ -39,7 +39,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
 
     }
 
-    public void Subscribe(Node _provider)
+    public void Subscribe(object _provider)
     {
         provider = (PlayerCharacterProvider) _provider;
         provider.HandItem.Connect( nameof(LootSlot.OccupantSet), this, nameof(OnHandItemSet));

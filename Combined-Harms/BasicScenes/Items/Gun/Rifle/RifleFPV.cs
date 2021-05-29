@@ -41,9 +41,9 @@ public class RifleFPV : Spatial, IObserver
         SetOrigin(HipFireTransform);
     }
 
-    public void Subscribe(Node _provider)
+    public void Subscribe(object _provider)
     {
-        this.DefaultSubscribe(_provider);
+        this.DefaultSubscribe((Node) _provider);
         provider = (RifleProvider) _provider;
         source = provider.Mag;
     }

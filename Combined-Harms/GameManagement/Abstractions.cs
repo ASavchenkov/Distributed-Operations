@@ -79,9 +79,15 @@ namespace ReplicationAbstractions
             }
         }
     }
+
+    //Well golly this seems really vague!
+    //Just like void* structs.
+    //Cast to correct type inside implementation.
+    //You can take the programmer out of the c++
+    //but you can't take the c++ out of the programmer.
     public interface IObserver
     {
-        void Subscribe(Node provider);
+        void Subscribe(object _provider);
     }
     public static class EasyInstancer
     {

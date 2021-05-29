@@ -27,9 +27,9 @@ public class PlayerCharacter3PV : Spatial, IObserver
 
     }
     
-    public void Subscribe(Node provider)
+    public void Subscribe(object _provider)
     {
-        this.provider = (PlayerCharacterProvider) provider;
+        this.provider = (PlayerCharacterProvider) _provider;
         this.DefaultSubscribe(this.provider);
         provider.Connect(nameof(PlayerCharacterProvider.TrajectoryUpdated), this, nameof(OnTrajectoryUpdated));
     }

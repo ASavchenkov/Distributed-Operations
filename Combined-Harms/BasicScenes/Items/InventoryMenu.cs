@@ -97,8 +97,7 @@ public class InventoryMenu : Spatial
                 else
                 {
                     //This was a click and drag
-                    //and we're dropping it on something.
-                    
+                    //and we may be dropping it on something.
                     (currentMouseOver as IAcceptsDrop)?.Drop(lootItem);
                 }
             }
