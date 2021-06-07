@@ -43,21 +43,27 @@ public class LootSlotObserver : PickableArea, IAcceptsDrop
             OccupantObserver = (DefaultLootPV) EasyInstancer.GenObserver(n, ((IHasLootPV)n).ObserverPathLootPV);
             AddChild( (Node) OccupantObserver);
             OccupantObserver.parent = this;
-            OccupantObserver.RecomputePos(Translation);
+            RecomputeOccupantPos();
         }
     }
 
     public void SetLTransform(Transform localTarget)
     {
         Transform = localTarget;
-        OccupantObserver?.RecomputePos(Translation);
+        RecomputeOccupantPos();
     }
 
     //Makes sure that the observer is placed the appropriate distance from the handle.
     public override void SetGTransform(Transform globalTarget)
     {
         GlobalTransform = globalTarget;
-        OccupantObserver?.RecomputePos(Translation);
+        RecomputeOccupantPos();
+    }
+
+    public void RecomputeOccupantPos()
+    {
+        if(!(OccupantObserver is null))
+            OccupantObserver.Translation = Translation.Normalized() * OccupantObserver.Radius;
     }
 
     //accepts null item

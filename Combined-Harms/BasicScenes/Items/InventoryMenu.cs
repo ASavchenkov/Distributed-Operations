@@ -102,6 +102,8 @@ public class InventoryMenu : Spatial
 
                     recipient.Drop(lootItem);
                 }
+                else
+                    lootItem.parent.RecomputeOccupantPos();
             }
             
             //Release regardless

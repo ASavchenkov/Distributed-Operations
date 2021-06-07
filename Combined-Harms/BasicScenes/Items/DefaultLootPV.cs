@@ -36,14 +36,8 @@ public class DefaultLootPV : PickableArea, IObserver
         GlobalTransform = globalTarget;
     }
 
-    public void RecomputePos(Vector3 t)
-    {
-        Translation = t.Normalized() * Radius;
-    }
-
     public override void Release(InventoryMenu menu)
     {
         base.Release(menu);
-        
     }
 }
