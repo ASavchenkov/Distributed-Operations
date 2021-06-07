@@ -52,6 +52,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
         if(IsInstanceValid(ItemInHands))
             ItemInHands.QueueFree();
         ItemInHands = null;
+        
         if(!(node is null))
         {
             ItemInHands = (RifleFPV) EasyInstancer.GenObserver(node, ((IHasFPV)node).ObserverPathFPV);

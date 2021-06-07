@@ -78,8 +78,8 @@ public class UserProvider : Node, IReplicable, IHasFPV
 
         if(IsInstanceValid(CurrentCharacter))
             CurrentCharacter.QueueFree();
-            
         CurrentCharacter = null;
+        
         Rpc(nameof(UpdateTeam), team);
     }
 

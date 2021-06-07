@@ -37,7 +37,7 @@ public class LootSlotObserver : PickableArea, IAcceptsDrop
         GD.Print("setting occupant: ", n?.Name);
         (OccupantObserver as Node)?.QueueFree();
         OccupantObserver = null;
-        
+
         if(n != null)
         {
             OccupantObserver = (DefaultLootPV) EasyInstancer.GenObserver(n, ((IHasLootPV)n).ObserverPathLootPV);
@@ -60,7 +60,7 @@ public class LootSlotObserver : PickableArea, IAcceptsDrop
         OccupantObserver?.RecomputePos(Translation);
     }
 
-    //Accepts null item.
+    //accepts null item
     //Because that's how Dropping removes things from other spots.
     public bool Drop(DefaultLootPV item)
     {
@@ -69,23 +69,16 @@ public class LootSlotObserver : PickableArea, IAcceptsDrop
         //Don't accept drops that are obviously not possible.
         if(!(Slot.Occupant is null || item is null))
         {
-            GD.Print("drop failed due to occupant not null");
+            GD.Print("cannot drop non-null item into occupied slot");
             return false;
         }
 
-        Slot.Occupant = item.provider;            
-        item.parent.ClearOccupant();
-        item.QueueFree();
+        Slot.Occupant = item?.provider;
+        item?.parent?.Drop(null);
 
         GD.Print("LootSlotObserver dropped successfully");
         return true;
     }
-
-    public void ClearOccupant()
-    {
-        Slot.Occupant = null;
-    }
-
 }
 
 
