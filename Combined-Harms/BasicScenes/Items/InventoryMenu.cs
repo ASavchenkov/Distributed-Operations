@@ -100,7 +100,8 @@ public class InventoryMenu : Spatial
                     //and we may be dropping it on something.
                     //And that thing can take a drop.
 
-                    recipient.Drop(lootItem);
+                    if(!recipient.Drop(lootItem))
+                        lootItem.parent.RecomputeOccupantPos();
                 }
                 else
                     lootItem.parent.RecomputeOccupantPos();
