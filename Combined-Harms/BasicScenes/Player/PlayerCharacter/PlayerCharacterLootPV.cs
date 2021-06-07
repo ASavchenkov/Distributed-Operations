@@ -3,16 +3,21 @@ using System;
 
 using ReplicationAbstractions;
 
-public class PlayerCharacterLootPV : DefaultLootPV, IObserver
+public class PlayerCharacterLootPV : DefaultLootPV
 {
     
-    private PlayerCharacterProvider provider;
-
-    public void Subscribe(object _provider)
+    private PlayerCharacterProvider _provider;
+    public override Node provider
     {
-        provider = (PlayerCharacterProvider) _provider;
-        ((LootSlotObserver) GetNode("ChestSlot")).Subscribe(provider.ChestItem);
-        ((LootSlotObserver) GetNode("HandSlot")).Subscribe(provider.HandItem);
+        get => _provider;
+        protected set {_provider = (PlayerCharacterProvider) value;}
+    }
+
+    public override void Subscribe(object p)
+    {
+        provider = (Node) p;
+        ((LootSlotObserver) GetNode("ChestSlot")).Subscribe(_provider.ChestItem);
+        ((LootSlotObserver) GetNode("HandSlot")).Subscribe(_provider.HandItem);
     }
 
 }

@@ -94,11 +94,13 @@ public class InventoryMenu : Spatial
                     //Not necessary yet though.
                     lootItem.FullClick();
                 }
-                else
+                else if(currentMouseOver is IAcceptsDrop recipient)
                 {
                     //This was a click and drag
                     //and we may be dropping it on something.
-                    (currentMouseOver as IAcceptsDrop)?.Drop(lootItem);
+                    //And that thing can take a drop.
+
+                    recipient.Drop(lootItem);
                 }
             }
             
@@ -120,7 +122,6 @@ public class InventoryMenu : Spatial
             currentMouseOver?.MouseOff();
             currentMouseOver = pickedSlot;
             currentMouseOver?.MouseOn();
-            GD.Print((currentMouseOver as Node)?.Name);
         }
     }
 

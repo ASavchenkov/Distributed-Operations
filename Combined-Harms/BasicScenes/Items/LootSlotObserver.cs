@@ -4,12 +4,12 @@ using System;
 using ReplicationAbstractions;
 
 //Huh why isn't this an IObserver?
-//Because IObserver is named poorly!
-//
+//Because it doesn't need the whole generic "Subscribe"
+//function that IObserver has for the GenObserver function.
 public class LootSlotObserver : PickableArea, IAcceptsDrop
 {
     public LootSlot Slot;
-    public DefaultLootPV observer = null;
+    public DefaultLootPV OccupantObserver = null;
 
     
     public void Subscribe(LootSlot slot)
@@ -23,48 +23,67 @@ public class LootSlotObserver : PickableArea, IAcceptsDrop
             OnOccupantSet(Slot.Occupant);
         }
         
-        slot.Connect(nameof(LootSlot.TransformSet), this, nameof(SetGTransform));
+        slot.Connect(nameof(LootSlot.TransformSet), this, nameof(SetLTransform));
         //Default position is where it is in this scene.
         //Otherwise, configure ourselves based on the Slot.
         if(Slot.Occupant is null)
             Slot.Transform = Transform;
         else
-            SetGTransform(Slot.Transform);
+            SetLTransform(Slot.Transform);
     }
 
     public void OnOccupantSet(Node n)
     {
         GD.Print("setting occupant: ", n?.Name);
-        (observer as Node)?.QueueFree();
-
+        (OccupantObserver as Node)?.QueueFree();
+        OccupantObserver = null;
+        
         if(n != null)
         {
-            observer = (DefaultLootPV) EasyInstancer.GenObserver(n, ((IHasLootPV)n).ObserverPathLootPV);
-            AddChild( (Node) observer);
-            RecomputeObserverPos();
+            OccupantObserver = (DefaultLootPV) EasyInstancer.GenObserver(n, ((IHasLootPV)n).ObserverPathLootPV);
+            AddChild( (Node) OccupantObserver);
+            OccupantObserver.parent = this;
+            OccupantObserver.RecomputePos(Translation);
         }
     }
-    public void Drop(DefaultLootPV item)
-    {
-        GD.Print("LootSlotObserver drop");
-    }
 
-    public void SetLtransform(Transform localTarget)
+    public void SetLTransform(Transform localTarget)
     {
         Transform = localTarget;
-        RecomputeObserverPos();
+        OccupantObserver?.RecomputePos(Translation);
     }
 
     //Makes sure that the observer is placed the appropriate distance from the handle.
     public override void SetGTransform(Transform globalTarget)
     {
         GlobalTransform = globalTarget;
-        RecomputeObserverPos();
+        OccupantObserver?.RecomputePos(Translation);
     }
-    private void RecomputeObserverPos()
+
+    //Accepts null item.
+    //Because that's how Dropping removes things from other spots.
+    public bool Drop(DefaultLootPV item)
     {
-        if(!(observer is null))
-            observer.Translation = Translation.Normalized() * observer.Radius;
+        GD.Print(Slot.Occupant);
+        //Drop function should have integral validation code.
+        //Don't accept drops that are obviously not possible.
+        if(!(Slot.Occupant is null || item is null))
+        {
+            GD.Print("drop failed due to occupant not null");
+            return false;
+        }
+
+        Slot.Occupant = item.provider;            
+        item.parent.ClearOccupant();
+        item.QueueFree();
+
+        GD.Print("LootSlotObserver dropped successfully");
+        return true;
+    }
+
+    public void ClearOccupant()
+    {
+        Slot.Occupant = null;
     }
 
 }

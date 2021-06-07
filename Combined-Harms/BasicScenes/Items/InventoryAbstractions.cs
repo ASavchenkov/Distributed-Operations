@@ -66,5 +66,5 @@ public abstract class PickableArea : Area
 
 public interface IAcceptsDrop
 {
-    void Drop( DefaultLootPV item);
+    bool Drop( DefaultLootPV item);
 }
