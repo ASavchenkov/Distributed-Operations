@@ -31,6 +31,7 @@
     <Compile Include="BasicScenes\Items\InventoryAbstractions.cs" />
     <Compile Include="BasicScenes\Items\InventoryMenu.cs" />
     <Compile Include="BasicScenes\Items\LootSlotObserver.cs" />
+    <Compile Include="BasicScenes\Items\RootHandle.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterLootPV.cs" />
     <Compile Include="GameManagement\GameManager.cs" />
     <Compile Include="GameManagement\NOKManager.cs" />

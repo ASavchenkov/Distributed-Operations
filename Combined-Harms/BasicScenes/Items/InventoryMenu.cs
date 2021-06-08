@@ -13,8 +13,8 @@ public class InventoryMenu : Spatial
     Spatial rootObserver;
     Camera cam;
     RayCast mouseRay;
-    Spatial rootHandle;
-    Spatial RayEndpoint;
+    RootHandle rootHandle;
+    public Spatial RayEndpoint;
 
     //Need to keep track of this for when we leave the mouseover.
     PickableArea currentMouseOver = null;
@@ -36,7 +36,7 @@ public class InventoryMenu : Spatial
         //So we do it here instead of _Ready()
         mouseRay = GetNode<RayCast>("MouseRay");
         RayEndpoint = mouseRay.GetNode<Spatial>("Endpoint");
-        rootHandle = GetNode<Spatial>("RootHandle");
+        rootHandle = GetNode<RootHandle>("RootHandle");
         rootHandle.AddChild(rootObserver);
     }
 
@@ -112,6 +112,11 @@ public class InventoryMenu : Spatial
             clickOnNode = null;
             GetTree().SetInputAsHandled();
         }
+        else if (inputEvent.IsActionPressed("ItemSecondary"))
+            rootHandle.Attach(this);
+        else if (inputEvent.IsActionReleased("ItemSecondary"))
+            rootHandle.Detach();
+        
     }
 
     private void PollRayCast()

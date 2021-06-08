@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://BasicScenes/Items/InventoryMenu.cs" type="Script" id=1]
+[ext_resource path="res://BasicScenes/Items/RootHandle.cs" type="Script" id=2]
 
 [node name="InventoryMenu" type="Spatial"]
 script = ExtResource( 1 )
@@ -15,3 +16,4 @@ collide_with_areas = true
 
 [node name="RootHandle" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+script = ExtResource( 2 )
