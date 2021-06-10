@@ -62,21 +62,22 @@ namespace ReplicationAbstractions
     
     public static class ReplicationExtensions
     {
-        public static void ReplicableReady( this IReplicable n)
+        public static void ReplicableReady( this IReplicable n, bool replicate = true)
         {
         
             n.rMember = new ReplicationMember(n);
-            Networking.Instance.RTCMP.Connect("peer_connected", n.rMember,nameof(ReplicationMember.OnPeerConnected));
             
-            if( n.IsNetworkMaster())
-            {
-                n.rMember.GenName();
-                ReplicationServer.Instance.Replicate(n);
-            }
-            else
-            {
-                NOKManager.Instance.Subscribe(n);
-            }
+            if( n.IsNetworkMaster()) n.rMember.GenName();
+            else NOKManager.Instance.Subscribe(n);
+
+            if(replicate) n.Replicate();
+        }
+
+        //Sometimes you want to replicate separately from startup
+        public static void Replicate( this IReplicable n)
+        {
+            Networking.Instance.RTCMP.Connect("peer_connected", n.rMember,nameof(ReplicationMember.OnPeerConnected));
+            ReplicationServer.Instance.Replicate(n);
         }
     }
 

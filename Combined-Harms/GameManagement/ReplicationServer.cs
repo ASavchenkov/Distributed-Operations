@@ -41,6 +41,7 @@ public class ReplicationServer : Node
     {
         GD.Print("Replicating: ", parent, "; ", name, "; ", scenePath);
         GD.Print("Peer ID: ", GetTree().GetRpcSenderId());
+        
         var parentNode = GetNode(parent);
         if(parentNode is null)
         {
