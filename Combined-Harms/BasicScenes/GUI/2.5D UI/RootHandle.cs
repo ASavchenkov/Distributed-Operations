@@ -1,23 +1,23 @@
 using Godot;
 using System;
 
-public class RootHandle : Spatial
+public class WorkspaceHandle : Spatial
 {
-    InventoryMenu attachedMenu;
+    TwoFiveDMenu attachedMenu;
     Transform offset;
 
-    public void Attach(InventoryMenu menu)
+    public void Attach(TwoFiveDMenu menu)
     {
         offset = Transform;
         attachedMenu = menu;
-        attachedMenu.Connect(nameof(InventoryMenu.RayUpdated), this, nameof(UpdateGTransform));
+        attachedMenu.Connect(nameof(TwoFiveDMenu.RayUpdated), this, nameof(UpdateGTransform));
         
         offset = attachedMenu.RayEndpoint.GlobalTransform.Inverse() * GlobalTransform;
     }
 
     public void Detach()
     {
-        attachedMenu.Disconnect(nameof(InventoryMenu.RayUpdated), this, nameof(UpdateGTransform));
+        attachedMenu.Disconnect(nameof(TwoFiveDMenu.RayUpdated), this, nameof(UpdateGTransform));
     }
 
     //We're not actually updating our transform to this.

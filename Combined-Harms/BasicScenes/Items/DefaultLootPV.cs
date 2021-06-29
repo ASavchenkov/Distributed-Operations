@@ -3,10 +3,10 @@ using System;
 
 using ReplicationAbstractions;
 
-public class DefaultLootPV : PickableArea, IObserver
+public class DefaultLootPV : Pickable, IObserver
 {
 
-    public virtual Node provider {get; protected set;}
+    public virtual ILootItem provider {get; protected set;}
     public LootSlotObserver parent;
     
     [Signal]
@@ -24,7 +24,7 @@ public class DefaultLootPV : PickableArea, IObserver
     {
         //in our case the provider is always a node
         //(until future refactor)
-        provider = (Node) _provider;
+        provider = (ILootItem) _provider;
     }
 
     public virtual void FullClick()
@@ -36,8 +36,9 @@ public class DefaultLootPV : PickableArea, IObserver
         GlobalTransform = globalTarget;
     }
 
-    public override void Release(InventoryMenu menu)
+    public override void Release(TwoFiveDMenu menu)
     {
         base.Release(menu);
     }
+
 }

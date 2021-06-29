@@ -6,35 +6,35 @@ using ReplicationAbstractions;
 //Huh why isn't this an IObserver?
 //Because it doesn't need the whole generic "Subscribe"
 //function that IObserver has for the GenObserver function.
-public class LootSlotObserver : PickableArea, IAcceptsDrop
+public class LootSlotObserver : Pickable, IAcceptsDrop
 {
-    public LootSlot Slot;
+    public LootSlot provider;
     public DefaultLootPV OccupantObserver = null;
 
     
     public void Subscribe(LootSlot slot)
     {
-        Slot = slot;
+        provider = slot;
         slot.Connect(nameof(LootSlot.OccupantSet), this, nameof(OnOccupantSet));
         
-        if(!(Slot.Occupant is null))
+        if(!(provider.Occupant is null))
         {
             GD.Print("occupant not null");
-            OnOccupantSet(Slot.Occupant);
+            OnOccupantSet((Node) provider.Occupant);
         }
         
         slot.Connect(nameof(LootSlot.TransformSet), this, nameof(SetLTransform));
         //Default position is where it is in this scene.
         //Otherwise, configure ourselves based on the Slot.
-        if(Slot.Occupant is null)
-            Slot.Transform = Transform;
+        if(provider.Occupant is null)
+            provider.Transform = Transform;
         else
-            SetLTransform(Slot.Transform);
+            SetLTransform(provider.Transform);
     }
 
     public void OnOccupantSet(Node n)
     {
-        GD.Print("setting occupant: ", n?.Name);
+        GD.Print(Name, "  is setting occupant: ", n?.Name);
         (OccupantObserver as Node)?.QueueFree();
         OccupantObserver = null;
 
@@ -66,24 +66,10 @@ public class LootSlotObserver : PickableArea, IAcceptsDrop
             OccupantObserver.Translation = Translation.Normalized() * OccupantObserver.Radius;
     }
 
-    //accepts null item
-    //Because that's how Dropping removes things from other spots.
-    public bool Drop(DefaultLootPV item)
+    //Purely a way for InventoryMenu to interact with provider drop function
+    public void Drop(DefaultLootPV item)
     {
-        GD.Print(Slot.Occupant);
-        //Drop function should have integral validation code.
-        //Don't accept drops that are obviously not possible.
-        if(!(Slot.Occupant is null || item is null))
-        {
-            GD.Print("cannot drop non-null item into occupied slot");
-            return false;
-        }
-
-        Slot.Occupant = item?.provider;
-        item?.parent?.Drop(null);
-
-        GD.Print("LootSlotObserver dropped successfully");
-        return true;
+        provider.Drop(item.provider);
     }
 }
 

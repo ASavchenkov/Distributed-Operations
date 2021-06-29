@@ -21,7 +21,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
     
     private RifleFPV ItemInHands = null;
 
-    private InventoryMenu InvMenu;
+    private TwoFiveDMenu InvMenu;
     
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -30,7 +30,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
 
-        InvMenu = InventoryMenu.Factory.Instance();
+        InvMenu = TwoFiveDMenu.Factory.Instance();
         InvMenu.Subscribe(provider);
         
         FEET = (Area) GetNode("FEET");
@@ -42,7 +42,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
     public void Subscribe(object _provider)
     {
         provider = (PlayerCharacterProvider) _provider;
-        provider.HandItem.Connect( nameof(LootSlot.OccupantSet), this, nameof(OnHandItemSet));
+        provider.HandSlot.Connect( nameof(LootSlot.OccupantSet), this, nameof(OnHandItemSet));
         this.DefaultSubscribe(provider);
     }
 

@@ -7,7 +7,7 @@ public class PlayerCharacterLootPV : DefaultLootPV
 {
     
     private PlayerCharacterProvider _provider;
-    public override Node provider
+    public override ILootItem provider
     {
         get => _provider;
         protected set {_provider = (PlayerCharacterProvider) value;}
@@ -15,9 +15,9 @@ public class PlayerCharacterLootPV : DefaultLootPV
 
     public override void Subscribe(object p)
     {
-        provider = (Node) p;
-        ((LootSlotObserver) GetNode("ChestSlot")).Subscribe(_provider.ChestItem);
-        ((LootSlotObserver) GetNode("HandSlot")).Subscribe(_provider.HandItem);
+        provider = (ILootItem) p;
+        ((LootSlotObserver) GetNode("ChestSlot")).Subscribe(_provider.ChestSlot);
+        ((LootSlotObserver) GetNode("HandSlot")).Subscribe(_provider.HandSlot);
     }
 
 }

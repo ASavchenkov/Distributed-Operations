@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 using ReplicationAbstractions;
-public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IHasLootPV
+public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, ILootItem
 {
 
     public ReplicationMember rMember {get; set;}
@@ -13,6 +13,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IHas
     
     public string ScenePath {get => Factory.ScenePath;}
 
+    public LootSlot parent {get;set;} = null;
 
     [Export]
     public string ObserverPathFPV { get; set;}
@@ -43,8 +44,8 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IHas
     [Export]
     public float Armor = 50;
 
-    public LootSlot ChestItem = new LootSlot();
-    public LootSlot HandItem = new LootSlot();
+    public LootSlot ChestSlot;
+    public LootSlot HandSlot;
 
     //Needed to put stuff back where it belongs later.
     //specific to PlayerCharacterProvider BC humanoids lol.
@@ -55,12 +56,16 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IHas
         this.ReplicableReady();
         var MapNode = GetNode("/root/GameRoot/Map");
         
+        ChestSlot = GetNode<LootSlot>("ChestSlot");
+        HandSlot = GetNode<LootSlot>("ChestSlot");
+
+
         Node observer = EasyInstancer.GenObserver(this, IsNetworkMaster() ? ObserverPathFPV : ObserverPath3PV);
         MapNode.AddChild(observer);
-
+        
         var rifle = EasyInstancer.Instance<RifleProvider>("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn");
         GetNode("/root/GameRoot/Loot").AddChild(rifle);
-        SetHandItem(rifle, ChestItem);
+        SetHandItem((ILootItem) rifle, ChestSlot);
     }
 
     public void OnNOKTransfer(int uid)
@@ -68,18 +73,28 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IHas
         QueueFree();
     }
 
-    public void SetHandItem(Node item, LootSlot home)
+    public void SetHandItem(ILootItem item, LootSlot home)
     {
         //I wish this was simpler but it isn't.
         //Just swapping items around.
         //This might actually have to happen slower for gameplay reasons.
         //(so it'l be even more complicated.)
+
+        
         if(HandItemHome != null)
-            HandItemHome.Occupant = HandItem.Occupant;
-        HandItem.Occupant = item;
+            HandItemHome.Occupant = HandSlot.Occupant;
+        HandSlot.Occupant = item;
         if(home != null)
             HandItemHome = home;
         HandItemHome.Occupant = null;
+    }
+
+    //stateUpdate will be used once it has weight information
+    public bool Validate(ILootItem occupant, object stateUpdate)
+    {
+        if(occupant == this)
+            return false;
+        return true;
     }
 
     [PuppetSync]
