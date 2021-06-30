@@ -1,10 +1,10 @@
 using Godot;
 using System;
-
+using System.Collections.Generic;
 
 //Doesn't need observer pattern
 //since only one spectator exists.
-public class Spectator : Spatial
+public class Spectator : Spatial, PriorityHolder
 {
     public Spatial LookYaw;
     public Spatial LookPitch;
@@ -12,6 +12,9 @@ public class Spectator : Spatial
     
     private bool inputEnabled = true;
     
+    public List<string> Claims {get; set;}
+        = new List<string>(new string[] {"Movement"});
+
     [Export]
     float mouseSensitivity = 100;
     [Export]
@@ -19,12 +22,14 @@ public class Spectator : Spatial
     [Export]
     public float maxSpeed {get; private set;} = 10;
     
+    
 
     public override void _Ready()
     {
         LookYaw = (Spatial) GetNode("LookYaw");
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
+        InputPriorityServer.Subscribe("Character",this);
 
     }
 

@@ -25,6 +25,7 @@ NOKManager="*res://GameManagement/NOKManager.tscn"
 UserObserver_1="*res://GameManagement/UserObserver.tscn"
 GameManager="*res://GameManagement/GameManager.cs"
 ReplicationServer="*res://GameManagement/ReplicationServer.cs"
+InputPriorityServer="*res://BasicScenes/GUI/2.5D UI/InputPriorityServer.tscn"
 
 [gdnative]
 
