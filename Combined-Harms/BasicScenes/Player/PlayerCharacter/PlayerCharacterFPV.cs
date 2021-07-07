@@ -31,7 +31,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
         camera = (Camera) LookPitch.GetNode("Camera");
 
         InvMenu = TwoFiveDMenu.Factory.Instance();
-        InvMenu.Subscribe(provider);
+        
         
         FEET = (Area) GetNode("FEET");
         FEET.Connect("body_entered",this,"GroundEncountered");

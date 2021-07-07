@@ -3,7 +3,7 @@ using System;
 
 using ReplicationAbstractions;
 
-public class DefaultLootPV : Pickable, IObserver
+public class DefaultLootPV : IPickable, IObserver
 {
 
     public virtual ILootItem provider {get; protected set;}

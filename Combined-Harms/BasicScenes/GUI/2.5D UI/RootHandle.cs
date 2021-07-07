@@ -10,14 +10,14 @@ public class WorkspaceHandle : Spatial
     {
         offset = Transform;
         attachedMenu = menu;
-        attachedMenu.Connect(nameof(TwoFiveDMenu.RayUpdated), this, nameof(UpdateGTransform));
+        attachedMenu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(UpdateGTransform));
         
         offset = attachedMenu.RayEndpoint.GlobalTransform.Inverse() * GlobalTransform;
     }
 
     public void Detach()
     {
-        attachedMenu.Disconnect(nameof(TwoFiveDMenu.RayUpdated), this, nameof(UpdateGTransform));
+        attachedMenu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(UpdateGTransform));
     }
 
     //We're not actually updating our transform to this.

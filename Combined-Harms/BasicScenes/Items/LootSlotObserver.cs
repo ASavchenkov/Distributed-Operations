@@ -6,7 +6,7 @@ using ReplicationAbstractions;
 //Huh why isn't this an IObserver?
 //Because it doesn't need the whole generic "Subscribe"
 //function that IObserver has for the GenObserver function.
-public class LootSlotObserver : Pickable, IAcceptsDrop
+public class LootSlotObserver : IPickable, IAcceptsDrop
 {
     public LootSlot provider;
     public DefaultLootPV OccupantObserver = null;

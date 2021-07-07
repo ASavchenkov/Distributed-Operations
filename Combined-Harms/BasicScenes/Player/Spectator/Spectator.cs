@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 //Doesn't need observer pattern
 //since only one spectator exists.
-public class Spectator : Spatial, PriorityHolder
+public class Spectator : Spatial, IPriorityHolder
 {
     public Spatial LookYaw;
     public Spatial LookPitch;
@@ -59,18 +59,22 @@ public class Spectator : Spatial, PriorityHolder
         Vector3 desiredMoveZ = new Vector3();
         //Add all the WASD controls to get a vector.
         
-        if(Input.IsActionPressed("MoveForward"))
-            desiredMoveXY += Vector3.Forward;
-        if(Input.IsActionPressed("MoveLeft"))
-            desiredMoveXY += Vector3.Left;
-        if(Input.IsActionPressed("MoveBack"))
-            desiredMoveXY += Vector3.Back;
-        if(Input.IsActionPressed("MoveRight"))
-            desiredMoveXY += Vector3.Right;
-        if(Input.IsActionPressed("MoveUp"))
-            desiredMoveZ += Vector3.Up;
-        if(Input.IsActionPressed("MoveDown"))
-            desiredMoveZ += Vector3.Down;
+        if(InputPriorityServer.CheckPriority(this, Claims[0]))
+        {
+            if(Input.IsActionPressed("MoveForward"))
+                desiredMoveXY += Vector3.Forward;
+            if(Input.IsActionPressed("MoveLeft"))
+                desiredMoveXY += Vector3.Left;
+            if(Input.IsActionPressed("MoveBack"))
+                desiredMoveXY += Vector3.Back;
+            if(Input.IsActionPressed("MoveRight"))
+                desiredMoveXY += Vector3.Right;
+            if(Input.IsActionPressed("MoveUp"))
+                desiredMoveZ += Vector3.Up;
+            if(Input.IsActionPressed("MoveDown"))
+                desiredMoveZ += Vector3.Down;
+        }
+
         //what's the behavior of Normalized() when desiredMove is zero?
         //I guess it's still zero?
         var desiredMove = (desiredMoveXY + desiredMoveZ).Normalized()*maxSpeed;
