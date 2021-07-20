@@ -1,10 +1,20 @@
 using Godot;
 using System;
 
-public class WorkspaceHandle : Spatial
+public class LootArea : Area, IPickable
 {
     TwoFiveDMenu attachedMenu;
     Transform offset;
+
+    public void MouseOn(TwoFiveDMenu _menu)
+    {
+
+    }
+
+    public void MouseOff(TwoFiveDMenu _menu)
+    {
+        
+    }
 
     public void Attach(TwoFiveDMenu menu)
     {

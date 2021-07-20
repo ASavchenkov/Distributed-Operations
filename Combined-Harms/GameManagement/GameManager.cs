@@ -16,7 +16,7 @@ public class GameManager : Node
         LocalUser = (UserObserver) GetNode("/root/UserObserver_1");
         //We've essentially connected to our own session when we start the application
         GetNode("/root").Connect("ready", this, nameof(OnConnectedToSession),
-            new Godot.Collections.Array(new object[] {-1}));
+            new Godot.Collections.Array{-1});
         Networking.Instance.Connect(nameof(Networking.ConnectedToSession), this, nameof(OnConnectedToSession));
 
     }

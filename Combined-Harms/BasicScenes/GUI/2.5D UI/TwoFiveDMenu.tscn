@@ -6,6 +6,6 @@
 [node name="TwoFiveDMenu" type="RayCast"]
 script = ExtResource( 1 )
 
-[node name="RootHandle" type="Spatial" parent="."]
+[node name="LootRootHandle" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 script = ExtResource( 2 )

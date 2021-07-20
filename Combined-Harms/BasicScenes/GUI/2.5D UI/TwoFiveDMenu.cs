@@ -16,7 +16,6 @@ public class TwoFiveDMenu : RayCast
         = new NodeFactory<TwoFiveDMenu>("res://BasicScenes/Items/TwoFiveDMenu.tscn");
     
     Camera cam;
-    Spatial rootHandle;
 
     //Need to keep track of this for when we leave the mouseover.
     public IPickable currentMouseOver = null;
@@ -29,7 +28,6 @@ public class TwoFiveDMenu : RayCast
     public override void _Ready()
     {
         cam = (Camera) GetParent();
-        rootHandle = GetNode<Spatial>("RootHandle");
     }
 
     //Primarily for stuff that might move around
@@ -62,8 +60,8 @@ public class TwoFiveDMenu : RayCast
         }
 
         //Call mouseOn/mouseOff to any changed IPickables.
+        //Honestly this is overkill considering you regularly only have 2 lol.
         var lastMouseOvers = (List<Node>) InputPriorityServer.layerNameMap[InputPriorityServer.mouseOver];
-        mouseOvers.Reverse(); //So the "blocking" one is first in line.
         
         foreach(Node n in mouseOvers)
         {
@@ -75,7 +73,6 @@ public class TwoFiveDMenu : RayCast
             if(!mouseOvers.Contains(n))
                 ((IPickable)n).MouseOff(this);
         }
-        InputPriorityServer.SetLayer(InputPriorityServer.mouseOver, mouseOvers);
         
         //Clear Exceptions so we start next frame on a clean slate.
         ClearExceptions();
@@ -96,7 +93,7 @@ public class TwoFiveDMenu : RayCast
 
             GetTree().SetInputAsHandled();
         }
-        // else if (inputEvent.IsActionReleased("ItemPrimary") && !(clickOnNode is null))
+        // else if (inputEvent.IsActionReleased("MousePrimary") && !(clickOnNode is null))
         // {
             
         //     var distance = (mouseRay.CastTo/mouseRay.CastTo.z).DistanceTo(clickOnPos);
@@ -127,9 +124,9 @@ public class TwoFiveDMenu : RayCast
         //     GetTree().SetInputAsHandled();
         // }
         //This stuff will need to be genericized.
-        // else if (inputEvent.IsActionPressed("ItemSecondary"))
+        // else if (inputEvent.IsActionPressed("MouseSecondary"))
         //     rootHandle.Attach(this);
-        // else if (inputEvent.IsActionReleased("ItemSecondary"))
+        // else if (inputEvent.IsActionReleased("MouseSecondary"))
         //     rootHandle.Detach();
         
     }
@@ -137,11 +134,13 @@ public class TwoFiveDMenu : RayCast
     public override void _EnterTree()
     {
         Input.SetMouseMode(Input.MouseMode.Visible);
+        InputPriorityServer.Subscribe(InputPriorityServer.menu, this);
     }
 
     public override void _ExitTree()
     {
         Input.SetMouseMode(Input.MouseMode.Captured);
+        InputPriorityServer.Unsubscribe(this);
     }
 
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 //Doesn't need observer pattern
 //since only one spectator exists.
-public class Spectator : Spatial, IPriorityHolder
+public class Spectator : Spatial, ITakesInput
 {
     public Spatial LookYaw;
     public Spatial LookPitch;
@@ -12,9 +12,7 @@ public class Spectator : Spatial, IPriorityHolder
     
     private bool inputEnabled = true;
     
-    public List<string> Claims {get; set;}
-        = new List<string>(new string[] {"Movement"});
-
+    public InputClaims Claims {get;set;} = new InputClaims();
     [Export]
     float mouseSensitivity = 100;
     [Export]
@@ -26,14 +24,15 @@ public class Spectator : Spatial, IPriorityHolder
 
     public override void _Ready()
     {
+        Claims.Claims.UnionWith( InputPriorityServer.Instance.movementActions);
         LookYaw = (Spatial) GetNode("LookYaw");
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
-        InputPriorityServer.Subscribe("Character",this);
+        InputPriorityServer.BaseRouter.Subscribe(this, InputPriorityServer.character);
 
     }
 
-    public override void _UnhandledInput(InputEvent @event)
+    public bool OnInput(InputEvent @event)
     {
 
         if(@event is InputEventMouseMotion mouseEvent && inputEnabled)
@@ -45,7 +44,9 @@ public class Spectator : Spatial, IPriorityHolder
                 LookPitch.RotationDegrees = new Vector3(maxPitch,0,0);
             else if (LookPitch.RotationDegrees.x < -maxPitch)
                 LookPitch.RotationDegrees = new Vector3(-maxPitch,0,0);
+            return true;
         }
+        return false;
     }
 
     public override void _PhysicsProcess(float delta)
@@ -59,21 +60,20 @@ public class Spectator : Spatial, IPriorityHolder
         Vector3 desiredMoveZ = new Vector3();
         //Add all the WASD controls to get a vector.
         
-        if(InputPriorityServer.CheckPriority(this, Claims[0]))
-        {
-            if(Input.IsActionPressed("MoveForward"))
-                desiredMoveXY += Vector3.Forward;
-            if(Input.IsActionPressed("MoveLeft"))
-                desiredMoveXY += Vector3.Left;
-            if(Input.IsActionPressed("MoveBack"))
-                desiredMoveXY += Vector3.Back;
-            if(Input.IsActionPressed("MoveRight"))
-                desiredMoveXY += Vector3.Right;
-            if(Input.IsActionPressed("MoveUp"))
-                desiredMoveZ += Vector3.Up;
-            if(Input.IsActionPressed("MoveDown"))
-                desiredMoveZ += Vector3.Down;
-        }
+        
+        if(Claims.IsActionPressed("MoveForward"))
+            desiredMoveXY += Vector3.Forward;
+        if(Claims.IsActionPressed("MoveLeft"))
+            desiredMoveXY += Vector3.Left;
+        if(Claims.IsActionPressed("MoveBack"))
+            desiredMoveXY += Vector3.Back;
+        if(Claims.IsActionPressed("MoveRight"))
+            desiredMoveXY += Vector3.Right;
+        if(Claims.IsActionPressed("MoveUp"))
+            desiredMoveZ += Vector3.Up;
+        if(Claims.IsActionPressed("MoveDown"))
+            desiredMoveZ += Vector3.Down;
+        
 
         //what's the behavior of Normalized() when desiredMove is zero?
         //I guess it's still zero?

@@ -6,19 +6,16 @@ public class DraggableArea : Area, IPickable
 {
 
     public bool Permeable {get;set;} = false;
-    ClickDragTracker M1 = new ClickDragTracker("ItemPrimary");
+    ClickDragTracker M1 = new ClickDragTracker("MousePrimary");
     
     public virtual void MouseOn(TwoFiveDMenu _menu)
     {
-        InputPriorityServer.Subscribe(InputPriorityServer.mouseOver,this);
         GD.Print(Name, ": Moused on");
     }
 
     //Allow the moused on thing to request that focus is kept.
     public virtual void MouseOff(TwoFiveDMenu _menu)
     {
-        
-        InputPriorityServer.Unsubscribe(this);
         GD.Print(Name, ": Moused off");
     }
 
@@ -79,7 +76,7 @@ public class ClickDragTracker : Node
             
             clickedPos = cursorPos;
         }
-        else if(inputEvent.IsActionReleased(actionName) && clickState != ClickState.MouseUp)
+        else if(inputEvent.IsActionReleased(actionName) && clickState != ClickState.Up)
         {
             if(clickState == ClickState.Down)
                 clickState = ClickState.Dragging;

@@ -72,15 +72,15 @@ public class RifleFPV : Spatial, IObserver
 
     public override void _UnhandledInput(InputEvent inputEvent)
     {
-        if(inputEvent.IsActionPressed("ItemPrimary"))
+        if(inputEvent.IsActionPressed("MousePrimary"))
         {
             Fire();
         }
-        else if(inputEvent.IsActionPressed("ItemSecondary"))
+        else if(inputEvent.IsActionPressed("MouseSecondary"))
         {
             SetOrigin(MainSight.RemoteEyeRelief);
         }
-        else if(inputEvent.IsActionReleased("ItemSecondary"))
+        else if(inputEvent.IsActionReleased("MouseSecondary"))
         {
             SetOrigin(HipFireTransform);
         }
