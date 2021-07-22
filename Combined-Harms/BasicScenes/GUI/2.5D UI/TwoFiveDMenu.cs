@@ -9,12 +9,14 @@ public interface IAcceptsDrop
     void Drop( DefaultLootPV item);
 }
 
-public class TwoFiveDMenu : RayCast
+public class TwoFiveDMenu : RayCast, ITakesInput
 {
 
     public static NodeFactory<TwoFiveDMenu> Factory
         = new NodeFactory<TwoFiveDMenu>("res://BasicScenes/Items/TwoFiveDMenu.tscn");
     
+    public InputClaims Claims {get;set;} = new InputClaims();
+
     Camera cam;
 
     //Need to keep track of this for when we leave the mouseover.
@@ -28,6 +30,8 @@ public class TwoFiveDMenu : RayCast
     public override void _Ready()
     {
         cam = (Camera) GetParent();
+        
+        Claims.Claims.UnionWith(InputPriorityServer.Instance.mouseButtons);
     }
 
     //Primarily for stuff that might move around
@@ -61,37 +65,35 @@ public class TwoFiveDMenu : RayCast
 
         //Call mouseOn/mouseOff to any changed IPickables.
         //Honestly this is overkill considering you regularly only have 2 lol.
-        var lastMouseOvers = (List<Node>) InputPriorityServer.layerNameMap[InputPriorityServer.mouseOver];
+        // var lastMouseOvers = (List<Node>) InputPriorityServer.layerNameMap[InputPriorityServer.mouseOver];
         
-        foreach(Node n in mouseOvers)
-        {
-            if(!lastMouseOvers.Contains(n))
-                ((IPickable)n).MouseOn(this);
-        }
-        foreach(Node n in lastMouseOvers)
-        {
-            if(!mouseOvers.Contains(n))
-                ((IPickable)n).MouseOff(this);
-        }
+        // foreach(Node n in mouseOvers)
+        // {
+        //     if(!lastMouseOvers.Contains(n))
+        //         ((IPickable)n).MouseOn(this);
+        // }
+        // foreach(Node n in lastMouseOvers)
+        // {
+        //     if(!mouseOvers.Contains(n))
+        //         ((IPickable)n).MouseOff(this);
+        // }
         
         //Clear Exceptions so we start next frame on a clean slate.
         ClearExceptions();
     }
 
-    public override void _UnhandledInput(InputEvent inputEvent)
+    public bool OnInput(InputEvent inputEvent)
     {
         
         var mouseMoveEvent = inputEvent as InputEventMouseMotion;
         if(!(mouseMoveEvent is null))
         {
-
-            var to = cam.ProjectLocalRayNormal(mouseMoveEvent.Position);
             
             //scale to z=1e6 so it's huge. Don't want to miss anything.
-            CastTo = to  * rootHandle.Translation.z / to.z * 1.0e6f;
+            var to = cam.ProjectLocalRayNormal(mouseMoveEvent.Position) * 1.0e6f;
+            
             EmitSignal(nameof(MouseUpdated), this);
-
-            GetTree().SetInputAsHandled();
+            return true;
         }
         // else if (inputEvent.IsActionReleased("MousePrimary") && !(clickOnNode is null))
         // {
@@ -128,19 +130,19 @@ public class TwoFiveDMenu : RayCast
         //     rootHandle.Attach(this);
         // else if (inputEvent.IsActionReleased("MouseSecondary"))
         //     rootHandle.Detach();
-        
+        return false;
     }
 
     public override void _EnterTree()
     {
         Input.SetMouseMode(Input.MouseMode.Visible);
-        InputPriorityServer.Subscribe(InputPriorityServer.menu, this);
+        InputPriorityServer.BaseRouter.Subscribe(this, InputPriorityServer.menu);
     }
 
     public override void _ExitTree()
     {
         Input.SetMouseMode(Input.MouseMode.Captured);
-        InputPriorityServer.Unsubscribe(this);
+        InputPriorityServer.BaseRouter.Unsubscribe(this, InputPriorityServer.menu);
     }
 
 }

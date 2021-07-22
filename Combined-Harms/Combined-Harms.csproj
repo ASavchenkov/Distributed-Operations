@@ -28,13 +28,14 @@
     <Compile Include="BasicScenes\Ballistics\Projectiles\Projectile3PV.cs" />
     <Compile Include="BasicScenes\Ballistics\Projectiles\ProjectileFPV.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\DraggableArea.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\InputAbstractions.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InputPriorityServer.cs" />
     <Compile Include="BasicScenes\Items\DefaultLootPV.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryAbstractions.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\TwoFiveDMenu.cs" />
     <Compile Include="BasicScenes\Items\LootSlot.cs" />
     <Compile Include="BasicScenes\Items\LootSlotObserver.cs" />
-    <Compile Include="BasicScenes\GUI\2.5D UI\RootHandle.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\LootArea.cs" />
     <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterLootPV.cs" />
     <Compile Include="GameManagement\GameManager.cs" />
     <Compile Include="GameManagement\NOKManager.cs" />

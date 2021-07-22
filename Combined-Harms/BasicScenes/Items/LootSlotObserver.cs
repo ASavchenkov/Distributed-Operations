@@ -6,7 +6,7 @@ using ReplicationAbstractions;
 //Huh why isn't this an IObserver?
 //Because it doesn't need the whole generic "Subscribe"
 //function that IObserver has for the GenObserver function.
-public class LootSlotObserver : IPickable, IAcceptsDrop
+public class LootSlotObserver : DraggableArea, IAcceptsDrop
 {
     public LootSlot provider;
     public DefaultLootPV OccupantObserver = null;
@@ -50,13 +50,6 @@ public class LootSlotObserver : IPickable, IAcceptsDrop
     public void SetLTransform(Transform localTarget)
     {
         Transform = localTarget;
-        RecomputeOccupantPos();
-    }
-
-    //Makes sure that the observer is placed the appropriate distance from the handle.
-    public override void SetGTransform(Transform globalTarget)
-    {
-        GlobalTransform = globalTarget;
         RecomputeOccupantPos();
     }
 

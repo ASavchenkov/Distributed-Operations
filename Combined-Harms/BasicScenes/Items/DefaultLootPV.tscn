@@ -1,7 +1,12 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://BasicScenes/Items/DefaultLootPV.cs" type="Script" id=1]
 
-[node name="Spatial" type="Spatial"]
+[sub_resource type="SphereShape" id=1]
+
+[node name="DefaultLootPV" type="Area"]
 script = ExtResource( 1 )
 Radius = 1.0
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 1 )
