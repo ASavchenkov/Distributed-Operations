@@ -13,7 +13,7 @@ public class TwoFiveDMenu : RayCast, ITakesInput
 {
 
     public static NodeFactory<TwoFiveDMenu> Factory
-        = new NodeFactory<TwoFiveDMenu>("res://BasicScenes/Items/TwoFiveDMenu.tscn");
+        = new NodeFactory<TwoFiveDMenu>("res://BasicScenes/GUI/2.5D UI/TwoFiveDMenu.tscn");
     
     public InputClaims Claims {get;set;} = new InputClaims();
 

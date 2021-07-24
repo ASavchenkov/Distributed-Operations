@@ -6,6 +6,8 @@ using System.Collections.Generic;
 //since only one spectator exists.
 public class Spectator : Spatial, ITakesInput
 {
+    private bool _disposed;
+
     public Spatial LookYaw;
     public Spatial LookPitch;
     public Camera camera;
@@ -24,10 +26,11 @@ public class Spectator : Spatial, ITakesInput
 
     public override void _Ready()
     {
-        Claims.Claims.UnionWith( InputPriorityServer.Instance.movementActions);
         LookYaw = (Spatial) GetNode("LookYaw");
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
+        
+        Claims.Claims.UnionWith( InputPriorityServer.Instance.movementActions);
         InputPriorityServer.BaseRouter.Subscribe(this, InputPriorityServer.character);
 
     }
@@ -83,5 +86,16 @@ public class Spectator : Spatial, ITakesInput
         Vector3 globalMove = LookPitch.GlobalTransform.basis.Xform(desiredMove);
         Translation += globalMove * delta;
         //We just apply movement manually since spectator cam doesn't have any interactions.
+    }
+
+    protected override void Dispose( bool disposing)
+    {
+        if(_disposed) return;
+        if(disposing)
+        {
+            InputPriorityServer.BaseRouter.Unsubscribe(this, InputPriorityServer.character);
+        }
+        _disposed = true;
+        base.Dispose(disposing);
     }
 }

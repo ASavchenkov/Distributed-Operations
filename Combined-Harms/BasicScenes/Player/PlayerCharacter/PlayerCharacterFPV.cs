@@ -4,8 +4,10 @@ using System;
 using ReplicationAbstractions;
 
 //Specifically for controlling first person movement.
-public class PlayerCharacterFPV : RigidBody, IObserver
+public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
 {
+    private bool _disposed = false;
+    public InputClaims Claims {get;set;} = new InputClaims();
 
     private PlayerCharacterProvider provider = null;
 
@@ -32,11 +34,12 @@ public class PlayerCharacterFPV : RigidBody, IObserver
 
         InvMenu = TwoFiveDMenu.Factory.Instance();
         
-        
         FEET = (Area) GetNode("FEET");
         FEET.Connect("body_entered",this,"GroundEncountered");
         FEET.Connect("body_exited", this, "GroundLeft");
 
+        Claims.Claims.UnionWith(InputPriorityServer.Instance.movementActions);
+        InputPriorityServer.BaseRouter.Subscribe(this, InputPriorityServer.character);
     }
 
     public void Subscribe(object _provider)
@@ -60,7 +63,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
         }
     }
 
-    public override void _UnhandledInput(InputEvent inputEvent)
+    public bool OnInput(InputEvent inputEvent)
     {
         if(inputEvent is InputEventMouseMotion mouseEvent)
         {
@@ -71,7 +74,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
                 LookPitch.RotationDegrees = new Vector3(provider.maxPitch,0,0);
             else if (LookPitch.RotationDegrees.x < -provider.maxPitch)
                 LookPitch.RotationDegrees = new Vector3(-provider.maxPitch,0,0);
-            GetTree().SetInputAsHandled();
+            return true;
         }
         else if (inputEvent is InputEventKey keyPress)
         {
@@ -79,7 +82,7 @@ public class PlayerCharacterFPV : RigidBody, IObserver
             {
                 GD.Print(groundCounter);
                 ApplyCentralImpulse(provider.jumpImpulse * Vector3.Up);    
-                GetTree().SetInputAsHandled();
+                return true;
             }
             else if(keyPress.IsActionPressed("Inventory"))
             {
@@ -87,9 +90,10 @@ public class PlayerCharacterFPV : RigidBody, IObserver
                     camera.RemoveChild(InvMenu);
                 else
                     camera.AddChild(InvMenu);
-                GetTree().SetInputAsHandled();
+                return true;
             }
         }
+        return false;
     }
 
     public override void _PhysicsProcess(float delta)
@@ -117,13 +121,13 @@ public class PlayerCharacterFPV : RigidBody, IObserver
 
         //Add all the WASD controls to get a vector.
         
-        if(Input.IsActionPressed("MoveForward"))
+        if(Claims.IsActionPressed("MoveForward"))
             desiredMove += Vector3.Forward;
-        if(Input.IsActionPressed("MoveLeft"))
+        if(Claims.IsActionPressed("MoveLeft"))
             desiredMove += Vector3.Left;
-        if(Input.IsActionPressed("MoveBack"))
+        if(Claims.IsActionPressed("MoveBack"))
             desiredMove += Vector3.Back;
-        if(Input.IsActionPressed("MoveRight"))
+        if(Claims.IsActionPressed("MoveRight"))
             desiredMove += Vector3.Right;
         
         //what's the behavior of Normalized() when desiredMove is zero?
@@ -144,5 +148,19 @@ public class PlayerCharacterFPV : RigidBody, IObserver
     {
         GD.Print("torso was hit");
     }
+
+    protected override void Dispose( bool disposing)
+    {
+        if(_disposed) return;
+        if(disposing)
+        {
+            InputPriorityServer.BaseRouter.Unsubscribe(this, InputPriorityServer.character);
+        }
+        _disposed = true;
+        base.Dispose(disposing);   
+    }
+
+
+
 
 }

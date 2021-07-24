@@ -59,7 +59,7 @@ public class NamedLayerRouter : Godot.Object, ITakesInput
 {
     
     Dictionary<string, ITakesInput> layerMap = new Dictionary<string, ITakesInput>();
-    public List<string> layerPriorities;
+    public List<string> layerPriorities = new List<string>();
 
     public InputClaims Claims {get;set;} = new InputClaims();
 

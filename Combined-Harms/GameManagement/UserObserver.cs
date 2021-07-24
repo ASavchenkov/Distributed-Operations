@@ -5,9 +5,11 @@ using ReplicationAbstractions;
 //Overall root node for the player,
 //whether they are in the menu, spectating, or currently playing.
 
-public class UserObserver : Node, IObserver
+public class UserObserver : Node, ITakesInput, IObserver
 {
     public UserProvider provider {get; private set;}
+
+    public InputClaims Claims {get;set;} = new InputClaims();
 
     private CanvasItem MainMenu;
     private CanvasItem currentMenuNode = null;
@@ -23,6 +25,10 @@ public class UserObserver : Node, IObserver
         Input.SetMouseMode(Input.MouseMode.Visible);
         MainMenu.GetNode("TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
         
+        //We are the last ones in line, since we only care about Esc key.
+        //Any other system that uses it gets it first.
+        Claims.Claims.Add("ui_cancel");
+        InputPriorityServer.BaseRouter.Subscribe(this, InputPriorityServer.gameManagement);
     }
 
     public void Subscribe(object _provider)
@@ -50,14 +56,20 @@ public class UserObserver : Node, IObserver
         if(provider.ThisTeam == UserProvider.Team.Unassigned) return;
 
         if(IsInstanceValid(CurrentView))
+        {
             CurrentView.QueueFree();
+            //Call to make sure that it unsubs from input stuff.
+            //(since there's no "OnQueueFree" signal or function.)
+            CurrentView.Dispose();
+        }
+        
         CurrentView = PlayerCharacterProvider.Factory.Instance();
         CurrentView.SetNetworkMaster(GetTree().GetNetworkUniqueId());
         GetNode("/root/GameRoot/PlayerCharacters").AddChild(CurrentView);
         provider.Rpc(nameof(UserProvider.SetCharacter),CurrentView.GetPath());
     }
 
-    public override void _UnhandledInput(InputEvent inputEvent)
+    public bool OnInput(InputEvent inputEvent)
     {
         
         if(inputEvent is InputEventKey keyEvent)
@@ -77,9 +89,10 @@ public class UserObserver : Node, IObserver
                     currentMenuNode = null;
                     Input.SetMouseMode(Input.MouseMode.Captured);
                 }
-                GetTree().SetInputAsHandled();
+                return true;
             }
         }
+        return false;
     }
 
 }

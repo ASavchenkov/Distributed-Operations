@@ -36,8 +36,6 @@ public class InputPriorityServer : Node
     {
         if(BaseRouter.OnInput(inputEvent))
             GetTree().SetInputAsHandled();
-        
-        GetTree().SetInputAsHandled();
     }
 }
 
