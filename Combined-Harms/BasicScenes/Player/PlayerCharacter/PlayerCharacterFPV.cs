@@ -39,7 +39,7 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
         FEET.Connect("body_exited", this, "GroundLeft");
 
         Claims.Claims.UnionWith(InputPriorityServer.Instance.movementActions);
-        InputPriorityServer.BaseRouter.Subscribe(this, InputPriorityServer.character);
+        InputPriorityServer.Base.Subscribe(this, BaseRouter.character);
     }
 
     public void Subscribe(object _provider)
@@ -154,7 +154,7 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
         if(_disposed) return;
         if(disposing)
         {
-            InputPriorityServer.BaseRouter.Unsubscribe(this, InputPriorityServer.character);
+            InputPriorityServer.Base.Unsubscribe(this, BaseRouter.character);
         }
         _disposed = true;
         base.Dispose(disposing);   

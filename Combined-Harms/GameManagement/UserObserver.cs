@@ -28,7 +28,7 @@ public class UserObserver : Node, ITakesInput, IObserver
         //We are the last ones in line, since we only care about Esc key.
         //Any other system that uses it gets it first.
         Claims.Claims.Add("ui_cancel");
-        InputPriorityServer.BaseRouter.Subscribe(this, InputPriorityServer.gameManagement);
+        InputPriorityServer.Base.Subscribe(this, BaseRouter.gameManagement);
     }
 
     public void Subscribe(object _provider)

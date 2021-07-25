@@ -31,7 +31,7 @@ public class Spectator : Spatial, ITakesInput
         camera = (Camera) LookPitch.GetNode("Camera");
         
         Claims.Claims.UnionWith( InputPriorityServer.Instance.movementActions);
-        InputPriorityServer.BaseRouter.Subscribe(this, InputPriorityServer.character);
+        InputPriorityServer.Base.Subscribe(this, BaseRouter.character);
 
     }
 
@@ -93,7 +93,7 @@ public class Spectator : Spatial, ITakesInput
         if(_disposed) return;
         if(disposing)
         {
-            InputPriorityServer.BaseRouter.Unsubscribe(this, InputPriorityServer.character);
+            InputPriorityServer.Base.Unsubscribe(this, BaseRouter.character);
         }
         _disposed = true;
         base.Dispose(disposing);

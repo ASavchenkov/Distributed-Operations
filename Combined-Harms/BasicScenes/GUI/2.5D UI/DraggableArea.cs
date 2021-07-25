@@ -13,7 +13,7 @@ public class DraggableArea : Area, IPickable
     {
         GD.Print(Name, ": Moused on");
         M1.menu = _menu;
-        InputPriorityServer.BaseRouter.Subscribe(M1, InputPriorityServer.mouseOver);
+        InputPriorityServer.Base.Subscribe(M1, BaseRouter.mouseOver);
         
     }
 
@@ -21,7 +21,7 @@ public class DraggableArea : Area, IPickable
     public virtual void MouseOff(TwoFiveDMenu _menu)
     {
         GD.Print(Name, ": Moused off");
-        InputPriorityServer.BaseRouter.Subscribe(M1, InputPriorityServer.mouseOver);
+        InputPriorityServer.Base.Subscribe(M1, BaseRouter.mouseOver);
     }
 }
 
@@ -81,7 +81,7 @@ public class ClickDragTracker : Godot.Object, ITakesInput
             //started click or click and drag. Don't know which yeet.
             clickState = ClickState.Down;
             clickedPos = cursorPos;
-            InputPriorityServer.BaseRouter.Subscribe(this, InputPriorityServer.dragging);
+            InputPriorityServer.Base.Subscribe(this, BaseRouter.dragging);
             return true;
         }
         else if(inputEvent.IsActionReleased(actionName))
@@ -92,7 +92,7 @@ public class ClickDragTracker : Godot.Object, ITakesInput
             else //end of drag. Dropping.
                 EmitSignal(nameof(Drop));
 
-            InputPriorityServer.BaseRouter.Unsubscribe(this, InputPriorityServer.dragging);
+            InputPriorityServer.Base.Unsubscribe(this, BaseRouter.dragging);
             menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(UpdateCursor));
             clickState = ClickState.Up;
             return true;

@@ -34,10 +34,9 @@ public class TwoFiveDMenu : RayCast, ITakesInput
         Claims.Claims.UnionWith(InputPriorityServer.Instance.mouseButtons);
     }
 
-    //Primarily for stuff that might move around
-    //even if the mouse isn't moving.
+    //Primarily if stuff moves around
+    //even though the mouse isn't moving.
     //(such as pickable Areas or the camera itself.)
-    //Also populates the list of intersected stuff.
     public override void _PhysicsProcess(float delta)
     {
         List<Node> mouseOvers = new List<Node>(); 
@@ -136,13 +135,13 @@ public class TwoFiveDMenu : RayCast, ITakesInput
     public override void _EnterTree()
     {
         Input.SetMouseMode(Input.MouseMode.Visible);
-        InputPriorityServer.BaseRouter.Subscribe(this, InputPriorityServer.menu);
+        InputPriorityServer.Base.Subscribe(this, BaseRouter.menu);
     }
 
     public override void _ExitTree()
     {
         Input.SetMouseMode(Input.MouseMode.Captured);
-        InputPriorityServer.BaseRouter.Unsubscribe(this, InputPriorityServer.menu);
+        InputPriorityServer.Base.Unsubscribe(this, BaseRouter.menu);
     }
 
 }

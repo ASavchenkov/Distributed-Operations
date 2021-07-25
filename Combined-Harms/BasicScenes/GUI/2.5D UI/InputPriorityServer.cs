@@ -13,29 +13,34 @@ public class InputPriorityServer : Node
 
     public static InputPriorityServer Instance;
 
+    public readonly string[] movementActions = {"MoveForward","MoveLeft", "MoveBack", "MoveRight","MoveUp","MoveDown"};
+    public readonly string[] mouseButtons = {"MousePrimary", "MouseSecondary"};
+    public static BaseRouter Base = new BaseRouter();
+
+
+    public override void _Ready()
+    {
+        Instance = this;
+
+    }
+
+    public override void _UnhandledInput(InputEvent inputEvent)
+    {
+        if(Base.OnInput(inputEvent))
+            GetTree().SetInputAsHandled();
+    }
+}
+public class BaseRouter: NamedLayerRouter
+{
     public const string gameManagement = "gameManagement";
     public const string character = "character";
     public const string menu = "menu";
     public const string mouseOver = "mouseOver";
     public const string selected = "Selected";
     public const string dragging = "Dragging";
-
-    public readonly string[] movementActions = {"MoveForward","MoveLeft", "MoveBack", "MoveRight","MoveUp","MoveDown"};
-    public readonly string[] mouseButtons = {"MousePrimary", "MouseSecondary"};
-    public static NamedLayerRouter BaseRouter = new NamedLayerRouter();
-
-
-    public override void _Ready()
+    public BaseRouter()
     {
-        Instance = this;
-        BaseRouter.layerPriorities = new List<string> {dragging, selected, mouseOver, menu, character, gameManagement};
-
-    }
-
-    public override void _UnhandledInput(InputEvent inputEvent)
-    {
-        if(BaseRouter.OnInput(inputEvent))
-            GetTree().SetInputAsHandled();
+        layerPriorities = new List<string> {dragging, selected, mouseOver, menu, character, gameManagement};
     }
 }
 
