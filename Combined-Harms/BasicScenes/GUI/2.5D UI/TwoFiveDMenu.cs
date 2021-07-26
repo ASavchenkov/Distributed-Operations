@@ -20,8 +20,8 @@ public class TwoFiveDMenu : RayCast, ITakesInput
     Camera cam;
 
     //Need to keep track of this for when we leave the mouseover.
-    public IPickable currentMouseOver = null;
-    
+    List<Node> lastMouseOvers = new List<Node>();
+
     const int pickingLimit = 10;
     
     [Signal]
@@ -31,6 +31,9 @@ public class TwoFiveDMenu : RayCast, ITakesInput
     {
         cam = (Camera) GetParent();
         
+        //Technically we also use mouse motion,
+        //but that isn't accessible through the Input singleton
+        //So we don't claim it doesn't really exist.
         Claims.Claims.UnionWith(InputPriorityServer.Instance.mouseButtons);
     }
 
@@ -64,20 +67,20 @@ public class TwoFiveDMenu : RayCast, ITakesInput
 
         //Call mouseOn/mouseOff to any changed IPickables.
         //Honestly this is overkill considering you regularly only have 2 lol.
-        // var lastMouseOvers = (List<Node>) InputPriorityServer.layerNameMap[InputPriorityServer.mouseOver];
-        
-        // foreach(Node n in mouseOvers)
-        // {
-        //     if(!lastMouseOvers.Contains(n))
-        //         ((IPickable)n).MouseOn(this);
-        // }
-        // foreach(Node n in lastMouseOvers)
-        // {
-        //     if(!mouseOvers.Contains(n))
-        //         ((IPickable)n).MouseOff(this);
-        // }
+        GD.Print(mouseOvers.Count);
+        foreach(Node n in mouseOvers)
+        {
+            if(!lastMouseOvers.Contains(n))
+                ((IPickable)n).MouseOn(this);
+        }
+        foreach(Node n in lastMouseOvers)
+        {
+            if(!mouseOvers.Contains(n))
+                ((IPickable)n).MouseOff(this);
+        }
         
         //Clear Exceptions so we start next frame on a clean slate.
+        lastMouseOvers = mouseOvers;
         ClearExceptions();
     }
 
@@ -89,8 +92,7 @@ public class TwoFiveDMenu : RayCast, ITakesInput
         {
             
             //scale to z=1e6 so it's huge. Don't want to miss anything.
-            var to = cam.ProjectLocalRayNormal(mouseMoveEvent.Position) * 1.0e6f;
-            
+            CastTo = cam.ProjectLocalRayNormal(mouseMoveEvent.Position) * 1.0e3f;
             EmitSignal(nameof(MouseUpdated), this);
             return true;
         }

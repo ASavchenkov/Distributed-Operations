@@ -32,7 +32,7 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
 
-        InvMenu = TwoFiveDMenu.Factory.Instance();
+        InvMenu = EasyInstancer.Instance<TwoFiveDMenu>("res://BasicScenes/GUI/2.5D UI/LootMenu.tscn");
         
         FEET = (Area) GetNode("FEET");
         FEET.Connect("body_entered",this,"GroundEncountered");

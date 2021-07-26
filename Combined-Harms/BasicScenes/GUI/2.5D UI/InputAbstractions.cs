@@ -102,7 +102,7 @@ public class NamedLayerRouter : Godot.Object, ITakesInput
     }
     public void Unsubscribe(ITakesInput thing, string layer)
     {
-        if(layerMap[layer] == thing)
+        if(layerMap.ContainsKey(layer) && layerMap[layer] == thing)
         {
             layerMap.Remove(layer);
             thing.Claims.Disconnect(nameof(InputClaims.PostClaimUpdate), this, nameof(OnChildPostUpdate));

@@ -82,7 +82,7 @@ namespace ReplicationAbstractions
     }
 
     //Well golly this seems really vague!
-    //Just like void* structs.
+    //Just like void* structs!
     //Cast to correct type inside implementation.
     //You can take the programmer out of the c++
     //but you can't take the c++ out of the programmer.
@@ -90,6 +90,7 @@ namespace ReplicationAbstractions
     {
         void Subscribe(object _provider);
     }
+    
     public static class EasyInstancer
     {
         public static T Instance<T> (string scenePath) where T: Node
@@ -134,8 +135,6 @@ namespace ReplicationAbstractions
         }   
     }
 
-
-    //Actual observer implementation 
     public interface IHasFPV
     {
         [Export]

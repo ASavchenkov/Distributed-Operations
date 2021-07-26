@@ -9,11 +9,11 @@ public class LootArea : Area, IPickable
 
     public void MouseOn(TwoFiveDMenu _menu)
     {
-
+        GD.Print("LootArea MouseOn");
     }
 
     public void MouseOff(TwoFiveDMenu _menu)
     {
-        
+        GD.Print("LootArea MouseOff");
     }
 }
