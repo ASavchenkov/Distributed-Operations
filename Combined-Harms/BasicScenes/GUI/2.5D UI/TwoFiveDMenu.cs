@@ -24,6 +24,9 @@ public class TwoFiveDMenu : RayCast, ITakesInput
 
     const int pickingLimit = 10;
 
+    [Signal]
+    public delegate void MouseUpdated();
+
     public override void _Ready()
     {
         cam = (Camera) GetParent();
@@ -61,7 +64,6 @@ public class TwoFiveDMenu : RayCast, ITakesInput
         {
             if(!mouseOvers.Contains(n) && n is IPickable p)
                 p.MouseOn(this);
-            
         }
         foreach(Spatial n in mouseOvers)
         {
@@ -84,44 +86,10 @@ public class TwoFiveDMenu : RayCast, ITakesInput
         if(inputEvent is InputEventMouseMotion mouseMoveEvent)
         {
             //scale so it's huge. Don't want to miss anything.
-            CastTo = cam.ProjectLocalRayNormal(mouseMoveEvent.Position) * 1.0e3f;
+            CastTo = cam.ProjectLocalRayNormal(mouseMoveEvent.Position) * 1e3f;
+            EmitSignal(nameof(MouseUpdated));
             return true;
         }
-        // else if (inputEvent.IsActionReleased("MousePrimary") && !(clickOnNode is null))
-        // {
-            
-        //     var distance = (mouseRay.CastTo/mouseRay.CastTo.z).DistanceTo(clickOnPos);
-            
-        //     //All of this is just for ILootPV stuff, so we cast it beforehand.
-
-        //     var lootItem = clickOnNode as DefaultLootPV;
-
-        //     if(!(lootItem is null))
-        //     {// The thing being released is a DefaultLootItem
-        //      // It has special behavior.
-               
-        //         //it was a regular click.
-        //         //Might want to center UI on item when we do this
-        //         //Not necessary yet though.
-        //         lootItem.FullClick();
-                
-        //         // else
-        //         // {
-        //         //     if(currentMouseOver is IAcceptsDrop recipient)
-        //         //         recipient.Drop(lootItem);
-        //         //     lootItem.parent.RecomputeOccupantPos();
-        //         // }       
-        //     }
-        //     //Release regardless
-        //     clickOnNode.Release(this);
-        //     clickOnNode = null;
-        //     GetTree().SetInputAsHandled();
-        // }
-        //This stuff will need to be genericized.
-        // else if (inputEvent.IsActionPressed("MouseSecondary"))
-        //     rootHandle.Attach(this);
-        // else if (inputEvent.IsActionReleased("MouseSecondary"))
-        //     rootHandle.Detach();
         return false;
     }
 
