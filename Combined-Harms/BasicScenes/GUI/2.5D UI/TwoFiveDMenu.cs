@@ -19,13 +19,10 @@ public class TwoFiveDMenu : RayCast, ITakesInput
 
     Camera cam;
 
-    //Need to keep track of this for when we leave the mouseover.
-    List<Node> lastMouseOvers = new List<Node>();
+    public List<Spatial> mouseOvers {get; private set;} = new List<Spatial>();
+    public Dictionary<Spatial, Vector3> mouseIntersections {get; private set;} = new Dictionary<Spatial, Vector3>();
 
     const int pickingLimit = 10;
-    
-    [Signal]
-    public delegate void MouseUpdated(TwoFiveDMenu ray);
 
     public override void _Ready()
     {
@@ -42,58 +39,53 @@ public class TwoFiveDMenu : RayCast, ITakesInput
     //(such as pickable Areas or the camera itself.)
     public override void _PhysicsProcess(float delta)
     {
-        List<Node> mouseOvers = new List<Node>(); 
+        List<Spatial> newMouseOvers = new List<Spatial>(); 
 
         //Populate mouseOvers
         for(int i = 0; i< pickingLimit; i++)
         {
-            var collidedObject = GetCollider();
-            
+            //IDK how this could not be a spatial, since we're in 3D exclusively,
+            //but if it is then god help us all.
+            var collidedObject = GetCollider() as Spatial;
             if(collidedObject is null) break;
-            if(collidedObject is IPickable p)
-            {
-                mouseOvers.Add((Node) p);
-                if(!p.Permeable) break;
 
-                AddException(collidedObject);
-                ForceRaycastUpdate();
-            }
-            else    //should never be false (Only IPickable should be in picking layer)
-            {
-                GD.PrintErr("Non-IPickable node <", ((Node)collidedObject).Name, "> in picking layer");
-                break;
-            }
+            newMouseOvers.Add(collidedObject);
+            mouseIntersections[collidedObject] = GetCollisionPoint();
+            AddException(collidedObject);
+            ForceRaycastUpdate();
         }
 
         //Call mouseOn/mouseOff to any changed IPickables.
         //Honestly this is overkill considering you regularly only have 2 lol.
-        GD.Print(mouseOvers.Count);
-        foreach(Node n in mouseOvers)
+        GD.Print(newMouseOvers.Count);
+        foreach(Spatial n in newMouseOvers)
         {
-            if(!lastMouseOvers.Contains(n))
-                ((IPickable)n).MouseOn(this);
+            if(!mouseOvers.Contains(n) && n is IPickable p)
+                p.MouseOn(this);
+            
         }
-        foreach(Node n in lastMouseOvers)
+        foreach(Spatial n in mouseOvers)
         {
-            if(!mouseOvers.Contains(n))
-                ((IPickable)n).MouseOff(this);
+            if(!newMouseOvers.Contains(n))
+            {
+                mouseIntersections.Remove(n);
+                if(n is IPickable p)
+                    p.MouseOff();
+            }
         }
         
+        mouseOvers = newMouseOvers;
         //Clear Exceptions so we start next frame on a clean slate.
-        lastMouseOvers = mouseOvers;
         ClearExceptions();
     }
 
     public bool OnInput(InputEvent inputEvent)
     {
         
-        var mouseMoveEvent = inputEvent as InputEventMouseMotion;
-        if(!(mouseMoveEvent is null))
+        if(inputEvent is InputEventMouseMotion mouseMoveEvent)
         {
-            
-            //scale to z=1e6 so it's huge. Don't want to miss anything.
+            //scale so it's huge. Don't want to miss anything.
             CastTo = cam.ProjectLocalRayNormal(mouseMoveEvent.Position) * 1.0e3f;
-            EmitSignal(nameof(MouseUpdated), this);
             return true;
         }
         // else if (inputEvent.IsActionReleased("MousePrimary") && !(clickOnNode is null))

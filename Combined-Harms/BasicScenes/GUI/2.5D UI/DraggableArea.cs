@@ -12,7 +12,6 @@ public class DraggableArea : Area, IPickable
     public virtual void MouseOn(TwoFiveDMenu _menu)
     {
         GD.Print(Name, ": Moused on");
-        M1.menu = _menu;
         InputPriorityServer.Base.Subscribe(M1, BaseRouter.mouseOver);
         
     }
@@ -93,7 +92,6 @@ public class ClickDragTracker : Godot.Object, ITakesInput
                 EmitSignal(nameof(Drop));
 
             InputPriorityServer.Base.Unsubscribe(this, BaseRouter.dragging);
-            menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(UpdateCursor));
             clickState = ClickState.Up;
             return true;
         }

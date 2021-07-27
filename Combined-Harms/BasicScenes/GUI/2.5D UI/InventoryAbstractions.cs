@@ -11,9 +11,8 @@ public interface IPickable
     //Doesn't consume scroll inputs.
     bool Permeable {get;set;}
     void MouseOn(TwoFiveDMenu menu);
-    void MouseOff(TwoFiveDMenu menu);
+    void MouseOff();
 }
-
 
 public interface ILootItem : IHasLootPV
 {
