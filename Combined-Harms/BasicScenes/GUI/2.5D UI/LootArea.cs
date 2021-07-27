@@ -48,7 +48,7 @@ public class LootArea : Area, ITakesInput, IPickable
             trackMouse = true;
             return true;
         }
-        else if (inputEvent.IsActionReleased("MouseSecondary"))
+        else if (inputEvent.IsActionReleased("MouseSecondary") && trackMouse)
         {
             menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(OnMouseUpdate));
             trackMouse = false;
