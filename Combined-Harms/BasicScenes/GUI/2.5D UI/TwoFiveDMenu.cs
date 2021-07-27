@@ -57,7 +57,6 @@ public class TwoFiveDMenu : RayCast, ITakesInput
 
         //Call mouseOn/mouseOff to any changed IPickables.
         //Honestly this is overkill considering you regularly only have 2 lol.
-        GD.Print(newMouseOvers.Count);
         foreach(Spatial n in newMouseOvers)
         {
             if(!mouseOvers.Contains(n) && n is IPickable p)

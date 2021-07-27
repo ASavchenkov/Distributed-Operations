@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class LootArea : Area, ITakesInput, ITakesMouseRay, IPickable
+public class LootArea : Area, ITakesInput, IPickable
 {
     public InputClaims Claims {get;set;} = new InputClaims();
     
@@ -21,7 +21,7 @@ public class LootArea : Area, ITakesInput, ITakesMouseRay, IPickable
         GD.Print("LootArea MouseOn");
     }
 
-    public void MouseOff(TwoFiveDMenu _menu)
+    public void MouseOff()
     {
         GD.Print("LootArea MouseOff");
     }
@@ -33,8 +33,4 @@ public class LootArea : Area, ITakesInput, ITakesMouseRay, IPickable
         return false;
     }
 
-    public void CollideMouseRay(Vector3 collisionPoint)
-    {
-        
-    }
 }

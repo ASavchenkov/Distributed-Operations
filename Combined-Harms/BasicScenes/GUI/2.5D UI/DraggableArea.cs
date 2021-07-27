@@ -17,7 +17,7 @@ public class DraggableArea : Area, IPickable
     }
 
     //Allow the moused on thing to request that focus is kept.
-    public virtual void MouseOff(TwoFiveDMenu _menu)
+    public virtual void MouseOff()
     {
         GD.Print(Name, ": Moused off");
         InputPriorityServer.Base.Subscribe(M1, BaseRouter.mouseOver);
