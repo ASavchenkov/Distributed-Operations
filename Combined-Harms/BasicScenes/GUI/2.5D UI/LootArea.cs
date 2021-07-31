@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class LootArea : Area, ITakesInput, IPickable
+public class LootArea : Area, IPickable
 {
     public InputClaims Claims {get;set;} = new InputClaims();
     
@@ -44,7 +44,7 @@ public class LootArea : Area, ITakesInput, IPickable
         if(inputEvent.IsActionPressed("MouseSecondary"))
         {
             menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(OnMouseUpdate));
-            clickedOffset = ToLocal(menu.mouseIntersections[this]) - LootRoot.Translation;
+            clickedOffset = ToLocal(menu.intersectionPoints[this]) - LootRoot.Translation;
             trackMouse = true;
             return true;
         }
@@ -58,7 +58,7 @@ public class LootArea : Area, ITakesInput, IPickable
     }
     public void OnMouseUpdate()
     {
-        LootRoot.Translation = ToLocal(menu.mouseIntersections[this]) - clickedOffset;
+        LootRoot.Translation = ToLocal(menu.intersectionPoints[this]) - clickedOffset;
     }
 
 }

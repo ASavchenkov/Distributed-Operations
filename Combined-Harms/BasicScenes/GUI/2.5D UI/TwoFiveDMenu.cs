@@ -19,9 +19,11 @@ public class TwoFiveDMenu : RayCast, ITakesInput
 
     Camera cam;
 
-    public List<Spatial> mouseOvers {get; private set;} = new List<Spatial>();
-    public Dictionary<Spatial, Vector3> mouseIntersections {get; private set;} = new Dictionary<Spatial, Vector3>();
-
+    public List<Spatial> mouseIntersections {get; private set;} = new List<Spatial>();
+    public Dictionary<Spatial, Vector3> intersectionPoints {get; private set;} = new Dictionary<Spatial, Vector3>();
+    
+    private OrderedRouter mouseOverRouter = new OrderedRouter();
+    
     const int pickingLimit = 10;
 
     [Signal]
@@ -42,8 +44,9 @@ public class TwoFiveDMenu : RayCast, ITakesInput
     //(such as pickable Areas or the camera itself.)
     public override void _PhysicsProcess(float delta)
     {
-        List<Spatial> newMouseOvers = new List<Spatial>(); 
-
+        var newIntersections = new List<Spatial>(); 
+        var newMouseOvers = new List<ITakesInput>();
+        bool hitNonPermeable = false;
         //Populate mouseOvers
         for(int i = 0; i< pickingLimit; i++)
         {
@@ -52,30 +55,40 @@ public class TwoFiveDMenu : RayCast, ITakesInput
             var collidedObject = GetCollider() as Spatial;
             if(collidedObject is null) break;
 
-            newMouseOvers.Add(collidedObject);
-            mouseIntersections[collidedObject] = GetCollisionPoint();
+            newIntersections.Add(collidedObject);
+            intersectionPoints[collidedObject] = GetCollisionPoint();
+
+            if(!hitNonPermeable && collidedObject is IPickable p)
+            {
+                if(!p.Permeable) hitNonPermeable = true;
+                newMouseOvers.Add(p);
+            }
+
             AddException(collidedObject);
             ForceRaycastUpdate();
         }
 
         //Call mouseOn/mouseOff to any changed IPickables.
         //Honestly this is overkill considering you regularly only have 2 lol.
-        foreach(Spatial n in newMouseOvers)
+        foreach(ITakesInput t in newMouseOvers)
         {
-            if(!mouseOvers.Contains(n) && n is IPickable p)
-                p.MouseOn(this);
+            if(!mouseOverRouter.LayerPriorities.Contains(t))
+                ((IPickable) t).MouseOn(this);
         }
-        foreach(Spatial n in mouseOvers)
+        foreach(ITakesInput t in mouseOverRouter.LayerPriorities)
         {
-            if(!newMouseOvers.Contains(n))
+            if(!newMouseOvers.Contains(t))
             {
-                mouseIntersections.Remove(n);
-                if(n is IPickable p)
-                    p.MouseOff();
+                ((IPickable) t).MouseOff();
             }
         }
+        foreach(Spatial s in intersectionPoints.Keys)
+        {
+            if(!newIntersections.Contains(s))
+                intersectionPoints.Remove(s);
+        }
         
-        mouseOvers = newMouseOvers;
+        mouseIntersections = newIntersections;
         //Clear Exceptions so we start next frame on a clean slate.
         ClearExceptions();
     }

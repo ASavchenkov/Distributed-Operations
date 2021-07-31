@@ -18,12 +18,7 @@ public class DefaultLootPV : DraggableArea, IObserver
     public override void _Ready()
     {
         base._Ready();
-        M1.Connect(nameof(ClickDragTracker.Drag), this, nameof(OnDrag));
-    }
-
-    public void OnDrag()
-    {
-        GD.Print("Dragging");
+        M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
     }
 
     public virtual void Subscribe( object _provider)

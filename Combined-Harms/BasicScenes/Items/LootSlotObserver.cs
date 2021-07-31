@@ -23,13 +23,13 @@ public class LootSlotObserver : DraggableArea, IAcceptsDrop
             OnOccupantSet((Node) provider.Occupant);
         }
         
-        slot.Connect(nameof(LootSlot.TransformSet), this, nameof(SetLTransform));
+        slot.Connect(nameof(LootSlot.TranslationSet), this, nameof(SetLTranslation));
         //Default position is where it is in this scene.
         //Otherwise, configure ourselves based on the Slot.
         if(provider.Occupant is null)
-            provider.Transform = Transform;
+            provider.Translation = Translation;
         else
-            SetLTransform(provider.Transform);
+            SetLTranslation(provider.Translation);
     }
 
     public void OnOccupantSet(Node n)
@@ -47,9 +47,20 @@ public class LootSlotObserver : DraggableArea, IAcceptsDrop
         }
     }
 
-    public void SetLTransform(Transform localTarget)
+    public override void OnMouseUpdate()
     {
-        Transform = localTarget;
+        foreach(Spatial intersected in menu.mouseIntersections)
+        {
+            if(intersected is LootArea area)
+            {
+                SetLTranslation(ToLocal(menu.intersectionPoints[intersected]));
+            }
+        }
+    }
+
+    public void SetLTranslation(Vector3 localTarget)
+    {
+        Translation = localTarget;
         RecomputeOccupantPos();
     }
 

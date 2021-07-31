@@ -3,7 +3,7 @@ using System;
 
 using ReplicationAbstractions;
 
-public interface IPickable
+public interface IPickable : ITakesInput
 {
     //For transparent colliders you place in the ui.
     //These take inputs non-permeable IPickables don't.

@@ -50,20 +50,20 @@ public class LootSlot : Node
         Occupant = null;
     }
 
-    private Transform _Transform = new Transform();
-    public Transform Transform 
+    private Vector3 _Translation = new Vector3();
+    public Vector3 Translation 
     {
-        get { return _Transform;}
+        get { return _Translation;}
         set 
         {
-            _Transform = value;
-            EmitSignal(nameof(TransformSet), value);
+            _Translation = value;
+            EmitSignal(nameof(TranslationSet), value);
         }
     }
     [Signal]
     public delegate void OccupantSet(Node n);
     [Signal]
-    public delegate void TransformSet(Transform t);    
+    public delegate void TranslationSet(Vector3 t);    
 
 
     public ILootItem parent = null;
