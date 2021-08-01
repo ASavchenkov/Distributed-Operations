@@ -58,6 +58,7 @@ public class LootSlot : Node
         {
             _Translation = value;
             EmitSignal(nameof(TranslationSet), value);
+            
         }
     }
     [Signal]
