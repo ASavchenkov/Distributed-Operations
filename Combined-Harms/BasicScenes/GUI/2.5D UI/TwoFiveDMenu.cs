@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using ReplicationAbstractions;
 
@@ -17,6 +18,9 @@ public class TwoFiveDMenu : RayCast, ITakesInput
     
     public InputClaims Claims {get;set;} = new InputClaims();
 
+    // [Export]
+    // public string camPath;
+    public string camPath = "../..";
     Camera cam;
 
     public List<Spatial> mouseIntersections {get; private set;} = new List<Spatial>();
@@ -31,8 +35,7 @@ public class TwoFiveDMenu : RayCast, ITakesInput
 
     public override void _Ready()
     {
-        cam = (Camera) GetParent();
-        
+        cam = (Camera) GetNode(camPath);
         //Technically we also use mouse motion,
         //but that isn't accessible through the Input singleton
         //So we don't claim it doesn't really exist.
@@ -82,10 +85,14 @@ public class TwoFiveDMenu : RayCast, ITakesInput
                 ((IPickable) t).MouseOff();
             }
         }
-        foreach(Spatial s in intersectionPoints.Keys)
+        mouseOverRouter.LayerPriorities = newMouseOvers;
+
+        List<Spatial> removals = (from ip in intersectionPoints.Keys
+                                where !newIntersections.Contains(ip)
+                                select ip).ToList<Spatial>();
+        foreach(Spatial s in removals)
         {
-            if(!newIntersections.Contains(s))
-                intersectionPoints.Remove(s);
+            intersectionPoints.Remove(s);
         }
         
         mouseIntersections = newIntersections;
@@ -110,12 +117,14 @@ public class TwoFiveDMenu : RayCast, ITakesInput
     {
         Input.SetMouseMode(Input.MouseMode.Visible);
         InputPriorityServer.Base.Subscribe(this, BaseRouter.menu);
+        InputPriorityServer.Base.Subscribe(mouseOverRouter, BaseRouter.mouseOver);
     }
 
     public override void _ExitTree()
     {
         Input.SetMouseMode(Input.MouseMode.Captured);
         InputPriorityServer.Base.Unsubscribe(this, BaseRouter.menu);
+        InputPriorityServer.Base.Unsubscribe(mouseOverRouter, BaseRouter.mouseOver);
     }
 
 }

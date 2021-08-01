@@ -26,5 +26,26 @@ public class DefaultLootPV : DraggableArea, IObserver
         provider = (ILootItem) _provider;
     }
 
+    public override void OnMouseUpdate()
+    {
+        foreach(Spatial intersected in menu.mouseIntersections)
+        {
+            if(intersected is InventoryWorkspace area)
+            {
+                Translation = ToLocal(menu.intersectionPoints[intersected]);
+                break;
+            }
+        }
+    }
+
+    public override void OnDrop()
+    {
+        base.OnDrop();
+        //Currently resets when it's dropped
+        //but in the future will check for loot slots
+        //And special items that take dropped items.
+        parent.RecomputeOccupantPos();
+    }
+
 
 }

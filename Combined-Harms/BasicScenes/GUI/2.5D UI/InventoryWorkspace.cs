@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class LootArea : Area, IPickable
+public class InventoryWorkspace : Area, IPickable
 {
     public InputClaims Claims {get;set;} = new InputClaims();
     
@@ -24,19 +24,17 @@ public class LootArea : Area, IPickable
     public void MouseOn(TwoFiveDMenu _menu)
     {
         menu = _menu;
-        InputPriorityServer.Base.Subscribe(this, BaseRouter.mouseOver);
-        GD.Print("LootArea MouseOn");
+        GD.Print("InventoryWorkspace MouseOn");
     }
 
     public void MouseOff()
     {
-        InputPriorityServer.Base.Unsubscribe(this, BaseRouter.mouseOver);
         if(trackMouse)
         {
             menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(OnMouseUpdate));
             trackMouse = false;
         }
-        GD.Print("LootArea MouseOff");
+        GD.Print("InventoryWorkspace MouseOff");
     }
 
     public bool OnInput(InputEvent inputEvent)

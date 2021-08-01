@@ -4,5 +4,6 @@
 
 [node name="TwoFiveDMenu" type="RayCast"]
 enabled = true
+collision_mask = 9
 collide_with_areas = true
 script = ExtResource( 1 )

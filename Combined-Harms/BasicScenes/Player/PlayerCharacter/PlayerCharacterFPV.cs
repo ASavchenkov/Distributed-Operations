@@ -23,7 +23,7 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
     
     private RifleFPV ItemInHands = null;
 
-    private TwoFiveDMenu InvMenu;
+    private Spatial inventoryMenu;
     
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -32,7 +32,7 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
 
-        InvMenu = EasyInstancer.Instance<TwoFiveDMenu>("res://BasicScenes/GUI/2.5D UI/LootMenu.tscn");
+        inventoryMenu = EasyInstancer.Instance<Spatial>("res://BasicScenes/GUI/2.5D UI/InventoryMenu.tscn");
         
         FEET = (Area) GetNode("FEET");
         FEET.Connect("body_entered",this,"GroundEncountered");
@@ -86,10 +86,10 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
             }
             else if(keyPress.IsActionPressed("Inventory"))
             {
-                if( InvMenu.IsInsideTree())
-                    camera.RemoveChild(InvMenu);
+                if( inventoryMenu.IsInsideTree())
+                    camera.RemoveChild(inventoryMenu);
                 else
-                    camera.AddChild(InvMenu);
+                    camera.AddChild(inventoryMenu);
                 return true;
             }
         }

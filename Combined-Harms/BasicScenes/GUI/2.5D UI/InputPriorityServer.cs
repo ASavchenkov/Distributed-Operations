@@ -83,7 +83,6 @@ public class InputClaims : Godot.Object
             return true;
         return false;
     }
-
 }
 
 public interface ITakesInput
@@ -149,7 +148,10 @@ public class NamedLayerRouter : Godot.Object, ITakesInput
             thing.Claims.Disconnect(nameof(InputClaims.PostClaimUpdate), this, nameof(OnChildPostUpdate));
         }
         else
+        {
             GD.PrintErr("Tried to unsubscribe someone else's layer");
+            GD.PrintErr(layer);
+        }
     }
 }
 
