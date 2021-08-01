@@ -20,6 +20,7 @@ public abstract class DraggableArea : Area, IPickable
     {
         Claims = M1.Claims;// Just link to M1 for now since it's the only one.
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
+        M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrop));
     }
 
     public virtual void MouseOn(TwoFiveDMenu _menu)

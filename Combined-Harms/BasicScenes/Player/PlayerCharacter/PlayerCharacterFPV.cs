@@ -9,7 +9,7 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
     private bool _disposed = false;
     public InputClaims Claims {get;set;} = new InputClaims();
 
-    private PlayerCharacterProvider provider = null;
+    public PlayerCharacterProvider provider {get; private set;} = null;
 
     public Spatial LookYaw;
     public Spatial LookPitch;
@@ -23,7 +23,7 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
     
     private RifleFPV ItemInHands = null;
 
-    private Spatial inventoryMenu;
+    private InventoryMenu inventoryMenu;
     
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -32,7 +32,8 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
         LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
         camera = (Camera) LookPitch.GetNode("Camera");
 
-        inventoryMenu = EasyInstancer.Instance<Spatial>("res://BasicScenes/GUI/2.5D UI/InventoryMenu.tscn");
+        inventoryMenu = EasyInstancer.Instance<InventoryMenu>("res://BasicScenes/GUI/2.5D UI/InventoryMenu.tscn");
+        inventoryMenu.pcFPV = this;
         
         FEET = (Area) GetNode("FEET");
         FEET.Connect("body_entered",this,"GroundEncountered");

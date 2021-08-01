@@ -51,7 +51,7 @@ public class LootSlotObserver : DraggableArea, IAcceptsDrop
     {
         foreach(Spatial intersected in menu.mouseIntersections)
         {
-            if(intersected is InventoryWorkspace area)
+            if(intersected is InventoryWindow area)
             {
                 SetLTranslation(ToLocal(menu.intersectionPoints[intersected]));
                 break;

@@ -15,12 +15,6 @@ public class DefaultLootPV : DraggableArea, IObserver
     [Signal]
     public delegate void RequestPosReset();
 
-    public override void _Ready()
-    {
-        base._Ready();
-        M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
-    }
-
     public virtual void Subscribe( object _provider)
     {
         provider = (ILootItem) _provider;
@@ -30,7 +24,7 @@ public class DefaultLootPV : DraggableArea, IObserver
     {
         foreach(Spatial intersected in menu.mouseIntersections)
         {
-            if(intersected is InventoryWorkspace area)
+            if(intersected is InventoryWindow area)
             {
                 Translation = ToLocal(menu.intersectionPoints[intersected]);
                 break;
