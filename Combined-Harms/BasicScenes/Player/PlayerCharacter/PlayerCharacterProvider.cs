@@ -63,9 +63,9 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, ILoo
         Node observer = EasyInstancer.GenObserver(this, IsNetworkMaster() ? ObserverPathFPV : ObserverPath3PV);
         MapNode.AddChild(observer);
         
-        // var rifle = EasyInstancer.Instance<RifleProvider>("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn");
-        // GetNode("/root/GameRoot/Loot").AddChild(rifle);
-        // SetHandItem((ILootItem) rifle, ChestSlot);
+        var rifle = EasyInstancer.Instance<RifleProvider>("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn");
+        GetNode("/root/GameRoot/Loot").AddChild(rifle);
+        SetHandItem((ILootItem) rifle, ChestSlot);
     }
 
     public void OnNOKTransfer(int uid)

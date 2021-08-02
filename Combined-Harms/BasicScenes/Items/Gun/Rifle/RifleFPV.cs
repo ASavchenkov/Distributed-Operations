@@ -4,10 +4,12 @@ using System.Collections.Generic;
 
 using ReplicationAbstractions;
 
-public class RifleFPV : Spatial, IObserver
+public class RifleFPV : Spatial, ITakesInput, IObserver
 {
 
     RifleProvider provider;
+
+    public InputClaims Claims {get;set;} = new InputClaims();
 
     private Node Projectiles;
     protected Spatial Muzzle;
@@ -38,6 +40,9 @@ public class RifleFPV : Spatial, IObserver
         HipFireTransform = (Position3D) GetNode("Origin/Gun/HipFireTransform");
         Muzzle = (Spatial) GetNode("Origin/Gun/Muzzle");
         
+        Claims.Claims.Add("MousePrimary");
+        Claims.Claims.Add("MouseSecondary");
+
         SetOrigin(HipFireTransform);
     }
 
@@ -70,19 +75,23 @@ public class RifleFPV : Spatial, IObserver
         Origin.Transform = newOrigin.Transform.Inverse();
     }
 
-    public override void _UnhandledInput(InputEvent inputEvent)
+    public bool OnInput(InputEvent inputEvent)
     {
         if(inputEvent.IsActionPressed("MousePrimary"))
         {
             Fire();
+            return true;
         }
         else if(inputEvent.IsActionPressed("MouseSecondary"))
         {
             SetOrigin(MainSight.RemoteEyeRelief);
+            return true;
         }
         else if(inputEvent.IsActionReleased("MouseSecondary"))
         {
             SetOrigin(HipFireTransform);
+            return true;
         }
+        return false;
     }
 }

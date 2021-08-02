@@ -66,6 +66,10 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
 
     public bool OnInput(InputEvent inputEvent)
     {
+        //If the equipped item handled the input, return
+        //Otherwise keep going.
+        if(!(ItemInHands is null) && ItemInHands.OnInput(inputEvent))
+            return true;
         if(inputEvent is InputEventMouseMotion mouseEvent)
         {
             //Yes these look flipped. It's correct.
