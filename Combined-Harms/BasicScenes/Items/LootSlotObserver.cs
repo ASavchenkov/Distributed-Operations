@@ -51,9 +51,9 @@ public class LootSlotObserver : DraggableArea, IAcceptsDrop
     {
         foreach(Spatial intersected in menu.mouseIntersections)
         {
-            if(intersected is InventoryWindow area)
+            if(intersected.Name == "InventoryWorkspace")
             {
-                SetLTranslation(ToLocal(menu.intersectionPoints[intersected]));
+                SetLTranslation(((Spatial)GetParent()).ToLocal(menu.intersectionPoints[intersected]));
                 break;
             }
         }

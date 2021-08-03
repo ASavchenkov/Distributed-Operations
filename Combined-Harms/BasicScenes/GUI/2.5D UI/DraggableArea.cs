@@ -19,33 +19,44 @@ public abstract class DraggableArea : Area, IPickable
     public override void _Ready()
     {
         Claims = M1.Claims;// Just link to M1 for now since it's the only one.
+        M1.Connect(nameof(MouseActionTracker.StateUpdate), this, nameof(OnStateUpdate));
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
-        M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrop));
+        M1.Connect(nameof(MouseActionTracker.Drop), this, nameof(OnDrop));
     }
 
     public virtual void MouseOn(TwoFiveDMenu _menu)
     {
         GD.Print(Name, ": Moused on");
         menu = _menu;
+        M1.menu = menu;
     }
 
     //Allow the moused on thing to request that focus is kept.
     public virtual void MouseOff()
     {
-        GD.Print(Name, ": Moused off");
+        GD.Print(Name, ": Moused off");   
+    }
+
+    public virtual void OnStateUpdate(MouseActionTracker.ClickState newState)
+    {
+        if(newState == MouseActionTracker.ClickState.Down)
+            InputPriorityServer.Base.Subscribe(this, BaseRouter.dragging);
+        else if(newState == MouseActionTracker.ClickState.Up)
+            InputPriorityServer.Base.Unsubscribe(this, BaseRouter.dragging);
     }
 
     public virtual void OnDrag()
     {
+        GD.Print("OnDrag");
+        SetCollisionLayerBit(3, false);
         menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(OnMouseUpdate));
-        M1.Connect(nameof(MouseActionTracker.Drop), this, nameof(OnDrop));
         Permeable = true;
     }
 
     public virtual void OnDrop()
     {
+        SetCollisionLayerBit(3, true);
         menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(OnMouseUpdate));
-        M1.Disconnect(nameof(MouseActionTracker.Drop), this, nameof(OnDrop));
         Permeable = false;
     }
 
@@ -89,7 +100,6 @@ public class MouseActionTracker : Godot.Object, ITakesInput
     [Signal]
     public delegate void StateUpdate(ClickState state);
  
-    Vector3 cursorPos;
     Vector3 clickedPos;
 
     public MouseActionTracker(string _actionName)
@@ -98,10 +108,11 @@ public class MouseActionTracker : Godot.Object, ITakesInput
         Claims.Claims.Add(actionName);
     }
 
-    public void UpdateCursor( RayCast ray)
+    public void OnMouseUpdated()
     {
-        cursorPos = ray.CastTo/ray.CastTo.z; //normalize to z=1
-        if( clickState == ClickState.Down && cursorPos.DistanceTo(clickedPos) > 0.1)
+        Vector3 mousePos = menu.CastTo/menu.CastTo.z; //normalize to z=1
+        
+        if( clickState == ClickState.Down && mousePos.DistanceTo(clickedPos) > 0.1)
         {
             clickState = ClickState.Dragging;
             EmitSignal(nameof(Drag));
@@ -116,19 +127,18 @@ public class MouseActionTracker : Godot.Object, ITakesInput
         {
             //started click or click and drag. Don't know which yeet.
             clickState = ClickState.Down;
-            clickedPos = cursorPos;
-            InputPriorityServer.Base.Subscribe(this, BaseRouter.dragging);
+            menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdated));
+            clickedPos = menu.CastTo/menu.CastTo.z;
             return true;
         }
         else if(inputEvent.IsActionReleased(actionName))
         {
-                
+            menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdated));
             if(clickState == ClickState.Down)
                 EmitSignal(nameof(FullClick));
             else //end of drag. Dropping.
                 EmitSignal(nameof(Drop));
 
-            InputPriorityServer.Base.Unsubscribe(this, BaseRouter.dragging);
             clickState = ClickState.Up;
             return true;
         }

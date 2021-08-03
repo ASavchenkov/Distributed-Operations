@@ -24,9 +24,10 @@ public class DefaultLootPV : DraggableArea, IObserver
     {
         foreach(Spatial intersected in menu.mouseIntersections)
         {
-            if(intersected is InventoryWindow area)
+            if(intersected.Name == "InventoryWorkspace")
             {
-                Translation = ToLocal(menu.intersectionPoints[intersected]);
+                GD.Print(menu.intersectionPoints[intersected]);
+                Translation = parent.ToLocal(menu.intersectionPoints[intersected]);
                 break;
             }
         }
