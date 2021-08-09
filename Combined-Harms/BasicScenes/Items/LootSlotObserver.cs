@@ -26,10 +26,10 @@ public class LootSlotObserver : DraggableArea, IAcceptsDrop
         slot.Connect(nameof(LootSlot.TranslationSet), this, nameof(SetLTranslation));
         //Default position is where it is in this scene.
         //Otherwise, configure ourselves based on the Slot.
-        if(provider.Translation is null)
-            provider.Translation = Translation;
-        else
+        if(provider.Translation.HasValue)
             SetLTranslation(provider.Translation.Value);
+        else
+            provider.Translation = Translation;
     }
 
     public void OnOccupantSet(Node n)
