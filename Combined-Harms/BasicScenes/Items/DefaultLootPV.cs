@@ -7,7 +7,7 @@ public class DefaultLootPV : DraggableArea, IObserver
 {
 
     public virtual ILootItem provider {get; protected set;}
-    public LootSlotObserver parent;
+    public Spatial parent;
     
     [Export]
     public float Radius = 1; //For automatic spacing.
@@ -18,6 +18,12 @@ public class DefaultLootPV : DraggableArea, IObserver
     public virtual void Subscribe( object _provider)
     {
         provider = (ILootItem) _provider;
+    }
+
+    public override void _Ready()
+    {
+        base._Ready();
+        parent = GetParentSpatial();
     }
 
     public override void OnMouseUpdate()
@@ -39,7 +45,8 @@ public class DefaultLootPV : DraggableArea, IObserver
         //Currently resets when it's dropped
         //but in the future will check for loot slots
         //And special items that take dropped items.
-        parent.RecomputeOccupantPos();
+        if(parent is LootSlotObserver lootSlotObserver)
+            lootSlotObserver.RecomputeOccupantPos();
     }
 
 

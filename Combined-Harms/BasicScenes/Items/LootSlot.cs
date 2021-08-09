@@ -50,8 +50,8 @@ public class LootSlot : Node
         Occupant = null;
     }
 
-    private Vector3 _Translation = new Vector3();
-    public Vector3 Translation 
+    private Vector3? _Translation = null;
+    public Vector3? Translation 
     {
         get { return _Translation;}
         set 
