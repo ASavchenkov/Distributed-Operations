@@ -19,3 +19,8 @@ public interface ILootItem : IHasLootPV
     LootSlot parent {get;set;}
     bool Validate(ILootItem item, object stateUpdate);
 }
+
+public interface IAcceptsDrop
+{
+    void AcceptDrop( DefaultLootPV item);
+}

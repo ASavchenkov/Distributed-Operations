@@ -72,9 +72,9 @@ public class LootSlotObserver : DraggableArea, IAcceptsDrop
     }
 
     //Purely a way for InventoryMenu to interact with provider drop function
-    public void Drop(DefaultLootPV item)
+    public void AcceptDrop(DefaultLootPV item)
     {
-        provider.Drop(item.provider);
+        provider.AcceptDrop(item.provider);
     }
 }
 

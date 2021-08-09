@@ -50,14 +50,12 @@ public abstract class DraggableArea : Area, IPickable
         GD.Print("OnDrag");
         SetCollisionLayerBit(3, false);
         menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(OnMouseUpdate));
-        Permeable = true;
     }
 
     public virtual void OnDrop()
     {
         SetCollisionLayerBit(3, true);
         menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(OnMouseUpdate));
-        Permeable = false;
     }
 
     public abstract void OnMouseUpdate();

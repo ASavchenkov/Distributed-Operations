@@ -5,11 +5,6 @@ using System.Linq;
 
 using ReplicationAbstractions;
 
-public interface IAcceptsDrop
-{
-    void Drop( DefaultLootPV item);
-}
-
 public class TwoFiveDMenu : RayCast, ITakesInput
 {
 

@@ -42,6 +42,8 @@ public class DefaultLootPV : DraggableArea, IObserver
     public override void OnDrop()
     {
         base.OnDrop();
+
+        foreach(Spatial intersection in menu.mouseIntersections)
         //Currently resets when it's dropped
         //but in the future will check for loot slots
         //And special items that take dropped items.
