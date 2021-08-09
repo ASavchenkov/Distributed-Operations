@@ -44,6 +44,11 @@ public class DefaultLootPV : DraggableArea, IObserver
         base.OnDrop();
 
         foreach(Spatial intersection in menu.mouseIntersections)
+        {
+            if(intersection is IAcceptsItem acceptor)
+                acceptor.AcceptItem(this);
+            
+        }
         //Currently resets when it's dropped
         //but in the future will check for loot slots
         //And special items that take dropped items.

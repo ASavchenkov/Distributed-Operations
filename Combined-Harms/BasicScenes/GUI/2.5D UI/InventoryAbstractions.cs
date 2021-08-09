@@ -20,7 +20,7 @@ public interface ILootItem : IHasLootPV
     bool Validate(ILootItem item, object stateUpdate);
 }
 
-public interface IAcceptsDrop
+public interface IAcceptsItem
 {
-    void AcceptDrop( DefaultLootPV item);
+    void AcceptItem( DefaultLootPV item);
 }

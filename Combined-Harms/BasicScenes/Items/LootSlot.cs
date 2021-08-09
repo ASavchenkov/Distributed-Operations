@@ -93,7 +93,7 @@ public class LootSlot : Node
     //Not quite the same as just setting the property "Occupant"
     //generally smart: swaps if swap is possible, otherwise does nothing.
     //newOccupant never null.
-    public void AcceptDrop(ILootItem newOccupant)
+    public void AcceptItem(ILootItem newOccupant)
     {
         //involves swapping item to origin slot.
         //Null old Occupant always valid, non-null needs checking.

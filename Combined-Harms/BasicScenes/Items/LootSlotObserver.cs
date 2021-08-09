@@ -6,7 +6,7 @@ using ReplicationAbstractions;
 //Huh why isn't this an IObserver?
 //Because it doesn't need the whole generic "Subscribe"
 //function that IObserver has for the GenObserver function.
-public class LootSlotObserver : DraggableArea, IAcceptsDrop
+public class LootSlotObserver : DraggableArea, IAcceptsItem
 {
     public LootSlot provider;
     public DefaultLootPV OccupantObserver = null;
@@ -72,9 +72,9 @@ public class LootSlotObserver : DraggableArea, IAcceptsDrop
     }
 
     //Purely a way for InventoryMenu to interact with provider drop function
-    public void AcceptDrop(DefaultLootPV item)
+    public void AcceptItem(DefaultLootPV item)
     {
-        provider.AcceptDrop(item.provider);
+        provider.AcceptItem(item.provider);
     }
 }
 
