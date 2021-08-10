@@ -46,7 +46,7 @@ public class DefaultLootPV : DraggableArea, IObserver
             if(intersection is IAcceptsItem acceptor)
                 if(acceptor.AcceptItem(this))
                     return;
-                else break; //Don't want unpredictable dropping into unseen acceptors.   
+                else break; //Don't want unpredictable dropping into unseen acceptors.
         }
 
         //Only do this if not accepted.
