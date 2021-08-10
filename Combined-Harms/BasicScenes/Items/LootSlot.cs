@@ -91,24 +91,22 @@ public class LootSlot : Node
     }
 
     //Not quite the same as just setting the property "Occupant"
-    //generally smart: swaps if swap is possible, otherwise does nothing.
-    //newOccupant never null.
-    public void AcceptItem(ILootItem newOccupant)
+    //Doesn't auto swap.
+    public bool AcceptItem(ILootItem newOccupant)
     {
-        //involves swapping item to origin slot.
-        //Null old Occupant always valid, non-null needs checking.
-        if( !(Occupant is null) &&
-            !(newOccupant.parent is null) &&
-            !newOccupant.parent.Validate(Occupant, null))
-                return;
         
-
-        if(Validate(newOccupant, null))
+        //Check that we're open
+        //Check that newOccupant is compatible with this slot.
+        if(Occupant is null && Validate(newOccupant, null))
         {
-            //swap is valid. Do it.
+            //if so, remove occupant from old spot, and add it to new spot.
             if(!(newOccupant.parent is null))
-                newOccupant.parent.Occupant = Occupant;
+                newOccupant.parent.Occupant = null;
+            else
+                ((Node)newOccupant).QueueFree();
             Occupant = newOccupant;
+            return true;
         }
+        return false;
     }
 }

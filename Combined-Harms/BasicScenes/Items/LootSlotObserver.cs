@@ -71,10 +71,10 @@ public class LootSlotObserver : DraggableArea, IAcceptsItem
             OccupantObserver.Translation = Translation.Normalized() * OccupantObserver.Radius;
     }
 
-    //Purely a way for InventoryMenu to interact with provider drop function
-    public void AcceptItem(DefaultLootPV item)
+    //Purely a way for InventoryMenu to interact with provider Accept function
+    public bool AcceptItem(DefaultLootPV item)
     {
-        provider.AcceptItem(item.provider);
+        return provider.AcceptItem(item.provider);
     }
 }
 

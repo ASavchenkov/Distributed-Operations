@@ -32,7 +32,6 @@ public class DefaultLootPV : DraggableArea, IObserver
         {
             if(intersected.Name == "InventoryWorkspace")
             {
-                GD.Print(menu.intersectionPoints[intersected]);
                 Translation = parent.ToLocal(menu.intersectionPoints[intersected]);
                 break;
             }
@@ -41,17 +40,19 @@ public class DefaultLootPV : DraggableArea, IObserver
 
     public override void OnDrop()
     {
-        base.OnDrop();
 
         foreach(Spatial intersection in menu.mouseIntersections)
         {
             if(intersection is IAcceptsItem acceptor)
-                acceptor.AcceptItem(this);
-            
+                if(acceptor.AcceptItem(this))
+                    return;
+                else break; //Don't want unpredictable dropping into unseen acceptors.   
         }
-        //Currently resets when it's dropped
-        //but in the future will check for loot slots
-        //And special items that take dropped items.
+
+        //Only do this if not accepted.
+        //Since Accepted drops result in QueueFreeing this node anyways.
+
+        base.OnDrop();
         if(parent is LootSlotObserver lootSlotObserver)
             lootSlotObserver.RecomputeOccupantPos();
     }

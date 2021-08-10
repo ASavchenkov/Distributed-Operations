@@ -22,5 +22,5 @@ public interface ILootItem : IHasLootPV
 
 public interface IAcceptsItem
 {
-    void AcceptItem( DefaultLootPV item);
+    bool AcceptItem( DefaultLootPV item);
 }
