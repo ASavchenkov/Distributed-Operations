@@ -30,13 +30,13 @@
     <Compile Include="BasicScenes\GUI\2.5D UI\DraggableArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InputPriorityServer.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryMenu.cs" />
-    <Compile Include="BasicScenes\Items\DefaultLootPV.cs" />
+    <Compile Include="BasicScenes\Items\DefaultInvPV.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryAbstractions.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\TwoFiveDMenu.cs" />
-    <Compile Include="BasicScenes\Items\LootSlot.cs" />
-    <Compile Include="BasicScenes\Items\LootSlotObserver.cs" />
+    <Compile Include="BasicScenes\Items\InvSlot.cs" />
+    <Compile Include="BasicScenes\Items\InvSlotObserver.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryWindow.cs" />
-    <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterLootPV.cs" />
+    <Compile Include="BasicScenes\Player\PlayerCharacter\PlayerCharacterInvPV.cs" />
     <Compile Include="GameManagement\GameManager.cs" />
     <Compile Include="GameManagement\NOKManager.cs" />
     <Compile Include="GameManagement\RandomSelector.cs" />

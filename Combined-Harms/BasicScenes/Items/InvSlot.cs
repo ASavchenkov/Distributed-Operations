@@ -5,15 +5,15 @@ using System;
 //Used on providers to store what loot is in their slots.
 
 //NOTES:
-//  parent of LootSlot NEEDS to be an ILootItem (or null)
-//  Occupant of LootSlot NEEDS to be an ILootItem (or null)
+//  parent of InvSlot NEEDS to be an IInvItem (or null)
+//  Occupant of InvSlot NEEDS to be an IInvItem (or null)
 //This allows us to check for potential circular dependencies
 //When moving things around.
-public class LootSlot : Node
+public class InvSlot : Node
 {
 
-    private ILootItem _Occupant = null;
-    public ILootItem Occupant 
+    private IInvItem _Occupant = null;
+    public IInvItem Occupant 
     {
         get { return _Occupant;}
         //Setting "Occupant" triggers an RPC
@@ -41,7 +41,7 @@ public class LootSlot : Node
     [Puppet]
     public void OccupantRPC(NodePath occupant)
     {
-        Occupant = (ILootItem) GetNode(occupant);
+        Occupant = (IInvItem) GetNode(occupant);
     }
 
     [Puppet]
@@ -67,18 +67,18 @@ public class LootSlot : Node
     public delegate void TranslationSet(Vector3 t);    
 
 
-    public ILootItem parent = null;
+    public IInvItem parent = null;
 
     public override void _Ready()
     {
-        parent = (ILootItem) GetParent();
+        parent = (IInvItem) GetParent();
     }
 
-    //LootSlot validation code only checks for compatibility
+    //InvSlot validation code only checks for compatibility
     //passes to parent; recursive until tree root.
     //occupant may be the same as Occupant, or it may be a new one.
     //stateUpate is an object, passed to parent.
-    public virtual bool Validate(ILootItem occupant, object stateUpdate)
+    public virtual bool Validate(IInvItem occupant, object stateUpdate)
     {
         if(occupant is null)
             return true; //"removing" an item is always valid.
@@ -86,13 +86,13 @@ public class LootSlot : Node
             //check with parent for non-obvious failure conditions (if parent exists)
             return parent.Validate(occupant, stateUpdate);
         else return true;
-            //we're the root (which in hindsight doesn't ever happen for LootSlots for now)
+            //we're the root (which in hindsight doesn't ever happen for InvSlots for now)
             //but who knows maybe when the codebase changes...
     }
 
     //Not quite the same as just setting the property "Occupant"
     //Doesn't auto swap.
-    public bool AcceptItem(ILootItem newOccupant)
+    public bool AcceptItem(IInvItem newOccupant)
     {
         
         //Check that we're open

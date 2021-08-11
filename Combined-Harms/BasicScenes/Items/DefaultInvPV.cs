@@ -3,10 +3,10 @@ using System;
 
 using ReplicationAbstractions;
 
-public class DefaultLootPV : DraggableArea, IObserver
+public class DefaultInvPV : DraggableArea, IObserver
 {
 
-    public virtual ILootItem provider {get; protected set;}
+    public virtual IInvItem provider {get; protected set;}
     public Spatial parent;
     
     [Export]
@@ -17,7 +17,7 @@ public class DefaultLootPV : DraggableArea, IObserver
 
     public virtual void Subscribe( object _provider)
     {
-        provider = (ILootItem) _provider;
+        provider = (IInvItem) _provider;
     }
 
     public override void _Ready()
@@ -53,8 +53,8 @@ public class DefaultLootPV : DraggableArea, IObserver
         //Since Accepted drops result in QueueFreeing this node anyways.
 
         base.OnDrop();
-        if(parent is LootSlotObserver lootSlotObserver)
-            lootSlotObserver.RecomputeOccupantPos();
+        if(parent is InvSlotObserver invSlotObserver)
+            invSlotObserver.RecomputeOccupantPos();
     }
 
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using ReplicationAbstractions;
 
-public class RifleProvider : Node, IReplicable, IHasFPV, ILootItem
+public class RifleProvider : Node, IReplicable, IHasFPV, IInvItem
 {
 
     //IReplicable boilerplate
@@ -16,10 +16,10 @@ public class RifleProvider : Node, IReplicable, IHasFPV, ILootItem
     [Export]
     public string ObserverPathFPV {get; set;}
     [Export]
-    public string ObserverPathLootPV {get; set;}
+    public string ObserverPathInvPV {get; set;}
 
 
-    public LootSlot parent {get;set;} = null;
+    public InvSlot parent {get;set;} = null;
 
     public Magazine Mag;
     
@@ -36,7 +36,7 @@ public class RifleProvider : Node, IReplicable, IHasFPV, ILootItem
         SetNetworkMaster(uid);
     }
 
-    public bool Validate(ILootItem item, object stateUpdate)
+    public bool Validate(IInvItem item, object stateUpdate)
     {
         if(item == this)
             return false;

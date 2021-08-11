@@ -46,7 +46,7 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
     public void Subscribe(object _provider)
     {
         provider = (PlayerCharacterProvider) _provider;
-        provider.HandSlot.Connect( nameof(LootSlot.OccupantSet), this, nameof(OnHandItemSet));
+        provider.HandSlot.Connect( nameof(InvSlot.OccupantSet), this, nameof(OnHandItemSet));
         this.DefaultSubscribe(provider);
     }
 

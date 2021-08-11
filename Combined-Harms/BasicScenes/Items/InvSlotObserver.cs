@@ -6,16 +6,16 @@ using ReplicationAbstractions;
 //Huh why isn't this an IObserver?
 //Because it doesn't need the whole generic "Subscribe"
 //function that IObserver has for the GenObserver function.
-public class LootSlotObserver : DraggableArea, IAcceptsItem
+public class InvSlotObserver : DraggableArea, IAcceptsItem
 {
-    public LootSlot provider;
-    public DefaultLootPV OccupantObserver = null;
+    public InvSlot provider;
+    public DefaultInvPV OccupantObserver = null;
 
     
-    public void Subscribe(LootSlot slot)
+    public void Subscribe(InvSlot slot)
     {
         provider = slot;
-        slot.Connect(nameof(LootSlot.OccupantSet), this, nameof(OnOccupantSet));
+        slot.Connect(nameof(InvSlot.OccupantSet), this, nameof(OnOccupantSet));
         
         if(!(provider.Occupant is null))
         {
@@ -23,7 +23,7 @@ public class LootSlotObserver : DraggableArea, IAcceptsItem
             OnOccupantSet((Node) provider.Occupant);
         }
         
-        slot.Connect(nameof(LootSlot.TranslationSet), this, nameof(SetLTranslation));
+        slot.Connect(nameof(InvSlot.TranslationSet), this, nameof(SetLTranslation));
         //Default position is where it is in this scene.
         //Otherwise, configure ourselves based on the Slot.
         if(provider.Translation.HasValue)
@@ -40,7 +40,7 @@ public class LootSlotObserver : DraggableArea, IAcceptsItem
 
         if(n != null)
         {
-            OccupantObserver = (DefaultLootPV) EasyInstancer.GenObserver(n, ((IHasLootPV)n).ObserverPathLootPV);
+            OccupantObserver = (DefaultInvPV) EasyInstancer.GenObserver(n, ((IHasInvPV)n).ObserverPathInvPV);
             AddChild( (Node) OccupantObserver);
             OccupantObserver.parent = this;
             RecomputeOccupantPos();
@@ -72,7 +72,7 @@ public class LootSlotObserver : DraggableArea, IAcceptsItem
     }
 
     //Purely a way for InventoryMenu to interact with provider Accept function
-    public bool AcceptItem(DefaultLootPV item)
+    public bool AcceptItem(DefaultInvPV item)
     {
         return provider.AcceptItem(item.provider);
     }

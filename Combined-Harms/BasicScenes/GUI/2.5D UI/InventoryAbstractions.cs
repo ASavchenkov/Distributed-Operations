@@ -14,13 +14,13 @@ public interface IPickable : ITakesInput
     void MouseOff();
 }
 
-public interface ILootItem : IHasLootPV
+public interface IInvItem : IHasInvPV
 {
-    LootSlot parent {get;set;}
-    bool Validate(ILootItem item, object stateUpdate);
+    InvSlot parent {get;set;}
+    bool Validate(IInvItem item, object stateUpdate);
 }
 
 public interface IAcceptsItem
 {
-    bool AcceptItem( DefaultLootPV item);
+    bool AcceptItem( DefaultInvPV item);
 }

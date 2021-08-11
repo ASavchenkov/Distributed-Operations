@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 using ReplicationAbstractions;
-public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, ILootItem
+public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInvItem
 {
 
     public ReplicationMember rMember {get; set;}
@@ -13,14 +13,14 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, ILoo
     
     public string ScenePath {get => Factory.ScenePath;}
 
-    public LootSlot parent {get;set;} = null;
+    public InvSlot parent {get;set;} = null;
 
     [Export]
     public string ObserverPathFPV { get; set;}
     [Export]
     public string ObserverPath3PV { get; set;}
     [Export]
-    public string ObserverPathLootPV {get; set;}
+    public string ObserverPathInvPV {get; set;}
     //For generating observers
 
     [Signal]
@@ -44,20 +44,20 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, ILoo
     [Export]
     public float Armor = 50;
 
-    public LootSlot ChestSlot;
-    public LootSlot HandSlot;
+    public InvSlot ChestSlot;
+    public InvSlot HandSlot;
 
     //Needed to put stuff back where it belongs later.
     //specific to PlayerCharacterProvider BC humanoids lol.
-    public LootSlot HandItemHome;
+    public InvSlot HandItemHome;
 
     public override void _Ready()
     {
         this.ReplicableReady();
         var MapNode = GetNode("/root/GameRoot/Map");
         
-        ChestSlot = GetNode<LootSlot>("ChestSlot");
-        HandSlot = GetNode<LootSlot>("HandSlot");
+        ChestSlot = GetNode<InvSlot>("ChestSlot");
+        HandSlot = GetNode<InvSlot>("HandSlot");
 
 
         Node observer = EasyInstancer.GenObserver(this, IsNetworkMaster() ? ObserverPathFPV : ObserverPath3PV);
@@ -65,7 +65,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, ILoo
         
         var rifle = EasyInstancer.Instance<RifleProvider>("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn");
         GetNode("/root/GameRoot/Loot").AddChild(rifle);
-        SetHandItem((ILootItem) rifle, ChestSlot);
+        SetHandItem((IInvItem) rifle, ChestSlot);
     }
 
     public void OnNOKTransfer(int uid)
@@ -73,7 +73,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, ILoo
         QueueFree();
     }
 
-    public void SetHandItem(ILootItem item, LootSlot home)
+    public void SetHandItem(IInvItem item, InvSlot home)
     {
         //I wish this was simpler but it isn't.
         //Just swapping items around.
@@ -90,7 +90,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, ILoo
     }
 
     //stateUpdate will be used once it has weight information
-    public bool Validate(ILootItem occupant, object stateUpdate)
+    public bool Validate(IInvItem occupant, object stateUpdate)
     {
         if(occupant == this)
             return false;

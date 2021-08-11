@@ -1,13 +1,13 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.cs" type="Script" id=1]
-[ext_resource path="res://BasicScenes/Items/LootSlot.cs" type="Script" id=2]
+[ext_resource path="res://BasicScenes/Items/InvSlot.cs" type="Script" id=2]
 
 [node name="PCProvider" type="Node"]
 script = ExtResource( 1 )
 ObserverPathFPV = "res://BasicScenes/Player/PlayerCharacter/PlayerCharacterFPV.tscn"
 ObserverPath3PV = "res://BasicScenes/Player/PlayerCharacter/PlayerCharacter3PV.tscn"
-ObserverPathLootPV = "res://BasicScenes/Player/PlayerCharacter/PlayerCharacterLootPV.tscn"
+ObserverPathInvPV = "res://BasicScenes/Player/PlayerCharacter/PlayerCharacterInvPV.tscn"
 maxSpeed = 1.0
 
 [node name="HandSlot" type="Node" parent="."]

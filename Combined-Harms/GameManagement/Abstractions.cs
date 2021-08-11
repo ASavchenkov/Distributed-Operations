@@ -147,10 +147,10 @@ namespace ReplicationAbstractions
         string ObserverPath3PV { get; set;}
     }
 
-    public interface IHasLootPV
+    public interface IHasInvPV
     {
         [Export]
-        string ObserverPathLootPV { get; set;}
+        string ObserverPathInvPV { get; set;}
     }
 }
 

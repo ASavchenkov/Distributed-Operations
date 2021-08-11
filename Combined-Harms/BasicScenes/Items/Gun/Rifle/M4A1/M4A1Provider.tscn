@@ -5,4 +5,4 @@
 [node name="Node" instance=ExtResource( 1 )]
 ScenePath = "res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn"
 ObserverPathFPV = "res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1FPV.tscn"
-ObserverPathLootPV = "res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1LootPV.tscn"
+ObserverPathInvPV = "res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1InvPV.tscn"
