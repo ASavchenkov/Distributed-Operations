@@ -10,6 +10,7 @@ public class RifleProvider : Node, IReplicable, IHasFPV, IInvItem
     //IReplicable boilerplate
     public ReplicationMember rMember {get; set;}
     
+    public Guid Gooeyd {get;set;}
     [Export]
     public string ScenePath {get;set;}
 

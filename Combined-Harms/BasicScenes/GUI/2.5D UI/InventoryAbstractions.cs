@@ -18,6 +18,11 @@ public interface IInvItem : IHasInvPV
 {
     InvSlot parent {get;set;}
     bool Validate(IInvItem item, object stateUpdate);
+
+    #region NodeStuff
+    NodePath GetPath();
+    string Name {get;set;}
+    #endregion
 }
 
 public interface IAcceptsItem

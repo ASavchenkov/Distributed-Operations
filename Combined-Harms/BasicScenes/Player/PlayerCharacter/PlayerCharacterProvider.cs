@@ -11,6 +11,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
     public static NodeFactory<PlayerCharacterProvider> Factory = 
         new NodeFactory<PlayerCharacterProvider> ("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
     
+    public Guid Gooeyd {get;set;}
     public string ScenePath {get => Factory.ScenePath;}
 
     public InvSlot parent {get;set;} = null;
@@ -50,6 +51,40 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
     //Needed to put stuff back where it belongs later.
     //specific to PlayerCharacterProvider BC humanoids lol.
     public InvSlot HandItemHome;
+
+    public class SaveData
+    {
+
+        public Vector3 Translation;
+        public Vector3 YawRotation;
+        public Vector3 PitchRotation;
+
+        public InvSlot.SaveData ChestSlot;
+        public InvSlot.SaveData HandSlot;
+
+        public SaveData(PlayerCharacterProvider target)
+        {
+            Translation = target.Translation;
+            YawRotation = target.YawRotation;
+            PitchRotation = target.PitchRotation;
+
+            ChestSlot = new InvSlot.SaveData(target.ChestSlot);
+            HandSlot = new InvSlot.SaveData(target.HandSlot);
+        }
+    }
+    //This needs to be a void* type thing so we can define this function
+    //in an interface and expose it to code higher in the chain.
+    public void ApplySaveData(object input)
+    {   
+        SaveData sd = (SaveData) input;
+
+        Translation = sd.Translation;
+        YawRotation = sd.YawRotation;
+        PitchRotation = sd.PitchRotation;
+                
+        ChestSlot.ApplySaveData(sd.ChestSlot);
+        HandSlot.ApplySaveData(sd.HandSlot);
+    }
 
     public override void _Ready()
     {

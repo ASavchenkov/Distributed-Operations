@@ -26,16 +26,30 @@ public class InvSlot : Node
                 Rpc(nameof(NullOccupantRPC));
             else
             {
-                GD.Print("Occupant being set to: ", ((Node)value).Name);
+                GD.Print("Occupant being set to: ", value.Name);
                 _Occupant.parent = this;
                 if(IsNetworkMaster())
-                    Rpc(nameof(OccupantRPC), ((Node) _Occupant).GetPath());
+                    Rpc(nameof(OccupantRPC), (_Occupant).GetPath());
             }
             
             //For those who want to keep track of changes
             //(such as parents and observers)
             EmitSignal(nameof(OccupantSet), _Occupant);
         }
+    }
+
+    public class SaveData
+    {
+        public string occupantPath;
+        public SaveData(InvSlot target)
+        {
+            occupantPath = target.Occupant?.GetPath();
+        }
+    }
+    public void ApplySaveData(object input)
+    {
+        SaveData sd = (SaveData) input;
+        Occupant = (IInvItem) GetNode(sd.occupantPath);
     }
     
     [Puppet]

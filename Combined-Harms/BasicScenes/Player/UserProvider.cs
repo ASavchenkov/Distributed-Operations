@@ -15,6 +15,7 @@ public class UserProvider : Node, IReplicable, IHasFPV
     public static NodeFactory<UserProvider> Factory = 
         new NodeFactory<UserProvider>("res://BasicScenes/Player/UserProvider.tscn");
     
+    public Guid Gooeyd {get;set;}
     public string ScenePath {get => Factory.ScenePath;}
 
     [Export]
