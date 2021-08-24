@@ -17,7 +17,7 @@ public class ProjectileProvider : Node, IReplicable, IHasFPV, IHas3PV
     //Replicable boilerplate
     public ReplicationMember rMember {get; set;}
 
-    public Guid Gooeyd {get;set;}
+    public Guid ID {get;set;}
     [Export]
     public string ScenePath {get;set;}
     //Observer boilerplate

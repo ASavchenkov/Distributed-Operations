@@ -41,6 +41,7 @@
     <Compile Include="GameManagement\NOKManager.cs" />
     <Compile Include="GameManagement\RandomSelector.cs" />
     <Compile Include="GameManagement\ReplicationServer.cs" />
+    <Compile Include="GameManagement\Serializer.cs" />
     <Compile Include="GameManagement\TDM.cs" />
     <Compile Include="BasicScenes\GUI\TDMMenu.cs" />
     <Compile Include="BasicScenes\GUI\NetworkingTab.cs" />

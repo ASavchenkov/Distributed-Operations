@@ -11,7 +11,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
     public static NodeFactory<PlayerCharacterProvider> Factory = 
         new NodeFactory<PlayerCharacterProvider> ("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
     
-    public Guid Gooeyd {get;set;}
+    public Guid ID {get;set;}
     public string ScenePath {get => Factory.ScenePath;}
 
     public InvSlot parent {get;set;} = null;
@@ -54,7 +54,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
 
     public class SaveData
     {
-
+        public Guid ID;
         public Vector3 Translation;
         public Vector3 YawRotation;
         public Vector3 PitchRotation;
@@ -64,6 +64,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
 
         public SaveData(PlayerCharacterProvider target)
         {
+            ID = target.ID;
             Translation = target.Translation;
             YawRotation = target.YawRotation;
             PitchRotation = target.PitchRotation;
