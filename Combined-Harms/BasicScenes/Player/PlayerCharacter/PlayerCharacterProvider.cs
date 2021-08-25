@@ -2,7 +2,10 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using MessagePack;
+
 using ReplicationAbstractions;
+
 public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInvItem
 {
 
@@ -52,19 +55,27 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
     //specific to PlayerCharacterProvider BC humanoids lol.
     public InvSlot HandItemHome;
 
-    public class SaveData
+    public SerializedNode Serialize()
     {
-        public Guid ID;
+        return new SaveData(this);
+    }
+
+    public class SaveData : SerializedNode
+    {
+        [Key(3)]
         public Vector3 Translation;
+        [Key(4)]
         public Vector3 YawRotation;
+        [Key(5)]
         public Vector3 PitchRotation;
 
+        [Key(6)]
         public InvSlot.SaveData ChestSlot;
+        [Key(7)]
         public InvSlot.SaveData HandSlot;
 
-        public SaveData(PlayerCharacterProvider target)
+        public SaveData(PlayerCharacterProvider target) : base(target)
         {
-            ID = target.ID;
             Translation = target.Translation;
             YawRotation = target.YawRotation;
             PitchRotation = target.PitchRotation;
@@ -72,12 +83,25 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
             ChestSlot = new InvSlot.SaveData(target.ChestSlot);
             HandSlot = new InvSlot.SaveData(target.HandSlot);
         }
+
+        public override IReplicable Instance(SceneTree tree)
+        {
+            var newPC = (PlayerCharacterProvider) base.Instance(tree);
+            
+            newPC.Translation = Translation;
+            newPC.YawRotation = YawRotation;
+            newPC.PitchRotation = PitchRotation;
+            newPC.ChestSlot.ApplySaveData(ChestSlot);
+            newPC.HandSlot.ApplySaveData(HandSlot);
+
+            return newPC;
+        }
     }
     //This needs to be a void* type thing so we can define this function
     //in an interface and expose it to code higher in the chain.
-    public void ApplySaveData(object input)
+    public void ApplySaveData(byte[] data)
     {   
-        SaveData sd = (SaveData) input;
+        SaveData sd = MessagePackSerializer.Deserialize<SaveData>(data);
 
         Translation = sd.Translation;
         YawRotation = sd.YawRotation;

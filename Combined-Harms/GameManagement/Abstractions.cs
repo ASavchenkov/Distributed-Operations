@@ -23,8 +23,7 @@ namespace ReplicationAbstractions
         }
         public void GenName()
         {
-            owner.ID = Guid.NewGuid();
-            owner.Name = owner.ID.ToString("D");
+            owner.Name = Guid.NewGuid().ToString("D");
         }
 
         public void OnPeerConnected(int uid)
@@ -44,7 +43,6 @@ namespace ReplicationAbstractions
     public interface IReplicable
     {
         ReplicationMember rMember {get;set;}
-        Guid ID {get;set;}
         string ScenePath {get;}
 
         #region NODE_STUFF

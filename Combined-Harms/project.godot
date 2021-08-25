@@ -26,7 +26,6 @@ NOKManager="*res://GameManagement/NOKManager.tscn"
 ReplicationServer="*res://GameManagement/ReplicationServer.cs"
 UserObserver_1="*res://GameManagement/UserObserver.tscn"
 GameManager="*res://GameManagement/GameManager.cs"
-Serializer="*res://GameManagement/Serializer.cs"
 
 [gdnative]
 

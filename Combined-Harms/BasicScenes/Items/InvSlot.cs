@@ -1,5 +1,8 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+
+using MessagePack;
 
 //A Node that alerts others when its occupant or positon is changed.
 //Used on providers to store what loot is in their slots.
@@ -9,6 +12,11 @@ using System;
 //  Occupant of InvSlot NEEDS to be an IInvItem (or null)
 //This allows us to check for potential circular dependencies
 //When moving things around.
+
+//WRT: ISaveable, this node isn't dynamically created,
+//so there's no need to put it into the context.
+//(It's always a child of whatever is being serialized,
+//and is accessed through that parent.)
 public class InvSlot : Node
 {
 
@@ -38,18 +46,18 @@ public class InvSlot : Node
         }
     }
 
+    [MessagePackObject]
     public class SaveData
     {
-        public string occupantPath;
-        public SaveData(InvSlot target)
+        public SerializedNode Occupant;
+        public SaveData( InvSlot target)
         {
-            occupantPath = target.Occupant?.GetPath();
+            Occupant = target.Occupant.Serialize();
         }
     }
-    public void ApplySaveData(object input)
+    public void ApplySaveData(SaveData sd)
     {
-        SaveData sd = (SaveData) input;
-        Occupant = (IInvItem) GetNode(sd.occupantPath);
+        Occupant = (IInvItem) sd.Occupant.Instance(GetTree());
     }
     
     [Puppet]

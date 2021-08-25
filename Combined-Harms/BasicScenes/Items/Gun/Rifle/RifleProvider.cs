@@ -10,7 +10,6 @@ public class RifleProvider : Node, IReplicable, IHasFPV, IInvItem
     //IReplicable boilerplate
     public ReplicationMember rMember {get; set;}
     
-    public Guid ID {get;set;}
     [Export]
     public string ScenePath {get;set;}
 
@@ -24,6 +23,20 @@ public class RifleProvider : Node, IReplicable, IHasFPV, IInvItem
 
     public Magazine Mag;
     
+
+    public SerializedNode Serialize()
+    {
+        return new SerializedNode(this);
+    }
+
+
+    //Currently pretty empty.
+    //Going to have attachments and settings in the future.
+    public class SaveData : SerializedNode
+    {
+        public SaveData(RifleProvider target) : base(target){}
+    }
+
     public override void _Ready()
     {
         this.ReplicableReady();

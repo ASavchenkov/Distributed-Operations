@@ -14,15 +14,12 @@ public interface IPickable : ITakesInput
     void MouseOff();
 }
 
-public interface IInvItem : IHasInvPV
+//All InvItems are IReplicable and have InvPVs
+public interface IInvItem : IReplicable, IHasInvPV
 {
     InvSlot parent {get;set;}
     bool Validate(IInvItem item, object stateUpdate);
-
-    #region NodeStuff
-    NodePath GetPath();
-    string Name {get;set;}
-    #endregion
+    SerializedNode Serialize();
 }
 
 public interface IAcceptsItem
