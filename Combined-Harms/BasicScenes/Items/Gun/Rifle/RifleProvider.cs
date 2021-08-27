@@ -2,6 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
+using MessagePack;
+
 using ReplicationAbstractions;
 
 public class RifleProvider : Node, IReplicable, IHasFPV, IInvItem
@@ -26,15 +28,23 @@ public class RifleProvider : Node, IReplicable, IHasFPV, IInvItem
 
     public SerializedNode Serialize()
     {
-        return new SerializedNode(this);
+        return new SaveData(this);
     }
 
 
     //Currently pretty empty.
     //Going to have attachments and settings in the future.
+    [MessagePackObject]
     public class SaveData : SerializedNode
     {
-        public SaveData(RifleProvider target) : base(target){}
+        [Key(3)]
+        public int testInt;
+        
+        public SaveData(){}
+        public SaveData(RifleProvider target) : base(target)
+        {
+            testInt = 8;
+        }
     }
 
     public override void _Ready()

@@ -54,7 +54,14 @@ public class InvSlot : Node
     [MessagePackObject]
     public class SaveData
     {
-        public SerializedNode Occupant;
+        
+        //Occupant will always be a SerializedNode
+        //but to work within MessagePacks object type serialization,
+        //any non-specific types end up needing to be objects.
+        [Key(0)]
+        public object Occupant;
+
+        public SaveData(){}
         public SaveData( InvSlot target)
         {
             Occupant = target.Occupant?.Serialize();
@@ -62,7 +69,7 @@ public class InvSlot : Node
     }
     public void ApplySaveData(SaveData sd)
     {
-        Occupant = (IInvItem) sd.Occupant.Instance(GetTree());
+        Occupant = (IInvItem) ((SerializedNode) sd.Occupant).Instance(GetTree());
     }
     
     [Puppet]
