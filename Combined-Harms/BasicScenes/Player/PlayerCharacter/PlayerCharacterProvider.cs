@@ -60,55 +60,44 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
         return new SaveData(this);
     }
 
+    [MessagePackObject]
     public class SaveData : SerializedNode
     {
         [Key(3)]
-        public Vector3 Translation;
+        public SerialVector3 Translation;
         [Key(4)]
-        public Vector3 YawRotation;
+        public SerialVector3 YawRotation;
         [Key(5)]
-        public Vector3 PitchRotation;
+        public SerialVector3 PitchRotation;
 
         [Key(6)]
         public InvSlot.SaveData ChestSlot;
         [Key(7)]
         public InvSlot.SaveData HandSlot;
-
+        
+        public SaveData(){}
         public SaveData(PlayerCharacterProvider target) : base(target)
         {
-            Translation = target.Translation;
-            YawRotation = target.YawRotation;
-            PitchRotation = target.PitchRotation;
+            Translation = new SerialVector3(target.Translation);
+            YawRotation = new SerialVector3(target.YawRotation);
+            PitchRotation = new SerialVector3(target.PitchRotation);
 
-            ChestSlot = new InvSlot.SaveData(target.ChestSlot);
-            HandSlot = new InvSlot.SaveData(target.HandSlot);
+            ChestSlot = target.ChestSlot.Serialize();
+            HandSlot = target.HandSlot.Serialize();
         }
 
         public override IReplicable Instance(SceneTree tree)
         {
             var newPC = (PlayerCharacterProvider) base.Instance(tree);
             
-            newPC.Translation = Translation;
-            newPC.YawRotation = YawRotation;
-            newPC.PitchRotation = PitchRotation;
+            newPC.Translation = Translation.Deserialize();
+            newPC.YawRotation = YawRotation.Deserialize();
+            newPC.PitchRotation = PitchRotation.Deserialize();
             newPC.ChestSlot.ApplySaveData(ChestSlot);
             newPC.HandSlot.ApplySaveData(HandSlot);
 
             return newPC;
         }
-    }
-    //This needs to be a void* type thing so we can define this function
-    //in an interface and expose it to code higher in the chain.
-    public void ApplySaveData(byte[] data)
-    {   
-        SaveData sd = MessagePackSerializer.Deserialize<SaveData>(data);
-
-        Translation = sd.Translation;
-        YawRotation = sd.YawRotation;
-        PitchRotation = sd.PitchRotation;
-                
-        ChestSlot.ApplySaveData(sd.ChestSlot);
-        HandSlot.ApplySaveData(sd.HandSlot);
     }
 
     public override void _Ready()

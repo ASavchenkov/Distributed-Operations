@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 
 using MessagePack;
+using MessagePack.Internal;
+using MessagePack.Formatters;
 
 using ReplicationAbstractions;
 
@@ -17,6 +19,8 @@ public class SerializedNode
     [Key(2)]
     public string ScenePath;
 
+    public SerializedNode(){}
+
     public SerializedNode(IReplicable target)
     {
         Parent = target.GetParent().GetPath();
@@ -29,8 +33,32 @@ public class SerializedNode
         Node instance = EasyInstancer.Instance<Node>(ScenePath);
         instance.Name = Name;
         tree.Root.GetNode(Parent).AddChild(instance);
-        //This is awful, but all IReplicables are Nodes.
-        //(There's just no way to stipulate that in c#)
+
         return (IReplicable) instance;
     }
+}
+
+[MessagePackObject]
+public class SerialVector3
+{
+    [Key(0)]
+    public float x;
+    [Key(1)]
+    public float y;
+    [Key(2)]
+    public float z;
+
+    public SerialVector3(){}
+    public SerialVector3(Vector3 target)
+    {
+        x = target.x;
+        y = target.y;
+        z = target.z;
+    }
+
+    public Vector3 Deserialize()
+    {
+        return new Vector3(x,y,z);
+    }
+
 }

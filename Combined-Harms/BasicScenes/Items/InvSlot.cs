@@ -46,13 +46,18 @@ public class InvSlot : Node
         }
     }
 
+    public SaveData Serialize()
+    {
+        return new SaveData(this);
+    }
+
     [MessagePackObject]
     public class SaveData
     {
         public SerializedNode Occupant;
         public SaveData( InvSlot target)
         {
-            Occupant = target.Occupant.Serialize();
+            Occupant = target.Occupant?.Serialize();
         }
     }
     public void ApplySaveData(SaveData sd)

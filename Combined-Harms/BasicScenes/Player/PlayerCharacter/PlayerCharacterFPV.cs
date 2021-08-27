@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+using MessagePack;
+
 using ReplicationAbstractions;
 
 //Specifically for controlling first person movement.
@@ -96,6 +98,12 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
                 else
                     camera.AddChild(inventoryMenu);
                 return true;
+            }
+            else if(keyPress.IsActionPressed("ui_home"))
+            {
+                var readyObject = (PlayerCharacterProvider.SaveData) provider.Serialize();
+                byte[] rawSerialized = MessagePackSerializer.Serialize<PlayerCharacterProvider.SaveData>(readyObject);
+                GD.Print(MessagePackSerializer.ConvertToJson(rawSerialized));
             }
         }
         return false;
