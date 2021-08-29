@@ -37,7 +37,7 @@ public class InvSlot : Node
                 GD.Print("Occupant being set to: ", value.Name);
                 _Occupant.parent = this;
                 if(IsNetworkMaster())
-                    Rpc(nameof(OccupantRPC), (_Occupant).GetPath());
+                    Rpc(nameof(OccupantRPC), _Occupant.GetPath());
             }
             
             //For those who want to keep track of changes
@@ -53,8 +53,7 @@ public class InvSlot : Node
 
     [MessagePackObject]
     public class SaveData
-    {
-        
+    {   
         //Occupant will always be a SerializedNode
         //but to work within MessagePacks object type serialization,
         //any non-specific types end up needing to be objects.
@@ -72,10 +71,17 @@ public class InvSlot : Node
         Occupant = (IInvItem) ((SerializedNode) sd.Occupant).Instance(GetTree());
     }
     
+    public void OnNodeReplicated(Node n)
+    {
+        Occupant = (IInvItem) n;
+    }
+
     [Puppet]
     public void OccupantRPC(NodePath occupant)
     {
         Occupant = (IInvItem) GetNode(occupant);
+        if(Occupant is null)
+            ReplicationServer.Instance.Subscribe(occupant, new ReplicationServer.NotifyReplicated(OnNodeReplicated));
     }
 
     [Puppet]

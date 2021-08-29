@@ -172,8 +172,4 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
         _disposed = true;
         base.Dispose(disposing);   
     }
-
-
-
-
 }

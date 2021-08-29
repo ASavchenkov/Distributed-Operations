@@ -28,7 +28,7 @@ public class SerializedNode
         ScenePath = target.ScenePath;
     }
     //Override and call base Instance to do actual deserialization.    
-    public virtual IReplicable Instance(SceneTree tree)
+    public virtual IReplicable Instance(SceneTree tree, bool newName = false)
     {
         Node instance = EasyInstancer.Instance<Node>(ScenePath);
         instance.Name = Name;

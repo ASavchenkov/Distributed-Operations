@@ -86,7 +86,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
             HandSlot = target.HandSlot.Serialize();
         }
 
-        public override IReplicable Instance(SceneTree tree)
+        public override IReplicable Instance(SceneTree tree, bool newName = false)
         {
             var newPC = (PlayerCharacterProvider) base.Instance(tree);
             
