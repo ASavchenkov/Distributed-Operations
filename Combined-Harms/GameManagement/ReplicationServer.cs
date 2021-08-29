@@ -62,9 +62,8 @@ public class ReplicationServer : Node
             if(listeners.ContainsKey(childPath))
             {
                 foreach(NotifyReplicated listener in listeners[childPath])
-                {
                     listener((Node) childNode);
-                }
+                listeners.Remove(childPath);
             }
 
         }
