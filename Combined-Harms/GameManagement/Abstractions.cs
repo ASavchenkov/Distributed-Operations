@@ -67,10 +67,12 @@ namespace ReplicationAbstractions
         
             n.rMember = new ReplicationMember(n);
             
-            if( n.IsNetworkMaster()) n.rMember.GenName();
+            if(n.IsNetworkMaster())
+            {
+                n.rMember.GenName();
+                if(replicate) n.Replicate();
+            }
             else NOKManager.Instance.Subscribe(n);
-
-            if(replicate) n.Replicate();
         }
 
         //Sometimes you want to replicate separately from startup
@@ -93,10 +95,14 @@ namespace ReplicationAbstractions
     
     public static class EasyInstancer
     {
+        public static int NetworkID = 1;
         public static T Instance<T> (string scenePath) where T: Node
         {
             PackedScene scene = GD.Load<PackedScene>(scenePath);
-            return (T) scene.Instance();
+            Node n = scene.Instance();
+            //This will get changed later by ReplicationServer if need be.
+            n.SetNetworkMaster(NetworkID);
+            return (T) n;
         }
         public static Node GenObserver( Node provider, string path)
         {

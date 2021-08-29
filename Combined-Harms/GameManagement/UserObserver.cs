@@ -64,7 +64,6 @@ public class UserObserver : Node, ITakesInput, IObserver
         }
         
         CurrentView = PlayerCharacterProvider.Factory.Instance();
-        CurrentView.SetNetworkMaster(GetTree().GetNetworkUniqueId());
         GetNode("/root/GameRoot/PlayerCharacters").AddChild(CurrentView);
         provider.Rpc(nameof(UserProvider.SetCharacter),CurrentView.GetPath());
     }

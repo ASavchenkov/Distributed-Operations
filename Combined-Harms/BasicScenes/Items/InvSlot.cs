@@ -79,7 +79,7 @@ public class InvSlot : Node
     [Puppet]
     public void OccupantRPC(NodePath occupant)
     {
-        Occupant = (IInvItem) GetNode(occupant);
+        Occupant = (IInvItem) GetNodeOrNull(occupant);
         if(Occupant is null)
             ReplicationServer.Instance.Subscribe(occupant, new ReplicationServer.NotifyReplicated(OnNodeReplicated));
     }

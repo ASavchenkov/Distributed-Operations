@@ -57,7 +57,8 @@ public class ReplicationServer : Node
             childNode = (IReplicable) EasyInstancer.Instance<Node>(scenePath);
 
             childNode.Name = name;
-            childNode.SetNetworkMaster(GetTree().GetRpcSenderId());
+            var sender = GetTree().GetRpcSenderId();
+            childNode.SetNetworkMaster(sender);
             parentNode.AddChild((Node) childNode);
             if(listeners.ContainsKey(childPath))
             {
@@ -70,6 +71,7 @@ public class ReplicationServer : Node
         else
         {
             GD.PrintErr("Replication Error: Node path collision/ non-master call");
+            GD.PrintErr(childPath);
             //purely for debugging. Shouldn't happen.
             //Don't know how to deal with this in production.
         }

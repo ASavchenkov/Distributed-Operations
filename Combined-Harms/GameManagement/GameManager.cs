@@ -28,6 +28,8 @@ public class GameManager : Node
         //If this is the start of the application, disconnect the signal from root.
         if(uid == -1)
             GetNode("/root").Disconnect("ready",this, nameof(OnConnectedToSession));
+        else
+            EasyInstancer.NetworkID = uid;   
         
         //Manually replace because the default seems to do it async
         //and we need to do this synchronously.
@@ -37,7 +39,6 @@ public class GameManager : Node
 
         Users = gameRoot.GetNode("Users");
         UserProvider provider = UserProvider.Factory.Instance();
-        provider.SetNetworkMaster(GetTree().GetNetworkUniqueId());
         Users.AddChild(provider);
         LocalUser.Subscribe(provider);
     }

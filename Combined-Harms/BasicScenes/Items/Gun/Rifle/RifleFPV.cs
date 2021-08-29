@@ -64,7 +64,6 @@ public class RifleFPV : Spatial, ITakesInput, IObserver
             Vector3 velocity = Muzzle.GlobalTransform.basis.Xform(-Vector3.Left) * muzzleVelocity;
             
             ProjectileProvider p = EasyInstancer.Instance<ProjectileProvider>(projectileScene);
-            p.SetNetworkMaster(GetTree().GetNetworkUniqueId());
             Projectiles.AddChild(p);
             p.Rpc("Init",Muzzle.GlobalTransform.origin, velocity);
         }
