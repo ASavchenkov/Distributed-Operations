@@ -14,7 +14,6 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
     public static NodeFactory<PlayerCharacterProvider> Factory = 
         new NodeFactory<PlayerCharacterProvider> ("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");
     
-    public Guid ID {get;set;}
     public string ScenePath {get => Factory.ScenePath;}
 
     public InvSlot parent {get;set;} = null;

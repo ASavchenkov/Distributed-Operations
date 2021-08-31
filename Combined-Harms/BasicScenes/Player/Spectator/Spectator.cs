@@ -35,10 +35,10 @@ public class Spectator : Spatial, ITakesInput
 
     }
 
-    public bool OnInput(InputEvent @event)
+    public bool OnInput(InputEvent inputEvent)
     {
 
-        if(@event is InputEventMouseMotion mouseEvent && inputEnabled)
+        if(inputEvent is InputEventMouseMotion mouseEvent && inputEnabled)
         {
             //Yes these look flipped. It's correct.
             LookYaw.RotateY(-mouseEvent.Relative.x/mouseSensitivity);
@@ -49,6 +49,7 @@ public class Spectator : Spatial, ITakesInput
                 LookPitch.RotationDegrees = new Vector3(-maxPitch,0,0);
             return true;
         }
+
         return false;
     }
 
