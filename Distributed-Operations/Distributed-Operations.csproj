@@ -1,9 +1,9 @@
-﻿<Project Sdk="Godot.NET.Sdk/3.3.0">
+<Project Sdk="Godot.NET.Sdk/3.3.0">
   <PropertyGroup>
     <ProjectGuid>{D1BCCFBC-716B-44D2-8688-5C2151D4D73F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>CombinedHarms</RootNamespace>
-    <AssemblyName>Combined-Harms</AssemblyName>
+    <RootNamespace>DistributedOperations</RootNamespace>
+    <AssemblyName>Distributed-Operations</AssemblyName>
     <GodotProjectGeneratorVersion>1.0.7374.16792</GodotProjectGeneratorVersion>
     <TargetFramework>netstandard2.0</TargetFramework>
     <!--The following properties were overriden during migration to prevent errors.

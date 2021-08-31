@@ -14,7 +14,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Combined-Harms"
+config/name="Distributed-Operations"
 run/main_scene="res://GameRoot.tscn"
 config/icon="res://icon.png"
 
