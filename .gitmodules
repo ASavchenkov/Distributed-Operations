@@ -1,3 +1,3 @@
 [submodule "Combined-Harms/addons/PurePeerSignaling"]
-	path = Combined-Harms/addons/PurePeerSignaling
+	path = Distributed-Operations/addons/PurePeerSignaling
 	url = https://github.com/ASavchenkov/PurePeerSignaling.git
