@@ -29,6 +29,8 @@ public class TDMMenu : Node
 
     public override void _Ready()
     {
+        GD.Print("lol why is this being called?");
+        
         Spectators = (ItemList) GetNode(SpectatorPath);
         RedTeam = (ItemList) GetNode(RedPath);
         BlueTeam = (ItemList) GetNode(BluePath);

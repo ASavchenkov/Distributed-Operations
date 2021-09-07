@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/InventoryWindow.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/TwoFiveDMenu.tscn" type="PackedScene" id=2]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/InventoryMenu.cs" type="Script" id=3]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/FileSystem.tscn" type="PackedScene" id=4]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 1, 1, 0.0149308 )
@@ -12,6 +13,33 @@ extents = Vector3( 1, 1, 0.0149308 )
 [node name="InventoryMenu" type="Spatial"]
 script = ExtResource( 3 )
 
+[node name="Layout" type="HBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false,
+"_editor_description_": "make sure the size is the "
+}
+
+[node name="FSArea" type="Control" parent="Layout"]
+margin_right = 170.0
+margin_bottom = 600.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="InventoryArea" type="Control" parent="Layout"]
+margin_left = 174.0
+margin_right = 1024.0
+margin_bottom = 600.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+size_flags_stretch_ratio = 5.0
+
 [node name="TwoFiveDMenu" parent="." instance=ExtResource( 2 )]
 
 [node name="InventoryWindow" type="Area" parent="."]
@@ -19,9 +47,14 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.858524 )
 collision_layer = 8
 collision_mask = 0
 script = ExtResource( 1 )
+ControlPath = NodePath("../Layout/InventoryArea")
 
 [node name="CollisionShape" type="CollisionShape" parent="InventoryWindow"]
 shape = SubResource( 1 )
+
+[node name="FileSystem" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+ControlPath = NodePath("../Layout/FSArea")
 
 [node name="InventoryWorkspace" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.27948 )

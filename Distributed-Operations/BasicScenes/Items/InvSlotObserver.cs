@@ -19,7 +19,6 @@ public class InvSlotObserver : DraggableArea, IAcceptsItem
         
         if(!(provider.Occupant is null))
         {
-            GD.Print("occupant not null");
             OnOccupantSet((Node) provider.Occupant);
         }
         

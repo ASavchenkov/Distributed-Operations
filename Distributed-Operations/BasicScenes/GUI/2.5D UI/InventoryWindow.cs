@@ -3,7 +3,7 @@ using System;
 
 //Used to determine where dragged objects are shown and placed through raycast collision.
 //Also moves all the loot stuff around by moving LootRoot Spatial.
-public class InventoryWindow : Area, IPickable
+public class InventoryWindow : ControlledBoxArea, IPickable
 {
     public InputClaims Claims {get;set;} = new InputClaims();
     

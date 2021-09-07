@@ -1,21 +1,43 @@
 using Godot;
 using System;
+using System.IO;
 
-public class FileSystem : Area, IPickable
+public class FileSystem : ControlledBoxArea, IPickable
 {
     public InputClaims Claims {get;set;} = new InputClaims();
 
     public bool Permeable {get;set;} = true;
+    
     private TwoFiveDMenu menu;
+
+    [Export]
+    float depth = 1;
+
+
+    public static string savePath = System.IO.Path.Combine(
+            System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData),
+            "SaveData"
+    );
+    
     public override void _Ready()
     {
         Claims.Claims.Add("ui_scroll_up");
         Claims.Claims.Add("ui_scroll_down");
+
+        base._Ready();
     }
 
+    public void OntreeEntered()
+    {
+        DirectoryInfo saveDir = System.IO.Directory.CreateDirectory(savePath); //probably already exists
+    }
+
+    
+
+    //Don't actually care what happens on MouseOn/mouseOff
     public void MouseOn(TwoFiveDMenu menu)
     {
-        this.menu = menu;
+        
     }
     public void MouseOff()
     {
@@ -40,3 +62,4 @@ public class FileSystem : Area, IPickable
         return false;
     }
 }
+
