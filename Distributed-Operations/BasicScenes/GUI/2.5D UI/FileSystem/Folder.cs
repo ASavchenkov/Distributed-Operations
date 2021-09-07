@@ -1,16 +1,33 @@
 using Godot;
 using System;
+using System.IO;
 
 public class Folder : DraggableArea
 {
 
-    public override void _Ready()
+    DirectoryInfo _DirInfo;
+    public DirectoryInfo DirInfo
     {
-        Connect("tree_entered", this, nameof(OnTreeEntered));
-        
+        get => _DirInfo;
+        set
+        {
+            _DirInfo = value;
+            Name = value.Name;
+        }
     }
 
-    public void OnTreeEntered()
+    float width;
+    bool showContents = false;
+
+    public void Init(DirectoryInfo dirInfo, Vector3 loc, float width)
+    {
+        DirInfo = dirInfo;
+        Translation = loc;
+        this.width = width;
+        GD.Print(Name, Translation);
+    }
+
+    public override void _Ready()
     {
 
     }

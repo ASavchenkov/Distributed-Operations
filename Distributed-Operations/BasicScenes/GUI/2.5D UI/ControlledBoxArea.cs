@@ -21,6 +21,8 @@ public class ControlTracker : Godot.Object
     Camera camera;
     public Vector3 TopRight;
     public Vector3 BottomLeft;
+    public Vector3 Size {get => TopRight-BottomLeft;}
+    
     public float depth;
 
     public ControlTracker( ControlledSpatial parent, NodePath camPath, NodePath ControlPath, float depth)
