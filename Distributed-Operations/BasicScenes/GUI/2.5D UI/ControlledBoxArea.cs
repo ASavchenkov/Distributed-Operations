@@ -72,12 +72,6 @@ public class ControlledBoxArea : Area, ControlledSpatial
         collider.Translation = (topRight-bottomLeft)/2 + new Vector3(0,0,collider.Translation.z);
         var shape = (BoxShape) collider.Shape;
         shape.Extents =  (topRight-bottomLeft)/2 + new Vector3(0,0,thiccness);
-        GD.Print(   Name,
-                    Translation,
-                    collider.Translation,
-                    topRight,
-                    bottomLeft,
-                    ((BoxShape) collider.Shape).Extents);
     }
 
 }
