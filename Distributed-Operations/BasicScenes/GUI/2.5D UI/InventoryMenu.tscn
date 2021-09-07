@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/InventoryWindow.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/TwoFiveDMenu.tscn" type="PackedScene" id=2]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/InventoryMenu.cs" type="Script" id=3]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/FileSystem.tscn" type="PackedScene" id=4]
+
+[sub_resource type="CylinderMesh" id=3]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 1, 1, 0.0149308 )
@@ -40,6 +42,31 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 5.0
 
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 1024, 600 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="Camera" type="Camera" parent="ViewportContainer/Viewport"]
+cull_mask = 2
+projection = 1
+
+[node name="MeshInstance" type="MeshInstance" parent="ViewportContainer/Viewport/Camera"]
+transform = Transform( 0.102914, -0.0469658, 0.222941, 0.103792, 0.227436, 3.09325e-09, -0.20282, 0.0925585, 0.113124, 0, 0, -1.90085 )
+layers = 2
+mesh = SubResource( 3 )
+material/0 = null
+
 [node name="TwoFiveDMenu" parent="." instance=ExtResource( 2 )]
 
 [node name="InventoryWindow" type="Area" parent="."]
@@ -59,7 +86,7 @@ ControlPath = NodePath("../Layout/FSArea")
 [node name="InventoryWorkspace" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.27948 )
 collision_layer = 8
-collision_mask = 0
+collision_mask = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="InventoryWorkspace"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
