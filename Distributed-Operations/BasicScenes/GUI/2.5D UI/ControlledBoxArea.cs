@@ -38,10 +38,18 @@ public class ControlTracker : Godot.Object
     {
         Rect2 newRect = layoutControl.GetGlobalRect();
         //Swapping corners makes the math much cleaner on the receiving end.
-        TopRight = camera.ProjectLocalRayNormal(new Vector2(newRect.Position.x + newRect.Size.x, newRect.Position.y ));
-        TopRight *= (depth/Math.Abs(TopRight.z));
-        BottomLeft = camera.ProjectLocalRayNormal(new Vector2(newRect.Position.x, newRect.Position.y + newRect.Size.y ));
-        BottomLeft *= (depth/Math.Abs(BottomLeft.z));
+        
+        TopRight = camera.ToLocal(camera.ProjectRayOrigin(new Vector2(newRect.Position.x + newRect.Size.x, newRect.Position.y)));
+        TopRight += new Vector3(0,0,-depth);
+        BottomLeft = camera.ToLocal(camera.ProjectRayOrigin(new Vector2(newRect.Position.x, newRect.Position.y + newRect.Size.y )));
+        BottomLeft += new Vector3(0,0,-depth);
+        
+        #region PERSPECTIVE_HIDDEN
+        // TopRight = camera.ProjectLocalRayNormal(new Vector2(newRect.Position.x + newRect.Size.x, newRect.Position.y ));
+        // TopRight *= (depth/Math.Abs(TopRight.z));
+        // BottomLeft = camera.ProjectLocalRayNormal(new Vector2(newRect.Position.x, newRect.Position.y + newRect.Size.y ));
+        // BottomLeft *= (depth/Math.Abs(BottomLeft.z));
+        #endregion
 
         parent.Resize(TopRight,BottomLeft);
         

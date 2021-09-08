@@ -2,7 +2,7 @@ using Godot;
 using System;
 using ReplicationAbstractions;
 
-public class InventoryMenu : Spatial
+public class InventoryMenu : ViewportContainer
 {
     Spatial workspace;
     //We need access to this to get "accessible" loot.
@@ -10,9 +10,8 @@ public class InventoryMenu : Spatial
 
     public override void _Ready()
     {
-        workspace = (Spatial) GetNode("ViewportContainer/Viewport/Camera/InventoryWorkspace");
+        workspace = (Spatial) GetNode("Viewport/Camera/InventoryWorkspace");
         var pcObserver = EasyInstancer.GenObserver(pcFPV.provider, pcFPV.provider.ObserverPathInvPV);
         workspace.AddChild(pcObserver);
     }
-
 }
