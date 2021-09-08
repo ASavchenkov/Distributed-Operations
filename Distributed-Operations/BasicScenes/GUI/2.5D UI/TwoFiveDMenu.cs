@@ -97,10 +97,10 @@ public class TwoFiveDMenu : RayCast, ITakesInput
 
     public bool OnInput(InputEvent inputEvent)
     {
-        
         if(inputEvent is InputEventMouseMotion mouseMoveEvent)
         {
             //scale so it's huge. Don't want to miss anything.
+            // Translation = cam.ToLocal(cam.ProjectRayOrigin(mouseMoveEvent.Position));
             CastTo = cam.ProjectLocalRayNormal(mouseMoveEvent.Position) * 1e3f;
             EmitSignal(nameof(MouseUpdated));
             return true;
