@@ -15,7 +15,7 @@ public class TwoFiveDMenu : RayCast, ITakesInput
 
     // [Export]
     // public string camPath;
-    public string camPath = "../..";
+    public string camPath = "..";
     Camera cam;
 
     public List<Spatial> mouseIntersections {get; private set;} = new List<Spatial>();
@@ -100,7 +100,7 @@ public class TwoFiveDMenu : RayCast, ITakesInput
         if(inputEvent is InputEventMouseMotion mouseMoveEvent)
         {
             //scale so it's huge. Don't want to miss anything.
-            // Translation = cam.ToLocal(cam.ProjectRayOrigin(mouseMoveEvent.Position));
+            Translation = cam.ToLocal(cam.ProjectRayOrigin(mouseMoveEvent.Position));
             CastTo = cam.ProjectLocalRayNormal(mouseMoveEvent.Position) * 1e3f;
             EmitSignal(nameof(MouseUpdated));
             return true;

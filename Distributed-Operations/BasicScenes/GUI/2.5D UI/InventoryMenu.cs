@@ -10,7 +10,7 @@ public class InventoryMenu : Spatial
 
     public override void _Ready()
     {
-        workspace = (Spatial) GetNode("InventoryWorkspace");
+        workspace = (Spatial) GetNode("ViewportContainer/Viewport/Camera/InventoryWorkspace");
         var pcObserver = EasyInstancer.GenObserver(pcFPV.provider, pcFPV.provider.ObserverPathInvPV);
         workspace.AddChild(pcObserver);
     }

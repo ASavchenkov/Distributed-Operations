@@ -24,6 +24,7 @@ shape = SubResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0 )
 
 [node name="Camera" type="Camera" parent="LookYaw/LookPitch"]
+cull_mask = 1048573
 fov = 90.0
 near = 0.1
 

@@ -108,7 +108,7 @@ public class MouseActionTracker : Godot.Object, ITakesInput
 
     public void OnMouseUpdated()
     {
-        Vector3 mousePos = menu.CastTo/menu.CastTo.z; //normalize to z=1
+        Vector3 mousePos = menu.Translation;
         
         if( clickState == ClickState.Down && mousePos.DistanceTo(clickedPos) > 0.1)
         {
@@ -126,7 +126,7 @@ public class MouseActionTracker : Godot.Object, ITakesInput
             //started click or click and drag. Don't know which yeet.
             clickState = ClickState.Down;
             menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdated));
-            clickedPos = menu.CastTo/menu.CastTo.z;
+            clickedPos = menu.Translation;
             return true;
         }
         else if(inputEvent.IsActionReleased(actionName))
@@ -142,5 +142,4 @@ public class MouseActionTracker : Godot.Object, ITakesInput
         }
         return false;
     }
-    
 }

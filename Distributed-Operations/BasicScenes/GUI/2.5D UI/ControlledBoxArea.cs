@@ -52,7 +52,7 @@ public class ControlledBoxArea : Area, ControlledSpatial
 
     public ControlTracker tracker {get;set;}
     
-    public NodePath camPath = "../..";
+    public NodePath camPath = "..";
     [Export]
     public NodePath ControlPath;
     [Export]

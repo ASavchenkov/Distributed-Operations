@@ -1,33 +1,35 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/InventoryWindow.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/TwoFiveDMenu.tscn" type="PackedScene" id=2]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/InventoryMenu.cs" type="Script" id=3]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/FileSystem.tscn" type="PackedScene" id=4]
 
-[sub_resource type="BoxShape" id=1]
-extents = Vector3( 1, 1, 0.0149308 )
+[sub_resource type="Environment" id=3]
+
+[sub_resource type="World" id=4]
+environment = SubResource( 3 )
 
 [sub_resource type="PlaneShape" id=2]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 1, 1, 0.0149308 )
 
 [node name="InventoryMenu" type="Spatial"]
 script = ExtResource( 3 )
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+stretch = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="ViewportContainer"]
-gui_disable_input = true
-
-[node name="Camera" type="Camera" parent="ViewportContainer/Viewport"]
-cull_mask = 2
-
-[node name="Layout" type="HBoxContainer" parent="."]
+[node name="Layout" type="HBoxContainer" parent="ViewportContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
@@ -38,14 +40,14 @@ __meta__ = {
 "_editor_description_": "make sure the size is the "
 }
 
-[node name="FSArea" type="Control" parent="Layout"]
+[node name="FSArea" type="Control" parent="ViewportContainer/Layout"]
 margin_right = 170.0
 margin_bottom = 600.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="InventoryArea" type="Control" parent="Layout"]
+[node name="InventoryArea" type="Control" parent="ViewportContainer/Layout"]
 margin_left = 174.0
 margin_right = 1024.0
 margin_bottom = 600.0
@@ -54,27 +56,42 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 5.0
 
-[node name="TwoFiveDMenu" parent="." instance=ExtResource( 2 )]
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 1024, 600 )
+own_world = true
+world = SubResource( 4 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+gui_disable_input = true
 
-[node name="InventoryWindow" type="Area" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.858524 )
-collision_layer = 8
-collision_mask = 0
-script = ExtResource( 1 )
-ControlPath = NodePath("../Layout/InventoryArea")
+[node name="DirectionalLight" type="DirectionalLight" parent="ViewportContainer/Viewport"]
 
-[node name="CollisionShape" type="CollisionShape" parent="InventoryWindow"]
-shape = SubResource( 1 )
+[node name="Camera" type="Camera" parent="ViewportContainer/Viewport"]
+projection = 1
+size = 4.0
 
-[node name="FileSystem" parent="." instance=ExtResource( 4 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
-ControlPath = NodePath("../Layout/FSArea")
+[node name="TwoFiveDMenu" parent="ViewportContainer/Viewport/Camera" instance=ExtResource( 2 )]
 
-[node name="InventoryWorkspace" type="Area" parent="."]
+[node name="InventoryWorkspace" type="Area" parent="ViewportContainer/Viewport/Camera"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.27948 )
 collision_layer = 8
 collision_mask = 2
 
-[node name="CollisionShape" type="CollisionShape" parent="InventoryWorkspace"]
+[node name="CollisionShape" type="CollisionShape" parent="ViewportContainer/Viewport/Camera/InventoryWorkspace"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 shape = SubResource( 2 )
+
+[node name="InventoryWindow" type="Area" parent="ViewportContainer/Viewport/Camera"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.858524 )
+collision_layer = 8
+collision_mask = 0
+script = ExtResource( 1 )
+ControlPath = NodePath("../../../Layout/InventoryArea")
+
+[node name="CollisionShape" type="CollisionShape" parent="ViewportContainer/Viewport/Camera/InventoryWindow"]
+shape = SubResource( 1 )
+
+[node name="FileSystem" parent="ViewportContainer/Viewport/Camera" instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+ControlPath = NodePath("../../../Layout/FSArea")

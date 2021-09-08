@@ -168,6 +168,7 @@ public class OrderedRouter : Godot.Object, ITakesInput
 
     public bool OnInput(InputEvent inputEvent)
     {
+
         foreach(ITakesInput i in LayerPriorities)
         {
             if(i.OnInput(inputEvent))
