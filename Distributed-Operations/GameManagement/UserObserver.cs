@@ -20,8 +20,8 @@ public class UserObserver : Node, ITakesInput, IObserver
     
     public override void _Ready()
     {
-        PackedScene menuScene = GD.Load<PackedScene>("res://BasicScenes/GUI/MainMenu.tscn");
-        MainMenu = (CanvasItem) GetNode("MainMenu");
+        // PackedScene menuScene = GD.Load<PackedScene>("res://BasicScenes/GUI/MainMenu.tscn");
+        MainMenu = (CanvasItem) GetNode("MainMenu/MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
         MainMenu.GetNode("TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
         
