@@ -45,7 +45,7 @@ public class UserProvider : Node, IReplicable, IHasFPV
         Alias = this.Name;  //Let player change it if they so wish.
                             //this.Name is a good default though.
         GD.Print("Alias: ", Alias);
-        var menu = GetNode("/root/UserObserver_1/MainMenu/TabContainer/TDM");
+        var menu = GetNode("/root/UserObserver_1/MainMenu/MainMenu/TabContainer/TDM");
         
         Connect(nameof(TeamChanged), menu, nameof(TDMMenu.UpdateLists));
         if(!IsNetworkMaster())
