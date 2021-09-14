@@ -15,10 +15,12 @@ public class InventoryWindow : ControlledBoxArea, IPickable
     private Vector3 clickedOffset = new Vector3();
     private bool trackMouse = false;
     
+    [Export]
+    NodePath WorkspacePath;
 
     public override void _Ready()
     {
-        workspace = GetNode<Spatial>("../InventoryWorkspace");
+        workspace = GetNode<Spatial>(WorkspacePath);
         Claims.Claims.Add("MouseSecondary");
         base._Ready();
     }

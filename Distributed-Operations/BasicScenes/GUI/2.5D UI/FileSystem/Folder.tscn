@@ -1,20 +1,71 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.cs" type="Script" id=1]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/PickableEmittingArea.cs" type="Script" id=1]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.cs" type="Script" id=2]
+
+[sub_resource type="DynamicFontData" id=2]
+font_path = "res://fonts/Arial Black.ttf"
+
+[sub_resource type="DynamicFont" id=3]
+size = 14
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = SubResource( 2 )
 
 [sub_resource type="BoxShape" id=1]
-extents = Vector3( 0.0809474, 0.111202, 0.0647719 )
+extents = Vector3( 1, 1, 0.150729 )
 
-[sub_resource type="SphereMesh" id=2]
+[node name="Folder" type="VBoxContainer"]
+margin_right = 170.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+custom_constants/separation = 0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Spatial" type="Area"]
+[node name="HSplitContainer" type="HBoxContainer" parent="."]
+margin_right = 170.0
+margin_bottom = 21.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="HSplitContainer"]
+margin_right = 146.0
+margin_bottom = 21.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 3 )
+text = " Test Name"
+
+[node name="ColorRect" type="ColorRect" parent="HSplitContainer"]
+margin_left = 150.0
+margin_right = 170.0
+margin_bottom = 20.0
+rect_min_size = Vector2( 20, 20 )
+size_flags_vertical = 3
+color = Color( 0.14902, 1, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Area" type="Area" parent="HSplitContainer"]
 script = ExtResource( 1 )
+ControlPath = NodePath("..")
+OwnerPath = NodePath("../..")
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0970665, -0.0837982, 0 )
+[node name="CollisionShape" type="CollisionShape" parent="HSplitContainer/Area"]
 shape = SubResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.1, -0.1, 0 )
-mesh = SubResource( 2 )
-material/0 = null
+[node name="Contents" type="MarginContainer" parent="."]
+margin_top = 21.0
+margin_right = 170.0
+margin_bottom = 21.0
+size_flags_horizontal = 3
+custom_constants/margin_left = 10
+
+[node name="Contents" type="VBoxContainer" parent="Contents"]
+margin_left = 10.0
+margin_right = 170.0
+custom_constants/separation = 0

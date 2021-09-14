@@ -1,12 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/FileSystem.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/InventoryWindow.cs" type="Script" id=2]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/PickableEmittingArea.cs" type="Script" id=3]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/TwoFiveDMenu.tscn" type="PackedScene" id=4]
-[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/FileSystem.tscn" type="PackedScene" id=5]
 
 [sub_resource type="PlaneShape" id=1]
 
 [sub_resource type="BoxShape" id=2]
+extents = Vector3( 0.455985, 1, 0.106627 )
+
+[sub_resource type="BoxShape" id=3]
 extents = Vector3( 1, 1, 0.0149308 )
 
 [node name="Camera" type="Camera"]
@@ -26,20 +30,6 @@ collision_mask = 2
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 shape = SubResource( 1 )
 
-[node name="InventoryWindow" type="Area" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
-collision_layer = 8
-collision_mask = 0
-script = ExtResource( 2 )
-ControlPath = NodePath("../Layout/InventoryArea")
-
-[node name="CollisionShape" type="CollisionShape" parent="InventoryWindow"]
-shape = SubResource( 2 )
-
-[node name="FileSystem" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
-ControlPath = NodePath("../Layout/FSArea")
-
 [node name="Layout" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -51,14 +41,28 @@ __meta__ = {
 "_editor_description_": "make sure the size is the "
 }
 
-[node name="FSArea" type="Control" parent="Layout"]
+[node name="FileSystem" type="ScrollContainer" parent="Layout"]
 margin_right = 170.0
 margin_bottom = 600.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource( 1 )
 
-[node name="InventoryArea" type="Control" parent="Layout"]
+[node name="FSArea" type="Area" parent="Layout/FileSystem"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+collision_layer = 8
+collision_mask = 0
+script = ExtResource( 3 )
+ControlPath = NodePath("..")
+
+[node name="CollisionShape" type="CollisionShape" parent="Layout/FileSystem/FSArea"]
+shape = SubResource( 2 )
+__meta__ = {
+"_editor_description_": "Meant to be scaled depending on FOV, aspect ratio, and resolution."
+}
+
+[node name="Inventory" type="Control" parent="Layout"]
 margin_left = 174.0
 margin_right = 1024.0
 margin_bottom = 600.0
@@ -66,3 +70,14 @@ mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 5.0
+
+[node name="InventoryArea" type="Area" parent="Layout/Inventory"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
+collision_layer = 8
+collision_mask = 0
+script = ExtResource( 2 )
+ControlPath = NodePath("..")
+WorkspacePath = NodePath("../../../InventoryWorkspace")
+
+[node name="CollisionShape" type="CollisionShape" parent="Layout/Inventory/InventoryArea"]
+shape = SubResource( 3 )

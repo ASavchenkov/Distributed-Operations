@@ -2,8 +2,13 @@ using Godot;
 using System;
 using System.IO;
 
-public class Folder : DraggableArea
+using ReplicationAbstractions;
+
+public class Folder : Control, IPickable
 {
+
+    public bool Permeable{get;set;} = false;
+    public InputClaims Claims {get;set;} = new InputClaims();
 
     DirectoryInfo _DirInfo;
     public DirectoryInfo DirInfo
@@ -16,24 +21,36 @@ public class Folder : DraggableArea
         }
     }
 
-    float width;
-    bool showContents = false;
+    Label label;
 
-    public void Init(DirectoryInfo dirInfo, Vector3 loc, float width)
-    {
-        DirInfo = dirInfo;
-        Translation = loc;
-        this.width = width;
-        GD.Print(Name, Translation);
-    }
+    bool showContents = false;
 
     public override void _Ready()
     {
+        label = GetNode<Label>("HSplitContainer/Name");
+        label.Text = DirInfo.Name;
 
+        var contentContainer = GetNode("Contents/Contents");
+        DirectoryInfo[] subdirs = DirInfo.GetDirectories();
+        foreach( DirectoryInfo i in subdirs)
+        {
+            var subFolder = EasyInstancer.Instance<Folder>("res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.tscn");
+            subFolder.DirInfo = i;
+            contentContainer.AddChild(subFolder);
+        }
+        
     }
 
-    public override void OnMouseUpdate()
+    public void MouseOn(TwoFiveDMenu menu)
     {
-        //does nothing. I should really rethink this being an abstract.
+
+    }
+    public void MouseOff()
+    {
+
+    }
+    public bool OnInput(InputEvent inputEvent)
+    {
+        return false;
     }
 }

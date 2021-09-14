@@ -106,7 +106,7 @@ public class MouseActionTracker : Godot.Object, ITakesInput
         Claims.Claims.Add(actionName);
     }
 
-    public void OnMouseUpdated()
+    public void OnMouseUpdate()
     {
         Vector3 mousePos = menu.Translation;
         
@@ -125,13 +125,13 @@ public class MouseActionTracker : Godot.Object, ITakesInput
         {
             //started click or click and drag. Don't know which yeet.
             clickState = ClickState.Down;
-            menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdated));
+            menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
             clickedPos = menu.Translation;
             return true;
         }
         else if(inputEvent.IsActionReleased(actionName))
         {
-            menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdated));
+            menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
             if(clickState == ClickState.Down)
                 EmitSignal(nameof(FullClick));
             else //end of drag. Dropping.

@@ -4,7 +4,7 @@ using System.IO;
 
 using ReplicationAbstractions;
 
-public class FileSystem : ControlledBoxArea, IPickable
+public class FileSystem : Control, IPickable
 {
     public InputClaims Claims {get;set;} = new InputClaims();
 
@@ -27,7 +27,7 @@ public class FileSystem : ControlledBoxArea, IPickable
     {
         DirectoryInfo saveDir = new DirectoryInfo(Godot.OS.GetUserDataDir() + "/Blueprints");
         rootFolder = EasyInstancer.Instance<Folder>("res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.tscn");
-        rootFolder.Init(saveDir, tracker.Size, tracker.Size.x);
+        rootFolder.DirInfo = saveDir;
         AddChild(rootFolder);
         
     }
