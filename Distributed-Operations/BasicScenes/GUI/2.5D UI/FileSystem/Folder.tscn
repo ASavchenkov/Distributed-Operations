@@ -3,14 +3,14 @@
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/PickableEmittingArea.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.cs" type="Script" id=2]
 
-[sub_resource type="DynamicFontData" id=2]
+[sub_resource type="DynamicFontData" id=4]
 font_path = "res://fonts/Arial Black.ttf"
 
 [sub_resource type="DynamicFont" id=3]
 size = 14
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
-font_data = SubResource( 2 )
+font_data = SubResource( 4 )
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 1, 1, 0.150729 )
@@ -42,7 +42,7 @@ text = " Test Name"
 [node name="ColorRect" type="ColorRect" parent="HSplitContainer"]
 margin_left = 150.0
 margin_right = 170.0
-margin_bottom = 20.0
+margin_bottom = 21.0
 rect_min_size = Vector2( 20, 20 )
 size_flags_vertical = 3
 color = Color( 0.14902, 1, 0, 1 )
@@ -53,6 +53,7 @@ __meta__ = {
 [node name="Area" type="Area" parent="HSplitContainer"]
 script = ExtResource( 1 )
 ControlPath = NodePath("..")
+depth = 2.0
 OwnerPath = NodePath("../..")
 
 [node name="CollisionShape" type="CollisionShape" parent="HSplitContainer/Area"]

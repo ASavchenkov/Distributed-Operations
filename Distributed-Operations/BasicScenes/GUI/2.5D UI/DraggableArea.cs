@@ -125,7 +125,8 @@ public class MouseActionTracker : Godot.Object, ITakesInput
         {
             //started click or click and drag. Don't know which yeet.
             clickState = ClickState.Down;
-            menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
+            if(!menu.IsConnected(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate)))
+                menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
             clickedPos = menu.Translation;
             return true;
         }

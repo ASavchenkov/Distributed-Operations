@@ -67,12 +67,18 @@ public class Folder : Control, IPickable
     private void loadChilren()
     {
         var contentContainer = GetNode("Contents/Contents");
-        DirectoryInfo[] subdirs = DirInfo.GetDirectories();
-        foreach( DirectoryInfo i in subdirs)
+
+        foreach( DirectoryInfo i in DirInfo.GetDirectories())
         {
             var subFolder = EasyInstancer.Instance<Folder>("res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.tscn");
             subFolder.DirInfo = i;
             contentContainer.AddChild(subFolder);
+        }
+        foreach( FileInfo f in DirInfo.GetFiles())
+        {
+            var file = EasyInstancer.Instance<FileControl>("res://BasicScenes/GUI/2.5D UI/FileSystem/FileControl.tscn");
+            file.FInfo = f;
+            contentContainer.AddChild(file);
         }
         showContents = true;
     }
