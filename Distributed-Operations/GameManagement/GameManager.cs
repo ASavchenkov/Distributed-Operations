@@ -42,8 +42,4 @@ public class GameManager : Node
         Users.AddChild(provider);
         LocalUser.Subscribe(provider);
     }
-
-
-
-
 }

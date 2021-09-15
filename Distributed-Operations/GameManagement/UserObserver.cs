@@ -12,6 +12,7 @@ public class UserObserver : Node, ITakesInput, IObserver
     public InputClaims Claims {get;set;} = new InputClaims();
 
     private CanvasItem MainMenu;
+    private ViewportContainer inventoryMenu;
     private CanvasItem currentMenuNode = null;
     
     //This tracks whether we're spectating, using a character, driving.
@@ -20,10 +21,11 @@ public class UserObserver : Node, ITakesInput, IObserver
     
     public override void _Ready()
     {
-        // PackedScene menuScene = GD.Load<PackedScene>("res://BasicScenes/GUI/MainMenu.tscn");
         MainMenu = (CanvasItem) GetNode("MainMenu/MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
         MainMenu.GetNode("TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
+        
+        inventoryMenu = EasyInstancer.Instance<ViewportContainer>("res://BasicScenes/GUI/2.5D UI/InventoryMenu.tscn");
         
         //We are the last ones in line, since we only care about Esc key.
         //Any other system that uses it gets it first.
@@ -88,6 +90,14 @@ public class UserObserver : Node, ITakesInput, IObserver
                     currentMenuNode = null;
                     Input.SetMouseMode(Input.MouseMode.Captured);
                 }
+                return true;
+            }
+            else if(keyEvent.IsActionPressed("Inventory"))
+            {
+                if( inventoryMenu.IsInsideTree())
+                    GetNode("/root/GameRoot").RemoveChild(inventoryMenu);
+                else
+                    GetNode("/root/GameRoot").AddChild(inventoryMenu);
                 return true;
             }
         }
