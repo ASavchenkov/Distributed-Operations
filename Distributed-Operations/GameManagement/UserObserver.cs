@@ -95,9 +95,9 @@ public class UserObserver : Node, ITakesInput, IObserver
             else if(keyEvent.IsActionPressed("Inventory"))
             {
                 if( inventoryMenu.IsInsideTree())
-                    GetNode("/root/GameRoot").RemoveChild(inventoryMenu);
+                    GetNode("/root").RemoveChild(inventoryMenu);
                 else
-                    GetNode("/root/GameRoot").AddChild(inventoryMenu);
+                    GetNode("/root").AddChild(inventoryMenu);
                 return true;
             }
         }
