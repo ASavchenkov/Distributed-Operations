@@ -13,30 +13,26 @@ public class FileSystem : Control, IPickable
     private TwoFiveDMenu menu;
     private Folder rootFolder = null;
     
+    [Export]
+    string rootPath;
+
     public override void _Ready()
     {
         base._Ready();
         Claims.Claims.Add("ui_scroll_up");
         Claims.Claims.Add("ui_scroll_down");
         Connect("tree_entered",this, nameof(OntreeEntered));
-        OntreeEntered();
-        Connect("tree_exiting",this, nameof(OnTreeExiting));
+        
+        rootFolder = GetNode<Folder>("Folder");
+        rootFolder.Path = rootPath;
+        rootFolder.DispName = rootPath;
     }
 
     public void OntreeEntered()
     {
-        DirectoryInfo saveDir = new DirectoryInfo(Godot.OS.GetUserDataDir() + "/Blueprints");
-        rootFolder = EasyInstancer.Instance<Folder>("res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.tscn");
-        rootFolder.DirInfo = saveDir;
-        AddChild(rootFolder);
-        
+        rootFolder.Refresh();
     }
 
-    public void OnTreeExiting()
-    {
-        rootFolder.QueueFree();
-        rootFolder = null;
-    }
 
     //Don't actually care what happens on MouseOn/mouseOff
     public void MouseOn(TwoFiveDMenu menu)
@@ -65,5 +61,11 @@ public class FileSystem : Control, IPickable
 
         return false;
     }
-}
 
+    public interface IFSControl
+    {
+        //false means no longer exists and is going to be deleted.
+        bool Refresh();
+        string Path {get;set;}
+    }
+}

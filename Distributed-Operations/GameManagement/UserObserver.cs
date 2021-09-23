@@ -23,7 +23,6 @@ public class UserObserver : Node, ITakesInput, IObserver
     {
         MainMenu = (CanvasItem) GetNode("MainMenu/MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
-        MainMenu.GetNode("TabContainer/Deployment/VBoxContainer/Spawn?/Option").Connect("pressed", this, nameof(SpawnPC));
         
         inventoryMenu = EasyInstancer.Instance<ViewportContainer>("res://BasicScenes/GUI/2.5D UI/InventoryMenu.tscn");
         
@@ -53,22 +52,22 @@ public class UserObserver : Node, ITakesInput, IObserver
         GetNode("/root/GameRoot/Map").AddChild(CurrentView);
     }
 
-    public void SpawnPC()
-    {
-        if(provider.ThisTeam == UserProvider.Team.Unassigned) return;
+    // public void SpawnPC()
+    // {
+    //     if(provider.ThisTeam == UserProvider.Team.Unassigned) return;
 
-        if(IsInstanceValid(CurrentView))
-        {
-            CurrentView.QueueFree();
-            //Call to make sure that it unsubs from input stuff.
-            //(since there's no "OnQueueFree" signal or function.)
-            CurrentView.Dispose();
-        }
+    //     if(IsInstanceValid(CurrentView))
+    //     {
+    //         CurrentView.QueueFree();
+    //         //Call to make sure that it unsubs from input stuff.
+    //         //(since there's no "OnQueueFree" signal or function.)
+    //         CurrentView.Dispose();
+    //     }
         
-        CurrentView = PlayerCharacterProvider.Factory.Instance();
-        GetNode("/root/GameRoot/PlayerCharacters").AddChild(CurrentView);
-        provider.Rpc(nameof(UserProvider.SetCharacter),CurrentView.GetPath());
-    }
+    //     CurrentView = PlayerCharacterProvider.Factory.Instance();
+    //     GetNode("/root/GameRoot/PlayerCharacters").AddChild(CurrentView);
+    //     provider.Rpc(nameof(UserProvider.SetCharacter),CurrentView.GetPath());
+    // }
 
     public bool OnInput(InputEvent inputEvent)
     {
@@ -95,9 +94,13 @@ public class UserObserver : Node, ITakesInput, IObserver
             else if(keyEvent.IsActionPressed("Inventory"))
             {
                 if( inventoryMenu.IsInsideTree())
+                {
                     GetNode("/root").RemoveChild(inventoryMenu);
+                }
                 else
+                {
                     GetNode("/root").AddChild(inventoryMenu);
+                }
                 return true;
             }
         }

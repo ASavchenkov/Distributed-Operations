@@ -4,14 +4,12 @@ using ReplicationAbstractions;
 
 public class InventoryMenu : ViewportContainer
 {
-    Spatial workspace;
+    public Spatial Workspace;
     //We need access to this to get "accessible" loot.
     public PlayerCharacterFPV pcFPV;
 
     public override void _Ready()
     {
-        workspace = (Spatial) GetNode("Viewport/Camera/InventoryWorkspace");
-        var pcObserver = EasyInstancer.GenObserver(pcFPV.provider, pcFPV.provider.ObserverPathInvPV);
-        workspace.AddChild(pcObserver);
+        Workspace = (Spatial) GetNode("Viewport/Camera/InventoryWorkspace");
     }
 }

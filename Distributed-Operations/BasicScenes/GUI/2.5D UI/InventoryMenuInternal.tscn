@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/FileSystem.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/InventoryWindow.cs" type="Script" id=2]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/PickableEmittingArea.cs" type="Script" id=3]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/TwoFiveDMenu.tscn" type="PackedScene" id=4]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.tscn" type="PackedScene" id=5]
 
 [sub_resource type="PlaneShape" id=1]
 
@@ -42,12 +43,17 @@ __meta__ = {
 }
 
 [node name="FileSystem" type="ScrollContainer" parent="Layout"]
-margin_right = 170.0
+margin_right = 255.0
 margin_bottom = 600.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource( 1 )
+rootPath = "res://Blueprints/"
+
+[node name="Folder" parent="Layout/FileSystem" instance=ExtResource( 5 )]
+margin_right = 255.0
+margin_bottom = 21.0
 
 [node name="FSArea" type="Area" parent="Layout/FileSystem"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
@@ -63,13 +69,13 @@ __meta__ = {
 }
 
 [node name="Inventory" type="Control" parent="Layout"]
-margin_left = 174.0
+margin_left = 259.0
 margin_right = 1024.0
 margin_bottom = 600.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-size_flags_stretch_ratio = 5.0
+size_flags_stretch_ratio = 3.0
 
 [node name="InventoryArea" type="Area" parent="Layout/Inventory"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )

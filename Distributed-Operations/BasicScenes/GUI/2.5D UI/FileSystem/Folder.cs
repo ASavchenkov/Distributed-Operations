@@ -1,10 +1,11 @@
 using Godot;
 using System;
 using System.IO;
+using System.Collections.Generic;
 
 using ReplicationAbstractions;
 
-public class Folder : Control, IPickable
+public class Folder : Control, IPickable, FileSystem.IFSControl
 {
 
     public bool Permeable{get;set;} = false;
@@ -12,17 +13,30 @@ public class Folder : Control, IPickable
 
     MouseActionTracker M1 = new MouseActionTracker("MousePrimary");
 
-    DirectoryInfo _DirInfo;
-    public DirectoryInfo DirInfo
+    public Godot.Directory dir = new Godot.Directory();
+    
+    string _Path;
+    public string Path
     {
-        get => _DirInfo;
+        get => _Path;
         set
         {
-            _DirInfo = value;
-            Name = value.Name;
+            _Path = value;
+            dir.Open(value);
+            Refresh();
         }
     }
-
+    string _DispName;
+    public string DispName
+    {
+        get => _DispName;
+        set
+        {
+            _DispName = value;
+            if(!(label is null))
+                label.Text = value;
+        }
+    }
     Label label;
 
     bool showContents = false;
@@ -32,8 +46,9 @@ public class Folder : Control, IPickable
         Claims = M1.Claims;
         M1.Connect(nameof(MouseActionTracker.FullClick), this, nameof(OnClick));
 
+        dir.Open(Path);
         label = GetNode<Label>("HSplitContainer/Name");
-        label.Text = DirInfo.Name;
+        label.Text = DispName;
     }
 
     public void MouseOn(TwoFiveDMenu menu)
@@ -44,6 +59,7 @@ public class Folder : Control, IPickable
     {
 
     }
+
     public bool OnInput(InputEvent inputEvent)
     {
         return M1.OnInput(inputEvent);
@@ -59,27 +75,61 @@ public class Folder : Control, IPickable
         }
         else
         {
-            loadChilren();
+            showContents = true;
+            Refresh();
         }
         
     }
-
-    private void loadChilren()
+    
+    //Recursive (calls refresh on all of it's children too.)
+    public bool Refresh()
     {
-        var contentContainer = GetNode("Contents/Contents");
 
-        foreach( DirectoryInfo i in DirInfo.GetDirectories())
+        //if we no longer exist, stop showing ourself (and everyone under us.)
+        if(!dir.DirExists(Path))
         {
-            var subFolder = EasyInstancer.Instance<Folder>("res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.tscn");
-            subFolder.DirInfo = i;
-            contentContainer.AddChild(subFolder);
+            QueueFree();
+            return false;
         }
-        foreach( FileInfo f in DirInfo.GetFiles())
+        //End it here if we're not currently showing contents.
+        if(!showContents)
+            return true;
+        
+        //Otherwise we refresh everything under us.
+        HashSet<string> existingPaths = new HashSet<string>();
+        var contentContainer = GetNode("Contents/Contents");
+        foreach (Node existing in contentContainer.GetChildren())
         {
-            var file = EasyInstancer.Instance<FileControl>("res://BasicScenes/GUI/2.5D UI/FileSystem/FileControl.tscn");
-            file.FInfo = f;
-            contentContainer.AddChild(file);
+            var ctrl = existing as FileSystem.IFSControl;
+            if(!(ctrl is null) && ctrl.Refresh())
+            {
+                existingPaths.Add(ctrl.Path);
+            }
         }
-        showContents = true;
+        dir.ListDirBegin(skipNavigational: true);
+        string child = dir.GetNext();
+        while(child != "")
+        {
+            var childPath = Path + child;
+            if(!existingPaths.Contains(childPath))
+            {
+                if(dir.DirExists(child))
+                {
+                    var subFolder = EasyInstancer.Instance<Folder>("res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.tscn");
+                    subFolder.Path = childPath;
+                    subFolder.DispName = child;
+                    contentContainer.AddChild(subFolder);
+                }
+                else if (dir.FileExists(child))
+                {
+                    var file = EasyInstancer.Instance<FileControl>("res://BasicScenes/GUI/2.5D UI/FileSystem/FileControl.tscn");
+                    file.Path = childPath;
+                    file.DispName = child;
+                    contentContainer.AddChild(file);
+                }
+            }
+            child = dir.GetNext();
+        }
+        return true;
     }
 }

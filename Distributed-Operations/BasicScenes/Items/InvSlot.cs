@@ -68,7 +68,8 @@ public class InvSlot : Node
     }
     public void ApplySaveData(SaveData sd)
     {
-        Occupant = (IInvItem) ((SerializedNode) sd.Occupant).Instance(GetTree());
+        if(!(sd.Occupant is null))
+            Occupant = (IInvItem) ((SerializedNode) sd.Occupant).Instance(GetTree());
     }
     
     public void OnNodeReplicated(Node n)

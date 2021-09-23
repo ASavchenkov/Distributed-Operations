@@ -87,7 +87,7 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
 
         public override IReplicable Instance(SceneTree tree, bool newName = false)
         {
-            var newPC = (PlayerCharacterProvider) base.Instance(tree);
+            var newPC = (PlayerCharacterProvider) base.Instance(tree, newName);
             
             newPC.Translation = Translation.Deserialize();
             newPC.YawRotation = YawRotation.Deserialize();

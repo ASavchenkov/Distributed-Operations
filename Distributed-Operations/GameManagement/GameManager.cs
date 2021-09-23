@@ -41,5 +41,6 @@ public class GameManager : Node
         UserProvider provider = UserProvider.Factory.Instance();
         Users.AddChild(provider);
         LocalUser.Subscribe(provider);
+
     }
 }

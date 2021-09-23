@@ -30,11 +30,14 @@ public class SerializedNode
     //Override and call base Instance to do actual deserialization.    
     public virtual IReplicable Instance(SceneTree tree, bool newName = false)
     {
-        Node instance = EasyInstancer.Instance<Node>(ScenePath);
-        instance.Name = Name;
-        tree.Root.GetNode(Parent).AddChild(instance);
+        IReplicable instance = (IReplicable) EasyInstancer.Instance<Node>(ScenePath);
+        if(newName)
+            instance.rMember.GenName();
+        else
+            instance.Name = Name;
+        tree.Root.GetNode(Parent).AddChild((Node) instance);
 
-        return (IReplicable) instance;
+        return instance;
     }
 }
 

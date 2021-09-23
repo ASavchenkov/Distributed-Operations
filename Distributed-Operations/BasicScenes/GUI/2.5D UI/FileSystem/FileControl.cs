@@ -4,7 +4,7 @@ using System.IO;
 
 using ReplicationAbstractions;
 
-public class FileControl : Control, IPickable
+public class FileControl : Control, IPickable, FileSystem.IFSControl
 {
 
     public bool Permeable{get;set;} = false;
@@ -12,29 +12,29 @@ public class FileControl : Control, IPickable
 
     MouseActionTracker M1 = new MouseActionTracker("MousePrimary");
     
-    FileInfo _FInfo;
-    public FileInfo FInfo
-    {
-        get => _FInfo;
-        set
-        {
-            _FInfo = value;
-            Name = value.Name;
-        }
-    }
-    
+    public Godot.File file = new Godot.File();
+    public string Path {get;set;}
+    public string DispName;
     Label label;
 
     public override void _Ready()
     {
         Claims = M1.Claims;
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
-
+        
         label = GetNode<Label>("Name");
-        label.Text = FInfo.Name;
+        label.Text = DispName;
     }
 
-    
+    public bool Refresh()
+    {
+        if(!file.FileExists(Path))
+        {
+            QueueFree();
+            return false;
+        }
+        return true;
+    }
     public void MouseOn(TwoFiveDMenu menu)
     {
         M1.menu = menu;
@@ -49,7 +49,7 @@ public class FileControl : Control, IPickable
 
     public void OnDrag()
     {
-        GD.Print("Dragged: ", FInfo.Name);
+        GD.Print("Dragged: ", Name);
     }
 
 }
