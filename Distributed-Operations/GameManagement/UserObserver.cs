@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using MessagePack;
 
 using ReplicationAbstractions;
 //Overall root node for the player,
@@ -19,8 +21,34 @@ public class UserObserver : Node, ITakesInput, IObserver
     //Basically whatever camera this user is using. Operates at the provider level.
     private Node CurrentView = null;
     
+    [MessagePackObject]
+    public class ScenePrimitive
+    {
+        [Key(0)]
+        public string ScenePath;
+
+    }
+
     public override void _Ready()
     {
+
+        Godot.File f = new Godot.File();
+
+        f.Open("res://Blueprints/test.txt", File.ModeFlags.WriteRead);
+        ScenePrimitive testObject = new ScenePrimitive();
+        testObject.ScenePath = "res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn";
+        
+        byte[] serObject = MessagePackSerializer.Typeless.Serialize(testObject);
+        f.StoreString(MessagePackSerializer.ConvertToJson(serObject));
+        
+        byte[] retrievedSerObject = MessagePackSerializer.ConvertFromJson(f.GetAsText());
+        object retrievedTestObject = MessagePackSerializer.Typeless.Deserialize(retrievedSerObject);
+        if(testObject is ScenePrimitive TO)
+        {
+            GD.Print("It got the type right!");
+            GD.Print(TO.ScenePath);
+        }
+        
         MainMenu = (CanvasItem) GetNode("MainMenu/MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
         

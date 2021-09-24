@@ -1,1 +1,1 @@
-some content
+["UserObserver+ScenePrimitive, Distributed-Operations, Version=1.0.7936.34126, Culture=neutral, PublicKeyToken=null","res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn"]

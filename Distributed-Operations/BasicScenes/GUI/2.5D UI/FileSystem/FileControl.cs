@@ -1,8 +1,10 @@
 using Godot;
 using System;
 using System.IO;
-
+using System.Collections.Generic;
 using ReplicationAbstractions;
+
+using MessagePack;
 
 public class FileControl : Control, IPickable, FileSystem.IFSControl
 {
@@ -49,7 +51,34 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
 
     public void OnDrag()
     {
-        GD.Print("Dragged: ", Name);
+        file.Open(Path, Godot.File.ModeFlags.Read);
+        string contents = file.GetAsText();
+        GD.Print(contents);
+        byte[] bytified = MessagePackSerializer.ConvertFromJson(contents);
+        
+        object deserialized = MessagePackSerializer.Typeless.Deserialize(bytified);
+        if(deserialized is string str)
+        {
+            //This is just a file with a scene path. Instance it how we normally would.
+            //Assume it's an IInvItem because currently it can't be anything else and work.
+            Node instancedNode = EasyInstancer.Instance<Node>(str);
+            GetNode("/root/GameRoot/Loot").AddChild(instancedNode);
+        }
+        else if (deserialized is SerializedNode sn)
+        {
+            sn.Instance(GetTree(), newName: true);
+        }
+        file.Close();
+    }
+
+    public void OnDrop( SerializedNode target)
+    {
+        file.Open(Path, Godot.File.ModeFlags.Write);
+        byte[] serialized = MessagePackSerializer.Typeless.Serialize(target);
+        string stringified = MessagePackSerializer.ConvertToJson(serialized);
+        GD.Print(stringified);
+        file.StoreString(stringified);
+        file.Close();
     }
 
 }
