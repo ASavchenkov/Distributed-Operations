@@ -10,7 +10,7 @@ using ReplicationAbstractions;
 public class PlayerCharacterProvider : Node, IHasFPV, IHas3PV, IInvItem
 {
 
-    public ReplicationMember rMember {get; set;}
+    public ReplicationMember rMember {get; set;} = new ReplicationMember();
 
     public static NodeFactory<PlayerCharacterProvider> Factory = 
         new NodeFactory<PlayerCharacterProvider> ("res://BasicScenes/Player/PlayerCharacter/PlayerCharacterProvider.tscn");

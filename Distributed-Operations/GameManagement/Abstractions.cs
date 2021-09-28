@@ -10,12 +10,8 @@ namespace ReplicationAbstractions
     //since extension methods can't be triggered by signals.
     public class ReplicationMember : Godot.Object
     {
-        private IReplicable owner;
-
-        public ReplicationMember(IReplicable o)
-        {
-            owner = o;
-        }
+        public IReplicable owner;
+        public bool ReplicateOnReady = false;
 
         public void MasterDespawn()
         {
@@ -77,14 +73,17 @@ namespace ReplicationAbstractions
         public static void ReplicableReady( this IReplicable n, bool replicate = true)
         {
         
-            n.rMember = new ReplicationMember(n);
+            n.rMember.owner = n;
             
-            if(n.IsNetworkMaster())
+            if(!n.IsNetworkMaster())
+            {
+                NOKManager.Instance.Subscribe(n);
+            }
+            else if(n.rMember.ReplicateOnReady)
             {
                 n.rMember.GenName();
                 if(replicate) n.Replicate();
             }
-            else NOKManager.Instance.Subscribe(n);
         }
 
         //Sometimes you want to replicate separately from startup

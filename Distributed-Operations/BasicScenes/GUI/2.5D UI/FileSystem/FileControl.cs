@@ -82,7 +82,11 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
     //Not yet used anywhere.
     public void OnDrop( SerializedNode target)
     {
-        file.Open(Path, Godot.File.ModeFlags.Write);
+        if(file.Open(Path, Godot.File.ModeFlags.Write) != Error.Ok)
+        {
+            GD.PrintErr("can't open file bruh");
+            return;
+        }
         string serialized = MessagePackSerializer.SerializeToJson<SerializedNode>(target);
         GD.Print(serialized);
         file.StoreString(serialized.PrettyPrintJson());

@@ -10,7 +10,7 @@ using ReplicationAbstractions;
 public class UserProvider : Node, IReplicable, IHasFPV
 {
 
-    public ReplicationMember rMember {get; set;}
+    public ReplicationMember rMember {get; set;} = new ReplicationMember();
 
     public static NodeFactory<UserProvider> Factory = 
         new NodeFactory<UserProvider>("res://BasicScenes/Player/UserProvider.tscn");

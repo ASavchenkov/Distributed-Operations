@@ -15,7 +15,7 @@ public class ProjectileProvider : Node, IReplicable, IHasFPV, IHas3PV
 {
 
     //Replicable boilerplate
-    public ReplicationMember rMember {get; set;}
+    public ReplicationMember rMember {get; set;} = new ReplicationMember();
 
     public Guid ID {get;set;}
     [Export]
