@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using ReplicationAbstractions;
 
 using MessagePack;
+using JsonPrettyPrinterPlus;
 
 public class FileControl : Control, IPickable, FileSystem.IFSControl
 {
@@ -82,10 +83,9 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
     public void OnDrop( SerializedNode target)
     {
         file.Open(Path, Godot.File.ModeFlags.Write);
-        byte[] serialized = MessagePackSerializer.Typeless.Serialize(target);
-        string stringified = MessagePackSerializer.ConvertToJson(serialized);
-        GD.Print(stringified);
-        file.StoreString(stringified);
+        string serialized = MessagePackSerializer.SerializeToJson<SerializedNode>(target);
+        GD.Print(serialized);
+        file.StoreString(serialized.PrettyPrintJson());
         file.Close();
     }
 

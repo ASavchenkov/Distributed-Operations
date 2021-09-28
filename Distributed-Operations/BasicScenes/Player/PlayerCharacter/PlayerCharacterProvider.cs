@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 
 using MessagePack;
+using JsonPrettyPrinterPlus;
 
 using ReplicationAbstractions;
 
@@ -92,6 +93,7 @@ public class PlayerCharacterProvider : Node, IHasFPV, IHas3PV, IInvItem
         Translation = casted.Translation.Deserialize();
         YawRotation = casted.YawRotation.Deserialize();
         PitchRotation = casted.PitchRotation.Deserialize();
+        
     }
 
     public override void _Ready()
@@ -102,15 +104,12 @@ public class PlayerCharacterProvider : Node, IHasFPV, IHas3PV, IInvItem
         ChestSlot = GetNode<InvSlot>("ChestSlot");
         HandSlot = GetNode<InvSlot>("HandSlot");
 
-
-        Node observer = EasyInstancer.GenObserver(this, IsNetworkMaster() ? ObserverPathFPV : ObserverPath3PV);
-        MapNode.AddChild(observer);
+        var rifle = EasyInstancer.Instance<RifleProvider>("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn");
+        GetNode("/root/GameRoot/Loot").AddChild(rifle);
+        GD.Print(GetNode("/root/GameRoot/Loot"));
+        SetHandItem((IInvItem) rifle, ChestSlot);
         
-        // var rifle = EasyInstancer.Instance<RifleProvider>("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn");
-        // GetNode("/root/GameRoot/Loot").AddChild(rifle);
-        // SetHandItem((IInvItem) rifle, ChestSlot);
-        
-        GD.Print(new SerializedNode(this).AsJson());
+        GD.Print(new SerializedNode(this).AsJson().PrettyPrintJson());
         
     }
 

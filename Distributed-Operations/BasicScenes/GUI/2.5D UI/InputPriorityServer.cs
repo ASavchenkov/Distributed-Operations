@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-
+using System.Diagnostics;
 
 //Every subscriber in each layer gets the input that reaches that layer.
 //We only check whether input has been handled when we go for the next layer.
@@ -150,6 +150,7 @@ public class NamedLayerRouter : Godot.Object, ITakesInput
         else
         {
             GD.PrintErr("Tried to unsubscribe someone else's layer");
+            // GD.Print(new System.Diagnostics.StackTrace());
             GD.PrintErr(layer);
         }
     }

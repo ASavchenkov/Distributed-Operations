@@ -88,15 +88,4 @@ public class Spectator : Spatial, ITakesInput
         Translation += globalMove * delta;
         //We just apply movement manually since spectator cam doesn't have any interactions.
     }
-
-    protected override void Dispose( bool disposing)
-    {
-        if(_disposed) return;
-        if(disposing)
-        {
-            InputPriorityServer.Base.Unsubscribe(this, BaseRouter.character);
-        }
-        _disposed = true;
-        base.Dispose(disposing);
-    }
 }

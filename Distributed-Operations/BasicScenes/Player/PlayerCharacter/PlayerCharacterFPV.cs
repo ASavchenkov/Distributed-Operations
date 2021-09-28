@@ -4,6 +4,7 @@ using System;
 using MessagePack;
 
 using ReplicationAbstractions;
+using System.Diagnostics;
 
 //Specifically for controlling first person movement.
 public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
@@ -30,9 +31,9 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        LookYaw = (Spatial) GetNode("LookYaw");
-        LookPitch = (Spatial) LookYaw.GetNode("LookPitch");
-        camera = (Camera) LookPitch.GetNode("Camera");
+        LookYaw = GetNode<Spatial>("LookYaw");
+        LookPitch = LookYaw.GetNode<Spatial>("LookPitch");
+        camera = LookPitch.GetNode<Camera>("Camera");
 
         // inventoryMenu = EasyInstancer.Instance<InventoryMenu>("res://BasicScenes/GUI/2.5D UI/InventoryMenu.tscn");
         // inventoryMenu.pcFPV = this;
@@ -152,16 +153,5 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
     public void TakeDamage(int damage, int penetration)
     {
         GD.Print("torso was hit");
-    }
-
-    protected override void Dispose( bool disposing)
-    {
-        if(_disposed) return;
-        if(disposing)
-        {
-            InputPriorityServer.Base.Unsubscribe(this, BaseRouter.character);
-        }
-        _disposed = true;
-        base.Dispose(disposing);   
     }
 }

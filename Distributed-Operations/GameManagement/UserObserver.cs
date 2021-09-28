@@ -23,9 +23,6 @@ public class UserObserver : Node, ITakesInput, IObserver
     
     public override void _Ready()
     {
-        
-        var newPlayer = PlayerCharacterProvider.Factory.Instance();
-        GetNode("/root/GameRoot/PlayerCharacters").AddChild(newPlayer);
 
         MainMenu = (CanvasItem) GetNode("MainMenu/MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
@@ -67,7 +64,9 @@ public class UserObserver : Node, ITakesInput, IObserver
     //         CurrentView.QueueFree();
     //         //Call to make sure that it unsubs from input stuff.
     //         //(since there's no "OnQueueFree" signal or function.)
-    //         CurrentView.Dispose();
+    //         
+    //          InputPriorityServer.Base.Unsubscribe(CurrentView, BaseRouter.character)
+                    
     //     }
         
     //     CurrentView = PlayerCharacterProvider.Factory.Instance();
