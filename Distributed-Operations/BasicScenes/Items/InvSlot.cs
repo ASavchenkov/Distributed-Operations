@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 using MessagePack;
 
+using ReplicationAbstractions;
 //A Node that alerts others when its occupant or positon is changed.
 //Used on providers to store what loot is in their slots.
 
@@ -46,7 +47,8 @@ public class InvSlot : Node
         }
     }
 
-    public SaveData Serialize()
+    //Follow ISaveable format up until data return type.
+    public SaveData GetData()
     {
         return new SaveData(this);
     }
@@ -58,18 +60,20 @@ public class InvSlot : Node
         //but to work within MessagePacks object type serialization,
         //any non-specific types end up needing to be objects.
         [Key(0)]
-        public object Occupant;
+        public object Occupant = null;
 
         public SaveData(){}
         public SaveData( InvSlot target)
         {
-            Occupant = target.Occupant?.Serialize();
+            if( target.Occupant is null) return;
+
+            Occupant = new SerializedNode(target.Occupant);
         }
     }
-    public void ApplySaveData(SaveData sd)
+    public void ApplyData(SaveData data)
     {
-        if(!(sd.Occupant is null))
-            Occupant = (IInvItem) ((SerializedNode) sd.Occupant).Instance(GetTree());
+        if(!(data.Occupant is null))
+            Occupant = (IInvItem) ((SerializedNode) data.Occupant).Instance(GetTree());
     }
     
     public void OnNodeReplicated(Node n)

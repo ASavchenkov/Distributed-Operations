@@ -18,6 +18,8 @@ public class SerializedNode
     public string Name;
     [Key(2)]
     public string ScenePath;
+    [Key(4)]
+    public object Data;
 
     public SerializedNode(){}
 
@@ -26,6 +28,7 @@ public class SerializedNode
         Parent = target.GetParent().GetPath();
         Name = target.Name;
         ScenePath = target.ScenePath;
+        Data = ((ISaveable) target).GetData();
     }
     //Override and call base Instance to do actual deserialization.    
     public virtual IReplicable Instance(SceneTree tree, bool newName = false)
@@ -36,8 +39,17 @@ public class SerializedNode
         else
             instance.Name = Name;
         tree.Root.GetNode(Parent).AddChild((Node) instance);
-
+        ((ISaveable)instance).ApplyData(Data);
         return instance;
+    }
+
+    public byte[] AsBytes()
+    {
+        return MessagePackSerializer.Serialize<SerializedNode>(this);
+    }
+    public string AsJson()
+    {
+        return MessagePackSerializer.SerializeToJson<SerializedNode>(this);
     }
 }
 

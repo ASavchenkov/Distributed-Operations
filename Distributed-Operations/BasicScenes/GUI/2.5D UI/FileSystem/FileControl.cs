@@ -51,26 +51,34 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
 
     public void OnDrag()
     {
+        GD.Print("onDrag");
         file.Open(Path, Godot.File.ModeFlags.Read);
+        
         string contents = file.GetAsText();
-        GD.Print(contents);
         byte[] bytified = MessagePackSerializer.ConvertFromJson(contents);
         
         object deserialized = MessagePackSerializer.Typeless.Deserialize(bytified);
+        GD.Print(deserialized.GetType());
+        
         if(deserialized is string str)
         {
+            GD.Print("it's a string");
             //This is just a file with a scene path. Instance it how we normally would.
             //Assume it's an IInvItem because currently it can't be anything else and work.
             Node instancedNode = EasyInstancer.Instance<Node>(str);
             GetNode("/root/GameRoot/Loot").AddChild(instancedNode);
+            GD.Print("instanced: ", instancedNode.GetPath());
         }
         else if (deserialized is SerializedNode sn)
         {
-            sn.Instance(GetTree(), newName: true);
+            GD.Print("it's a serializedNode");
+            Node instanced = (Node) sn.Instance(GetTree(), newName: true);
+            GD.Print("deserialized: ", instanced.GetPath());
         }
         file.Close();
     }
 
+    //Not yet used anywhere.
     public void OnDrop( SerializedNode target)
     {
         file.Open(Path, Godot.File.ModeFlags.Write);

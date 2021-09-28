@@ -15,11 +15,10 @@ public interface IPickable : ITakesInput
 }
 
 //All InvItems are IReplicable and have InvPVs
-public interface IInvItem : IReplicable, IHasInvPV
+public interface IInvItem : IReplicable, ISaveable, IHasInvPV
 {
     InvSlot parent {get;set;}
     bool Validate(IInvItem item, object stateUpdate);
-    SerializedNode Serialize();
 }
 
 public interface IAcceptsItem

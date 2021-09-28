@@ -40,6 +40,18 @@ namespace ReplicationAbstractions
         }
     }
 
+    //for things that can't just be deserialized and instanced
+    //Such as nodes inside of scenes that are created automatically
+    //but may still have some data that needs to be appplied.
+
+    //Can be, and is, used in conjunction with IReplicable for
+    //serializedNode. (but maybe not in the future?)
+    public interface ISaveable
+    {
+        void ApplyData(object data);
+        object GetData();
+    }
+
     public interface IReplicable
     {
         ReplicationMember rMember {get;set;}

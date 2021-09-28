@@ -122,6 +122,9 @@ public class Folder : Control, IPickable, FileSystem.IFSControl
                 }
                 else if (dir.FileExists(child))
                 {
+                    // var filee = new Godot.File();
+                    // GD.Print(filee.FileExists(dir.GetCurrentDir() + child));
+                    // GD.Print("Added file of name: ", child, ", Path: ", childPath);
                     var file = EasyInstancer.Instance<FileControl>("res://BasicScenes/GUI/2.5D UI/FileSystem/FileControl.tscn");
                     file.Path = childPath;
                     file.DispName = child;

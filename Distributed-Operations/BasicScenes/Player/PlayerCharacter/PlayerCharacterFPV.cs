@@ -94,9 +94,8 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
             
             else if(keyPress.IsActionPressed("ui_home"))
             {
-                var readyObject = (PlayerCharacterProvider.SaveData) provider.Serialize();
-                byte[] rawSerialized = MessagePackSerializer.Serialize<PlayerCharacterProvider.SaveData>(readyObject);
-                GD.Print(MessagePackSerializer.ConvertToJson(rawSerialized));
+                var readyObject = new SerializedNode(provider);
+                GD.Print(readyObject.AsJson());
             }
         }
         return false;

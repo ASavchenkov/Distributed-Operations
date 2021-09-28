@@ -6,7 +6,7 @@ using MessagePack;
 
 using ReplicationAbstractions;
 
-public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInvItem
+public class PlayerCharacterProvider : Node, IHasFPV, IHas3PV, IInvItem
 {
 
     public ReplicationMember rMember {get; set;}
@@ -54,49 +54,44 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
     //specific to PlayerCharacterProvider BC humanoids lol.
     public InvSlot HandItemHome;
 
-    public SerializedNode Serialize()
+    public object GetData()
     {
         return new SaveData(this);
     }
 
     [MessagePackObject]
-    public class SaveData : SerializedNode
+    public class SaveData
     {
-        [Key(3)]
+        [Key(0)]
         public SerialVector3 Translation;
-        [Key(4)]
+        [Key(1)]
         public SerialVector3 YawRotation;
-        [Key(5)]
+        [Key(2)]
         public SerialVector3 PitchRotation;
 
-        [Key(6)]
+        [Key(3)]
         public InvSlot.SaveData ChestSlot;
-        [Key(7)]
+        [Key(4)]
         public InvSlot.SaveData HandSlot;
         
         public SaveData(){}
-        public SaveData(PlayerCharacterProvider target) : base(target)
+        public SaveData(PlayerCharacterProvider target)
         {
             Translation = new SerialVector3(target.Translation);
             YawRotation = new SerialVector3(target.YawRotation);
             PitchRotation = new SerialVector3(target.PitchRotation);
 
-            ChestSlot = target.ChestSlot.Serialize();
-            HandSlot = target.HandSlot.Serialize();
+            ChestSlot = target.ChestSlot.GetData();
+            HandSlot = target.HandSlot.GetData();
         }
+    }
 
-        public override IReplicable Instance(SceneTree tree, bool newName = false)
-        {
-            var newPC = (PlayerCharacterProvider) base.Instance(tree, newName);
-            
-            newPC.Translation = Translation.Deserialize();
-            newPC.YawRotation = YawRotation.Deserialize();
-            newPC.PitchRotation = PitchRotation.Deserialize();
-            newPC.ChestSlot.ApplySaveData(ChestSlot);
-            newPC.HandSlot.ApplySaveData(HandSlot);
-
-            return newPC;
-        }
+    public void ApplyData(object data)
+    {
+        SaveData casted = (SaveData) data;
+        Translation = casted.Translation.Deserialize();
+        YawRotation = casted.YawRotation.Deserialize();
+        PitchRotation = casted.PitchRotation.Deserialize();
     }
 
     public override void _Ready()
@@ -111,9 +106,12 @@ public class PlayerCharacterProvider : Node, IReplicable, IHasFPV, IHas3PV, IInv
         Node observer = EasyInstancer.GenObserver(this, IsNetworkMaster() ? ObserverPathFPV : ObserverPath3PV);
         MapNode.AddChild(observer);
         
-        var rifle = EasyInstancer.Instance<RifleProvider>("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn");
-        GetNode("/root/GameRoot/Loot").AddChild(rifle);
-        SetHandItem((IInvItem) rifle, ChestSlot);
+        // var rifle = EasyInstancer.Instance<RifleProvider>("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn");
+        // GetNode("/root/GameRoot/Loot").AddChild(rifle);
+        // SetHandItem((IInvItem) rifle, ChestSlot);
+        
+        GD.Print(new SerializedNode(this).AsJson());
+        
     }
 
     public void OnNOKTransfer(int uid)

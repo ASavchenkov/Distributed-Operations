@@ -24,27 +24,30 @@ public class RifleProvider : Node, IReplicable, IHasFPV, IInvItem
     public InvSlot parent {get;set;} = null;
 
     public Magazine Mag;
-    
 
-    public SerializedNode Serialize()
+    public object GetData()
     {
         return new SaveData(this);
     }
-
-
     //Currently pretty empty.
     //Going to have attachments and settings in the future.
     [MessagePackObject]
-    public class SaveData : SerializedNode
+    public class SaveData
     {
-        [Key(3)]
+        [Key(0)]
         public int testInt;
         
         public SaveData(){}
-        public SaveData(RifleProvider target) : base(target)
+        public SaveData(RifleProvider target)
         {
             testInt = 8;
         }
+    }
+
+    public void ApplyData(object data)
+    {
+        SaveData casted = (SaveData) data;
+        GD.Print("deserialized gun: ", casted.testInt);
     }
 
     public override void _Ready()
