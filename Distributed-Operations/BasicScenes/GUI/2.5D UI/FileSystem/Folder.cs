@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 using ReplicationAbstractions;
 
-public class Folder : Control, IPickable, FileSystem.IFSControl
+public class Folder : Control, IPickable, FileSystem.IFSControl//, IAcceptsItem
 {
 
     public bool Permeable{get;set;} = false;
@@ -116,7 +116,7 @@ public class Folder : Control, IPickable, FileSystem.IFSControl
                 if(dir.DirExists(child))
                 {
                     var subFolder = EasyInstancer.Instance<Folder>("res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.tscn");
-                    subFolder.Path = childPath;
+                    subFolder.Path = childPath + "/";
                     subFolder.DispName = child;
                     contentContainer.AddChild(subFolder);
                 }
@@ -135,4 +135,18 @@ public class Folder : Control, IPickable, FileSystem.IFSControl
         }
         return true;
     }
+
+    // public bool AcceptItem( DefaultInvPV item)
+    // {
+    //     if(file.Open(Path, Godot.File.ModeFlags.Write) != Error.Ok)
+    //     {
+    //         GD.PrintErr("can't open file bruh");
+    //         return;
+    //     }
+    //     string serialized = MessagePackSerializer.SerializeToJson<SerializedNode>(target);
+    //     GD.Print(serialized);
+    //     file.StoreString(serialized.PrettyPrintJson());
+    //     file.Close();
+    //     return true;
+    // }
 }

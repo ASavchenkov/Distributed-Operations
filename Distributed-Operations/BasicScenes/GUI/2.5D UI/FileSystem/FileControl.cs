@@ -52,7 +52,7 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
 
     public void OnDrag()
     {
-        GD.Print("onDrag");
+        GD.Print("onDrag: ", Path);
         file.Open(Path, Godot.File.ModeFlags.Read);
         
         string contents = file.GetAsText();
@@ -78,19 +78,4 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
         }
         file.Close();
     }
-
-    //Not yet used anywhere... _yet_
-    public void OnDrop( SerializedNode target)
-    {
-        if(file.Open(Path, Godot.File.ModeFlags.Write) != Error.Ok)
-        {
-            GD.PrintErr("can't open file bruh");
-            return;
-        }
-        string serialized = MessagePackSerializer.SerializeToJson<SerializedNode>(target);
-        GD.Print(serialized);
-        file.StoreString(serialized.PrettyPrintJson());
-        file.Close();
-    }
-
 }
