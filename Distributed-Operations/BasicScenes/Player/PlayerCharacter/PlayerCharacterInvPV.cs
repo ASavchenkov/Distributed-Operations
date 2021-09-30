@@ -7,7 +7,7 @@ public class PlayerCharacterInvPV : DefaultInvPV
 {
     
     private PlayerCharacterProvider _provider;
-    public override IInvItem provider
+    public override IInvItem Provider
     {
         get => _provider;
         protected set {_provider = (PlayerCharacterProvider) value;}
@@ -15,7 +15,7 @@ public class PlayerCharacterInvPV : DefaultInvPV
 
     public override void Subscribe(object p)
     {
-        provider = (IInvItem) p;
+        Provider = (IInvItem) p;
         ((InvSlotObserver) GetNode("ChestSlot")).Subscribe(_provider.ChestSlot);
         ((InvSlotObserver) GetNode("HandSlot")).Subscribe(_provider.HandSlot);
     }

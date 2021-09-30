@@ -115,9 +115,9 @@ namespace ReplicationAbstractions
             n.SetNetworkMaster(NetworkID);
             return (T) n;
         }
-        public static Node GenObserver( Node provider, string path)
+        public static Node GenObserver( Node provider, string scenePath)
         {
-            Node observer = Instance<Node>(path);
+            Node observer = Instance<Node>(scenePath);
             if(observer is IObserver o)
             {
                 o.Subscribe(provider);

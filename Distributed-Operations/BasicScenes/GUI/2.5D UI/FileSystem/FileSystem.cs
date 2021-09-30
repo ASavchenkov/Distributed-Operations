@@ -10,7 +10,7 @@ public class FileSystem : Control, IPickable
 
     public bool Permeable {get;set;} = true;
     
-    private TwoFiveDMenu menu;
+    private TwoFiveDCursor menu;
     private Folder rootFolder = null;
     
     [Export]
@@ -35,7 +35,7 @@ public class FileSystem : Control, IPickable
 
 
     //Don't actually care what happens on MouseOn/mouseOff
-    public void MouseOn(TwoFiveDMenu menu)
+    public void MouseOn(TwoFiveDCursor menu)
     {
         
     }

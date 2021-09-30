@@ -1,15 +1,25 @@
 using Godot;
 using System;
+using System.Linq;
+using System.Collections.Generic;
+
 using ReplicationAbstractions;
 
-public class InventoryMenu : ViewportContainer
+public class InventoryMenu : Control
 {
-    public Spatial Workspace;
-    //We need access to this to get "accessible" loot.
-    public PlayerCharacterFPV pcFPV;
-
+    
+    Area InventoryWorkspace;
+    //Root items that aren't yet "real" and haven't been replicated.
+    //Always show up in inventory menu.
+    
     public override void _Ready()
     {
-        Workspace = (Spatial) GetNode("Viewport/Camera/InventoryWorkspace");
+        InventoryWorkspace = GetNode<Area>("Viewport/Camera/InventoryWorkspace");
     }
+    public void AddRootInvItem(IInvItem item)
+    {
+        var observer = (DefaultInvPV) EasyInstancer.GenObserver((Node) item,item.ObserverPathInvPV);
+        InventoryWorkspace.AddChild(observer);
+    }
+
 }

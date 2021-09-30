@@ -10,7 +10,7 @@ public class InventoryWindow : ControlledBoxArea, IPickable
     Spatial workspace;
 
     public bool Permeable {get;set;} = true;
-    private TwoFiveDMenu menu = null;
+    private TwoFiveDCursor menu = null;
 
     private Vector3 clickedOffset = new Vector3();
     private bool trackMouse = false;
@@ -25,7 +25,7 @@ public class InventoryWindow : ControlledBoxArea, IPickable
         base._Ready();
     }
 
-    public void MouseOn(TwoFiveDMenu _menu)
+    public void MouseOn(TwoFiveDCursor _menu)
     {
         menu = _menu;
         GD.Print("InventoryWorkspace MouseOn");
@@ -40,7 +40,7 @@ public class InventoryWindow : ControlledBoxArea, IPickable
     {
         if(inputEvent.IsActionPressed("MouseSecondary"))
         {
-            menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(OnMouseUpdate));
+            menu.Connect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(OnMouseUpdate));
             clickedOffset = ToLocal(menu.intersectionPoints[workspace]) - workspace.Translation;
             InputPriorityServer.Base.Subscribe(this, BaseRouter.dragging);
             trackMouse = true;
@@ -48,7 +48,7 @@ public class InventoryWindow : ControlledBoxArea, IPickable
         }
         else if (inputEvent.IsActionReleased("MouseSecondary") && trackMouse)
         {
-            menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(OnMouseUpdate));
+            menu.Disconnect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(OnMouseUpdate));
             InputPriorityServer.Base.Unsubscribe(this, BaseRouter.dragging);
             trackMouse = false;
             return true;

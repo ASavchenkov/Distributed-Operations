@@ -73,7 +73,7 @@ public class InvSlotObserver : DraggableArea, IAcceptsItem
     //Purely a way for InventoryMenu to interact with provider Accept function
     public bool AcceptItem(DefaultInvPV item)
     {
-        return provider.AcceptItem(item.provider);
+        return provider.AcceptItem(item.Provider);
     }
 }
 

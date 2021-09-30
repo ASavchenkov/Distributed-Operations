@@ -38,7 +38,7 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
         }
         return true;
     }
-    public void MouseOn(TwoFiveDMenu menu)
+    public void MouseOn(TwoFiveDCursor menu)
     {
         M1.menu = menu;
     }
@@ -57,29 +57,29 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
         
         string contents = file.GetAsText();
         byte[] bytified = MessagePackSerializer.ConvertFromJson(contents);
-        
         object deserialized = MessagePackSerializer.Typeless.Deserialize(bytified);
-        GD.Print(deserialized.GetType());
         
         if(deserialized is string str)
         {
             GD.Print("it's a string");
             //This is just a file with a scene path. Instance it how we normally would.
             //Assume it's an IInvItem because currently it can't be anything else and work.
-            Node instancedNode = EasyInstancer.Instance<Node>(str);
-            GetNode("/root/GameRoot/Loot").AddChild(instancedNode);
-            GD.Print("instanced: ", instancedNode.GetPath());
+            Node instanced = EasyInstancer.Instance<Node>(str);
+            GetNode("/root/GameRoot/Assets").AddChild(instanced);
+            M1.menu.User.InventoryMenu.AddRootInvItem((IInvItem) instanced);
+            GD.Print("instanced: ", instanced.GetPath());
         }
         else if (deserialized is SerializedNode sn)
         {
             GD.Print("it's a serializedNode");
             Node instanced = (Node) sn.Instance(GetTree(), newName: true);
+            M1.menu.User.InventoryMenu.AddRootInvItem((IInvItem) instanced);
             GD.Print("deserialized: ", instanced.GetPath());
         }
         file.Close();
     }
 
-    //Not yet used anywhere.
+    //Not yet used anywhere... _yet_
     public void OnDrop( SerializedNode target)
     {
         if(file.Open(Path, Godot.File.ModeFlags.Write) != Error.Ok)

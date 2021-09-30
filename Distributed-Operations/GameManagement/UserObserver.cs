@@ -13,12 +13,13 @@ public class UserObserver : Node, ITakesInput, IObserver
     public InputClaims Claims {get;set;} = new InputClaims();
 
     private CanvasItem MainMenu;
-    private ViewportContainer inventoryMenu;
+    public InventoryMenu InventoryMenu { get; private set;}
     private CanvasItem currentMenuNode = null;
     
     //This tracks whether we're spectating, using a character, driving.
     //Basically whatever camera this user is using. Operates at the provider level.
     private Node CurrentView = null;
+
     
     
     public override void _Ready()
@@ -27,7 +28,7 @@ public class UserObserver : Node, ITakesInput, IObserver
         MainMenu = (CanvasItem) GetNode("MainMenu/MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
         
-        inventoryMenu = EasyInstancer.Instance<ViewportContainer>("res://BasicScenes/GUI/2.5D UI/InventoryMenu.tscn");
+        InventoryMenu = EasyInstancer.Instance<InventoryMenu>("res://BasicScenes/GUI/2.5D UI/InventoryMenu.tscn");
         
         //We are the last ones in line, since we only care about Esc key.
         //Any other system that uses it gets it first.
@@ -70,7 +71,7 @@ public class UserObserver : Node, ITakesInput, IObserver
     //     }
         
     //     CurrentView = PlayerCharacterProvider.Factory.Instance();
-    //     GetNode("/root/GameRoot/PlayerCharacters").AddChild(CurrentView);
+    //     BADGetNode("/root/GameRoot/PlayerCharacters").AddChild(CurrentView);
     //     provider.Rpc(nameof(UserProvider.SetCharacter),CurrentView.GetPath());
     // }
 
@@ -98,13 +99,13 @@ public class UserObserver : Node, ITakesInput, IObserver
             }
             else if(keyEvent.IsActionPressed("Inventory"))
             {
-                if( inventoryMenu.IsInsideTree())
+                if( InventoryMenu.IsInsideTree())
                 {
-                    GetNode("/root").RemoveChild(inventoryMenu);
+                    GetNode("/root").RemoveChild(InventoryMenu);
                 }
                 else
                 {
-                    GetNode("/root").AddChild(inventoryMenu);
+                    GetNode("/root").AddChild(InventoryMenu);
                 }
                 return true;
             }

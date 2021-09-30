@@ -5,16 +5,15 @@ using System.Linq;
 
 using ReplicationAbstractions;
 
-public class TwoFiveDMenu : RayCast, ITakesInput
+public class TwoFiveDCursor : RayCast, ITakesInput
 {
 
-    public static NodeFactory<TwoFiveDMenu> Factory
-        = new NodeFactory<TwoFiveDMenu>("res://BasicScenes/GUI/2.5D UI/TwoFiveDMenu.tscn");
+    public static NodeFactory<TwoFiveDCursor> Factory
+        = new NodeFactory<TwoFiveDCursor>("res://BasicScenes/GUI/2.5D UI/TwoFiveDMenu.tscn");
     
     public InputClaims Claims {get;set;} = new InputClaims();
 
-    // [Export]
-    // public string camPath;
+    public UserObserver User {get; private set;}
     public string camPath = "..";
     Camera cam;
 
@@ -30,7 +29,9 @@ public class TwoFiveDMenu : RayCast, ITakesInput
 
     public override void _Ready()
     {
-        cam = (Camera) GetNode(camPath);
+        cam = GetNode<Camera>(camPath);
+        //hardcoded for now.
+        User = GetNode<UserObserver>("/root/UserObserver_1");
         //Technically we also use mouse motion,
         //but that isn't accessible through the Input singleton
         //So we don't claim it doesn't really exist.

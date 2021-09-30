@@ -3,7 +3,7 @@
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/FileSystem.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/InventoryWindow.cs" type="Script" id=2]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/PickableEmittingArea.cs" type="Script" id=3]
-[ext_resource path="res://BasicScenes/GUI/2.5D UI/TwoFiveDMenu.tscn" type="PackedScene" id=4]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/TwoFiveDCursor.tscn" type="PackedScene" id=4]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.tscn" type="PackedScene" id=5]
 
 [sub_resource type="PlaneShape" id=1]

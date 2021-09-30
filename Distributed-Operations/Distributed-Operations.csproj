@@ -38,7 +38,7 @@
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryMenu.cs" />
     <Compile Include="BasicScenes\Items\DefaultInvPV.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryAbstractions.cs" />
-    <Compile Include="BasicScenes\GUI\2.5D UI\TwoFiveDMenu.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\TwoFiveDCursor.cs" />
     <Compile Include="BasicScenes\Items\InvSlot.cs" />
     <Compile Include="BasicScenes\Items\InvSlotObserver.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryWindow.cs" />

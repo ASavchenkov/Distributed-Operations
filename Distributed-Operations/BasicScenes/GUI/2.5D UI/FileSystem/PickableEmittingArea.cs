@@ -14,7 +14,7 @@ public class PickableEmittingArea : ControlledBoxArea, IPickable
     }
 
     public bool Permeable {get => owner.Permeable; set{ owner.Permeable =value;}}
-    public void MouseOn(TwoFiveDMenu menu) => owner.MouseOn(menu);
+    public void MouseOn(TwoFiveDCursor menu) => owner.MouseOn(menu);
     public void MouseOff() => owner.MouseOff();
 
     public InputClaims Claims{get =>owner.Claims; set {owner.Claims = value;}}

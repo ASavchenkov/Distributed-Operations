@@ -105,11 +105,10 @@ public class PlayerCharacterProvider : Node, IHasFPV, IHas3PV, IInvItem
         HandSlot = GetNode<InvSlot>("HandSlot");
 
         var rifle = EasyInstancer.Instance<RifleProvider>("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn");
-        GetNode("/root/GameRoot/Loot").AddChild(rifle);
-        GD.Print(GetNode("/root/GameRoot/Loot"));
+        GetNode("/root/GameRoot/Assets").AddChild(rifle);
         SetHandItem((IInvItem) rifle, ChestSlot);
         
-        GD.Print(new SerializedNode(this).AsJson().PrettyPrintJson());
+        // GD.Print(new SerializedNode(this).AsJson().PrettyPrintJson());
         
     }
 

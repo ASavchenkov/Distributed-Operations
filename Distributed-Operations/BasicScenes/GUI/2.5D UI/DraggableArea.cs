@@ -14,7 +14,7 @@ public abstract class DraggableArea : Area, IPickable
 
     protected MouseActionTracker M1 = new MouseActionTracker("MousePrimary");
 
-    protected TwoFiveDMenu menu = null;
+    protected TwoFiveDCursor menu = null;
     
     public override void _Ready()
     {
@@ -24,7 +24,7 @@ public abstract class DraggableArea : Area, IPickable
         M1.Connect(nameof(MouseActionTracker.Drop), this, nameof(OnDrop));
     }
 
-    public virtual void MouseOn(TwoFiveDMenu _menu)
+    public virtual void MouseOn(TwoFiveDCursor _menu)
     {
         GD.Print(Name, ": Moused on");
         menu = _menu;
@@ -49,13 +49,13 @@ public abstract class DraggableArea : Area, IPickable
     {
         GD.Print("OnDrag");
         SetCollisionLayerBit(3, false);
-        menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(OnMouseUpdate));
+        menu.Connect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(OnMouseUpdate));
     }
 
     public virtual void OnDrop()
     {
         SetCollisionLayerBit(3, true);
-        menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(OnMouseUpdate));
+        menu.Disconnect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(OnMouseUpdate));
     }
 
     public abstract void OnMouseUpdate();
@@ -72,7 +72,7 @@ public class MouseActionTracker : Godot.Object, ITakesInput
     public InputClaims Claims {get;set;} = new InputClaims();
 
     readonly string actionName;
-    public TwoFiveDMenu menu;
+    public TwoFiveDCursor menu;
     
     public enum ClickState { Up, Down, Dragging};
     ClickState _clickState = ClickState.Up;
@@ -125,14 +125,14 @@ public class MouseActionTracker : Godot.Object, ITakesInput
         {
             //started click or click and drag. Don't know which yeet.
             clickState = ClickState.Down;
-            if(!menu.IsConnected(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate)))
-                menu.Connect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
+            if(!menu.IsConnected(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate)))
+                menu.Connect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
             clickedPos = menu.Translation;
             return true;
         }
         else if(inputEvent.IsActionReleased(actionName))
         {
-            menu.Disconnect(nameof(TwoFiveDMenu.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
+            menu.Disconnect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
             if(clickState == ClickState.Down)
                 EmitSignal(nameof(FullClick));
             else //end of drag. Dropping.

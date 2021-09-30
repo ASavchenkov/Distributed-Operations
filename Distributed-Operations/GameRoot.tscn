@@ -14,14 +14,12 @@ __meta__ = {
 "_editor_description_": "A place to organize all the players."
 }
 
-[node name="PlayerCharacters" type="Node" parent="."]
-
 [node name="Projectiles" type="Node" parent="."]
 __meta__ = {
 "_editor_description_": "Just a place to organize all projectiles if we want to look at them when debugging."
 }
 
-[node name="Loot" type="Node" parent="."]
+[node name="Assets" type="Node" parent="."]
 __meta__ = {
 "_editor_description_": ""
 }

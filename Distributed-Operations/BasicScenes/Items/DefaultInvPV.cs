@@ -6,7 +6,7 @@ using ReplicationAbstractions;
 public class DefaultInvPV : DraggableArea, IObserver
 {
 
-    public virtual IInvItem provider {get; protected set;}
+    public virtual IInvItem Provider {get; protected set;}
     public Spatial parent;
     
     [Export]
@@ -17,7 +17,7 @@ public class DefaultInvPV : DraggableArea, IObserver
 
     public virtual void Subscribe( object _provider)
     {
-        provider = (IInvItem) _provider;
+        Provider = (IInvItem) _provider;
     }
 
     public override void _Ready()
