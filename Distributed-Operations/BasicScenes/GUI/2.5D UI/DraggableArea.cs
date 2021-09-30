@@ -132,7 +132,8 @@ public class MouseActionTracker : Godot.Object, ITakesInput
         }
         else if(inputEvent.IsActionReleased(actionName))
         {
-            menu.Disconnect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
+            if(menu.IsConnected(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate)))
+                menu.Disconnect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
             if(clickState == ClickState.Down)
                 EmitSignal(nameof(FullClick));
             else //end of drag. Dropping.

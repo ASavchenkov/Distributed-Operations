@@ -43,10 +43,18 @@ public class DefaultInvPV : DraggableArea, IObserver
 
         foreach(Spatial intersection in menu.mouseIntersections)
         {
+            GD.Print(intersection.Name, ", ", intersection is IAcceptsItem);
             if(intersection is IAcceptsItem acceptor)
+            {
                 if(acceptor.AcceptItem(this))
+                {
+                    QueueFree();
                     return;
+                }
                 else break; //Don't want unpredictable dropping into unseen acceptors.
+            }
+            
+                
         }
 
         //Only do this if not accepted.
