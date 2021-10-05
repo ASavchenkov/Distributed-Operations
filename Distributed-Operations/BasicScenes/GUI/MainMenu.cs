@@ -9,7 +9,6 @@ public class MainMenu : CenterContainer, ITakesInput
 
     public override void _Ready()
     {
-        Connect("tree_entered", this, nameof(OnTreeEntered));
         InputPriorityServer.Base.Subscribe(this, BaseRouter.mainMenu);
         Claims.Claims.Add("ui_cancel");
     }
@@ -30,7 +29,7 @@ public class MainMenu : CenterContainer, ITakesInput
         return false;        
     }
 
-    public void OnTreeEntered()
+    public override void _EnterTree()
     {
         Input.SetMouseMode(Input.MouseMode.Visible);
     }

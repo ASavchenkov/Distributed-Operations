@@ -79,11 +79,13 @@ public class UserObserver : Node, ITakesInput, IObserver
             }
             
         }
-        if(inputEvent.IsAction("RefreshMouseMode") && InventoryMenu.IsInsideTree())
-        {
-            Input.SetMouseMode(Input.MouseMode.Visible);
-            return true;
-        }
+
+        // if(inputEvent.IsAction("RefreshMouseMode") && InventoryMenu.IsInsideTree())
+        // {
+        //     GD.PrintErr("Did we get this?");
+        //     Input.SetMouseMode(Input.MouseMode.Visible);
+        //     return true;
+        // }
         return false;
     }
 

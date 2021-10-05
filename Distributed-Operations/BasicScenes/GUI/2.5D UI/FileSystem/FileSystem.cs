@@ -21,16 +21,16 @@ public class FileSystem : Control, IPickable
         base._Ready();
         Claims.Claims.Add("ui_scroll_up");
         Claims.Claims.Add("ui_scroll_down");
-        Connect("tree_entered",this, nameof(OntreeEntered));
         
         rootFolder = GetNode<Folder>("Folder");
         rootFolder.Path = rootPath;
         rootFolder.DispName = rootPath;
     }
 
-    public void OntreeEntered()
+    public override void _EnterTree()
     {
-        rootFolder.Refresh();
+        //rootFolder might not be ready yet if this is the first opening.
+        rootFolder?.Refresh();
     }
 
 

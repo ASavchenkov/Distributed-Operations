@@ -21,5 +21,4 @@ public class InventoryMenu : Control
         var observer = (DefaultInvPV) EasyInstancer.GenObserver((Node) item,item.ObserverPathInvPV);
         InventoryWorkspace.AddChild(observer);
     }
-
 }

@@ -106,6 +106,11 @@ public class TwoFiveDCursor : RayCast, ITakesInput
             EmitSignal(nameof(MouseUpdated));
             return true;
         }
+        if(inputEvent.IsAction("RefreshMouseMode"))
+        {
+            Input.SetMouseMode(Input.MouseMode.Visible);
+            return true;
+        }
         return false;
     }
 

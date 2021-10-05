@@ -27,7 +27,6 @@ public class InputPriorityServer : Node
     public override void _Ready()
     {
         Instance = this;
-
     }
 
     public override void _UnhandledInput(InputEvent inputEvent)
