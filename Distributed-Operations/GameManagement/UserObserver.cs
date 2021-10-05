@@ -57,7 +57,6 @@ public class UserObserver : Node, ITakesInput, IObserver
 
     public bool OnInput(InputEvent inputEvent)
     {
-        
         if(inputEvent is InputEventKey keyEvent)
         {
             if (keyEvent.IsActionPressed("ui_cancel"))
