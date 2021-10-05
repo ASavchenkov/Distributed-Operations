@@ -84,7 +84,7 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
                 LookPitch.RotationDegrees = new Vector3(-provider.maxPitch,0,0);
             return true;
         }
-        else if (inputEvent is InputEventKey keyPress)
+        if (inputEvent is InputEventKey keyPress)
         {
             if(keyPress.IsActionPressed("Jump") && groundCounter!=0)
             {
@@ -98,6 +98,11 @@ public class PlayerCharacterFPV : RigidBody, ITakesInput, IObserver
                 var readyObject = new SerializedNode(provider);
                 GD.Print(readyObject.AsJson());
             }
+        }
+        if (inputEvent.IsAction("RefreshMouseMode"))
+        {
+            Input.SetMouseMode(Input.MouseMode.Captured);
+            return true;
         }
         return false;
     }

@@ -36,6 +36,7 @@
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\PickableEmittingArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InputPriorityServer.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryMenu.cs" />
+    <Compile Include="BasicScenes\GUI\MainMenu.cs" />
     <Compile Include="BasicScenes\Items\DefaultInvPV.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryAbstractions.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\TwoFiveDCursor.cs" />

@@ -53,8 +53,6 @@ public class DefaultInvPV : DraggableArea, IObserver
                 }
                 else break; //Don't want unpredictable dropping into unseen acceptors.
             }
-            
-                
         }
 
         //Only do this if not accepted.

@@ -17,6 +17,12 @@ public class InputPriorityServer : Node
     public readonly string[] mouseButtons = {"MousePrimary", "MouseSecondary"};
     public static BaseRouter Base = new BaseRouter();
 
+    public static void RefreshMouseMode()
+    {
+        InputEventAction mouseMode = new InputEventAction();
+        mouseMode.Action = "RefreshMouseMode";
+        Instance._UnhandledInput(mouseMode);
+    }
 
     public override void _Ready()
     {
@@ -38,9 +44,13 @@ public class BaseRouter: NamedLayerRouter
     public const string mouseOver = "mouseOver";
     public const string selected = "Selected";
     public const string dragging = "Dragging";
+    public const string mainMenu = "MainMenu";
+    //The "final" priority is really "Control"
+    //but that's already in Godot,
+    //so we let controls handle it on their own with _GuiInput
     public BaseRouter()
     {
-        layerPriorities = new List<string> {dragging, selected, mouseOver, menu, character, gameManagement};
+        layerPriorities = new List<string> {mainMenu, dragging, selected, mouseOver, menu, character, gameManagement};
     }
 }
 

@@ -49,6 +49,11 @@ public class Spectator : Spatial, ITakesInput
                 LookPitch.RotationDegrees = new Vector3(-maxPitch,0,0);
             return true;
         }
+        if(inputEvent.IsAction("RefreshMouseMode"))
+        {
+            Input.SetMouseMode(Input.MouseMode.Captured);
+            return true;
+        }
 
         return false;
     }
