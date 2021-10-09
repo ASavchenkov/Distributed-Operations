@@ -10,7 +10,7 @@ public interface IPickable : ITakesInput
     //E.G: Scrolling when moused over an IPickable that
     //Doesn't consume scroll inputs.
     bool Permeable {get;set;}
-    void MouseOn(TwoFiveDCursor menu);
+    void MouseOn(MultiRayCursor cursor);
     void MouseOff();
 }
 

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/PickingRay.cs" type="Script" id=1]
+
+[node name="PickingRay" type="RayCast"]
+enabled = true
+collision_mask = 9
+collide_with_areas = true
+script = ExtResource( 1 )

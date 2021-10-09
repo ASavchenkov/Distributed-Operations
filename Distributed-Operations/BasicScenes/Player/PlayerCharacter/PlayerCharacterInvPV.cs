@@ -19,5 +19,4 @@ public class PlayerCharacterInvPV : DefaultInvPV
         ((InvSlotObserver) GetNode("ChestSlot")).Subscribe(_provider.ChestSlot);
         ((InvSlotObserver) GetNode("HandSlot")).Subscribe(_provider.HandSlot);
     }
-
 }

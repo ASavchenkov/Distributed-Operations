@@ -51,9 +51,9 @@ public class Folder : Control, IPickable, FileSystem.IFSControl//, IAcceptsItem
         label.Text = DispName;
     }
 
-    public void MouseOn(TwoFiveDCursor menu)
+    public void MouseOn(MultiRayCursor cursor)
     {
-        M1.menu = menu;
+        M1.cursor = cursor;
     }
     public void MouseOff()
     {

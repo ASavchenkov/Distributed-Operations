@@ -14,7 +14,8 @@ public class UserObserver : Node, ITakesInput, IObserver
 
     private MainMenu mainMenu;
     public InventoryMenu InventoryMenu { get; private set;}
-    
+    public MultiRayCursor Cursor {get;} = new MultiRayCursor();
+
     //This tracks whether we're spectating, using a character, driving.
     //Basically whatever camera this user is using. Operates at the provider level.
     private Node CurrentView = null;
@@ -33,6 +34,10 @@ public class UserObserver : Node, ITakesInput, IObserver
         //Any other system that uses it gets it first.
         Claims.Claims.Add("ui_cancel");
         InputPriorityServer.Base.Subscribe(this, BaseRouter.gameManagement);
+    }
+    public override void _PhysicsProcess(float delta)
+    {
+        Cursor._PhysicsProcess(delta);
     }
 
     public void Subscribe(object _provider)

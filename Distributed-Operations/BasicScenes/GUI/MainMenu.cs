@@ -32,5 +32,6 @@ public class MainMenu : CenterContainer, ITakesInput
     public override void _EnterTree()
     {
         Input.SetMouseMode(Input.MouseMode.Visible);
+        base._EnterTree();
     }
 }

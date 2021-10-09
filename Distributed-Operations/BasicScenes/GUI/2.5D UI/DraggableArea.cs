@@ -14,7 +14,7 @@ public abstract class DraggableArea : Area, IPickable
 
     protected MouseActionTracker M1 = new MouseActionTracker("MousePrimary");
 
-    protected TwoFiveDCursor menu = null;
+    protected MultiRayCursor cursor = null;
     
     public override void _Ready()
     {
@@ -24,11 +24,11 @@ public abstract class DraggableArea : Area, IPickable
         M1.Connect(nameof(MouseActionTracker.Drop), this, nameof(OnDrop));
     }
 
-    public virtual void MouseOn(TwoFiveDCursor _menu)
+    public virtual void MouseOn(MultiRayCursor _cursor)
     {
         GD.Print(Name, ": Moused on");
-        menu = _menu;
-        M1.menu = menu;
+        cursor = _cursor;
+        M1.cursor = cursor;
     }
 
     //Allow the moused on thing to request that focus is kept.
@@ -49,18 +49,18 @@ public abstract class DraggableArea : Area, IPickable
     {
         GD.Print("OnDrag");
         SetCollisionLayerBit(3, false);
-        menu.Connect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(OnMouseUpdate));
+        cursor.Connect(nameof(MultiRayCursor.CursorUpdated), this, nameof(OnCursorUpdate));
     }
 
     public virtual void OnDrop()
     {
         SetCollisionLayerBit(3, true);
-        menu.Disconnect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(OnMouseUpdate));
+        cursor.Disconnect(nameof(MultiRayCursor.CursorUpdated), this, nameof(OnCursorUpdate));
     }
 
-    public abstract void OnMouseUpdate();
+    public abstract void OnCursorUpdate();
 
-    public bool OnInput(InputEvent inputEvent)
+    public virtual bool OnInput(InputEvent inputEvent)
     {
         return M1.OnInput(inputEvent);
     }
@@ -68,11 +68,10 @@ public abstract class DraggableArea : Area, IPickable
 
 public class MouseActionTracker : Godot.Object, ITakesInput
 {
-
     public InputClaims Claims {get;set;} = new InputClaims();
 
     readonly string actionName;
-    public TwoFiveDCursor menu;
+    public MultiRayCursor cursor;
     
     public enum ClickState { Up, Down, Dragging};
     ClickState _clickState = ClickState.Up;
@@ -98,7 +97,7 @@ public class MouseActionTracker : Godot.Object, ITakesInput
     [Signal]
     public delegate void StateUpdate(ClickState state);
  
-    Vector3 clickedPos;
+    Vector2 clickedPos;
 
     public MouseActionTracker(string _actionName)
     {
@@ -106,9 +105,9 @@ public class MouseActionTracker : Godot.Object, ITakesInput
         Claims.Claims.Add(actionName);
     }
 
-    public void OnMouseUpdate()
+    public void OnCursorUpdate()
     {
-        Vector3 mousePos = menu.Translation;
+        Vector2 mousePos = cursor.MousePosition;
         
         if( clickState == ClickState.Down && mousePos.DistanceTo(clickedPos) > 0.1)
         {
@@ -125,15 +124,15 @@ public class MouseActionTracker : Godot.Object, ITakesInput
         {
             //started click or click and drag. Don't know which yeet.
             clickState = ClickState.Down;
-            if(!menu.IsConnected(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate)))
-                menu.Connect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
-            clickedPos = menu.Translation;
+            if(!cursor.IsConnected(nameof(MultiRayCursor.CursorUpdated), this, nameof(MouseActionTracker.OnCursorUpdate)))
+                cursor.Connect(nameof(MultiRayCursor.CursorUpdated), this, nameof(MouseActionTracker.OnCursorUpdate));
+            clickedPos = cursor.MousePosition;
             return true;
         }
         else if(inputEvent.IsActionReleased(actionName))
         {
-            if(menu.IsConnected(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate)))
-                menu.Disconnect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(MouseActionTracker.OnMouseUpdate));
+            if(cursor.IsConnected(nameof(MultiRayCursor.CursorUpdated), this, nameof(MouseActionTracker.OnCursorUpdate)))
+                cursor.Disconnect(nameof(MultiRayCursor.CursorUpdated), this, nameof(MouseActionTracker.OnCursorUpdate));
             if(clickState == ClickState.Down)
                 EmitSignal(nameof(FullClick));
             else //end of drag. Dropping.

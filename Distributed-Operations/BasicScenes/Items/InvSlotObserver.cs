@@ -46,13 +46,13 @@ public class InvSlotObserver : DraggableArea, IAcceptsItem
         }
     }
 
-    public override void OnMouseUpdate()
+    public override void OnCursorUpdate()
     {
-        foreach(Spatial intersected in menu.mouseIntersections)
+        foreach(Spatial intersected in cursor.mouseIntersections)
         {
             if(intersected.Name == "InventoryWorkspace")
             {
-                SetLTranslation(((Spatial)GetParent()).ToLocal(menu.intersectionPoints[intersected]));
+                SetLTranslation(((Spatial)GetParent()).ToLocal(cursor.intersectionPoints[intersected]));
                 break;
             }
         }

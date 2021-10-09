@@ -6,8 +6,6 @@ using System.Collections.Generic;
 //since only one spectator exists.
 public class Spectator : Spatial, ITakesInput
 {
-    private bool _disposed;
-
     public Spatial LookYaw;
     public Spatial LookPitch;
     public Camera camera;

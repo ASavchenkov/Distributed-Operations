@@ -44,9 +44,6 @@ public class BaseRouter: NamedLayerRouter
     public const string selected = "Selected";
     public const string dragging = "Dragging";
     public const string mainMenu = "MainMenu";
-    //The "final" priority is really "Control"
-    //but that's already in Godot,
-    //so we let controls handle it on their own with _GuiInput
     public BaseRouter()
     {
         layerPriorities = new List<string> {mainMenu, dragging, selected, mouseOver, menu, character, gameManagement};
@@ -178,7 +175,6 @@ public class OrderedRouter : Godot.Object, ITakesInput
 
     public bool OnInput(InputEvent inputEvent)
     {
-
         foreach(ITakesInput i in LayerPriorities)
         {
             if(i.OnInput(inputEvent))

@@ -26,13 +26,13 @@ public class DefaultInvPV : DraggableArea, IObserver
         parent = GetParentSpatial();
     }
 
-    public override void OnMouseUpdate()
+    public override void OnCursorUpdate()
     {
-        foreach(Spatial intersected in menu.mouseIntersections)
+        foreach(Spatial intersected in cursor.mouseIntersections)
         {
             if(intersected.Name == "InventoryWorkspace")
             {
-                Translation = parent.ToLocal(menu.intersectionPoints[intersected]);
+                Translation = parent.ToLocal(cursor.intersectionPoints[intersected]);
                 break;
             }
         }
@@ -41,7 +41,7 @@ public class DefaultInvPV : DraggableArea, IObserver
     public override void OnDrop()
     {
 
-        foreach(Spatial intersection in menu.mouseIntersections)
+        foreach(Spatial intersection in cursor.mouseIntersections)
         {
             GD.Print(intersection.Name, ", ", intersection is IAcceptsItem);
             if(intersection is IAcceptsItem acceptor)

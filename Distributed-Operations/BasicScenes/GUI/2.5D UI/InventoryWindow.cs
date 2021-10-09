@@ -10,7 +10,7 @@ public class InventoryWindow : ControlledBoxArea, IPickable
     Spatial workspace;
 
     public bool Permeable {get;set;} = true;
-    private TwoFiveDCursor menu = null;
+    private MultiRayCursor cursor = null;
 
     private Vector3 clickedOffset = new Vector3();
     private bool trackMouse = false;
@@ -25,9 +25,9 @@ public class InventoryWindow : ControlledBoxArea, IPickable
         base._Ready();
     }
 
-    public void MouseOn(TwoFiveDCursor _menu)
+    public void MouseOn(MultiRayCursor _cursor)
     {
-        menu = _menu;
+        cursor = _cursor;
         GD.Print("InventoryWorkspace MouseOn");
     }
 
@@ -40,24 +40,24 @@ public class InventoryWindow : ControlledBoxArea, IPickable
     {
         if(inputEvent.IsActionPressed("MouseSecondary"))
         {
-            menu.Connect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(OnMouseUpdate));
-            clickedOffset = ToLocal(menu.intersectionPoints[workspace]) - workspace.Translation;
+            cursor.Connect(nameof(MultiRayCursor.CursorUpdated), this, nameof(OnCursorUpdate));
+            clickedOffset = ToLocal(cursor.intersectionPoints[workspace]) - workspace.Translation;
             InputPriorityServer.Base.Subscribe(this, BaseRouter.dragging);
             trackMouse = true;
             return true;
         }
         else if (inputEvent.IsActionReleased("MouseSecondary") && trackMouse)
         {
-            menu.Disconnect(nameof(TwoFiveDCursor.MouseUpdated), this, nameof(OnMouseUpdate));
+            cursor.Disconnect(nameof(MultiRayCursor.CursorUpdated), this, nameof(OnCursorUpdate));
             InputPriorityServer.Base.Unsubscribe(this, BaseRouter.dragging);
             trackMouse = false;
             return true;
         }
         return false;
     }
-    public void OnMouseUpdate()
+    public void OnCursorUpdate()
     {
-        workspace.Translation = ToLocal(menu.intersectionPoints[workspace]) - clickedOffset;
+        workspace.Translation = ToLocal(cursor.intersectionPoints[workspace]) - clickedOffset;
     }
 
 }

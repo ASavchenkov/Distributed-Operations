@@ -10,11 +10,11 @@ public class FileSystem : Control, IPickable
 
     public bool Permeable {get;set;} = true;
     
-    private TwoFiveDCursor menu;
+    private PickingRay menu;
     private Folder rootFolder = null;
     
     [Export]
-    string rootPath;
+    string rootPath = "";
 
     public override void _Ready()
     {
@@ -31,11 +31,12 @@ public class FileSystem : Control, IPickable
     {
         //rootFolder might not be ready yet if this is the first opening.
         rootFolder?.Refresh();
+        base._EnterTree();
     }
 
 
     //Don't actually care what happens on MouseOn/mouseOff
-    public void MouseOn(TwoFiveDCursor menu)
+    public void MouseOn(MultiRayCursor menu)
     {
         
     }

@@ -20,11 +20,14 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
     public string DispName;
     Label label;
 
+    UserObserver user;
+
     public override void _Ready()
     {
         Claims = M1.Claims;
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
         
+        user  = GetNode<UserObserver>("/root/UserObserver_1");
         label = GetNode<Label>("Name");
         label.Text = DispName;
     }
@@ -38,9 +41,9 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
         }
         return true;
     }
-    public void MouseOn(TwoFiveDCursor menu)
+    public void MouseOn(MultiRayCursor cursor)
     {
-        M1.menu = menu;
+        M1.cursor = cursor;
     }
     
     public void MouseOff() {}
@@ -66,14 +69,14 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
             //Assume it's an IInvItem because currently it can't be anything else and work.
             Node instanced = EasyInstancer.Instance<Node>(str);
             GetNode("/root/GameRoot/Assets").AddChild(instanced);
-            M1.menu.User.InventoryMenu.AddRootInvItem((IInvItem) instanced);
+            user.InventoryMenu.AddRootInvItem((IInvItem) instanced);
             GD.Print("instanced: ", instanced.GetPath());
         }
         else if (deserialized is SerializedNode sn)
         {
             GD.Print("it's a serializedNode");
             Node instanced = (Node) sn.Instance(GetTree(), newName: true);
-            M1.menu.User.InventoryMenu.AddRootInvItem((IInvItem) instanced);
+            user.InventoryMenu.AddRootInvItem((IInvItem) instanced);
             GD.Print("deserialized: ", instanced.GetPath());
         }
         file.Close();
