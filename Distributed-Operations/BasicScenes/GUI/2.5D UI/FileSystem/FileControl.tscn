@@ -1,7 +1,6 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/FileControl.cs" type="Script" id=1]
-[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/PickableEmittingArea.cs" type="Script" id=2]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://fonts/Arial Black.ttf"
@@ -12,11 +11,8 @@ outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = SubResource( 1 )
 
-[sub_resource type="BoxShape" id=3]
-extents = Vector3( 1, 1, 0.150729 )
-
 [node name="HSplitContainer" type="HBoxContainer"]
-margin_right = 170.0
+margin_right = 112.0
 margin_bottom = 21.0
 script = ExtResource( 1 )
 __meta__ = {
@@ -24,15 +20,15 @@ __meta__ = {
 }
 
 [node name="Name" type="Label" parent="."]
-margin_right = 146.0
+margin_right = 88.0
 margin_bottom = 21.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 2 )
 text = " Test Name"
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_left = 150.0
-margin_right = 170.0
+margin_left = 92.0
+margin_right = 112.0
 margin_bottom = 21.0
 rect_min_size = Vector2( 20, 20 )
 size_flags_vertical = 3
@@ -40,13 +36,3 @@ color = Color( 0.14902, 1, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Area" type="Area" parent="."]
-collision_layer = 8
-collision_mask = 0
-script = ExtResource( 2 )
-ControlPath = NodePath("..")
-depth = 2.0
-
-[node name="CollisionShape" type="CollisionShape" parent="Area"]
-shape = SubResource( 3 )

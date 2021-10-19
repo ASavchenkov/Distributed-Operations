@@ -3,9 +3,12 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 
+using MessagePack;
+using JsonPrettyPrinterPlus;
+
 using ReplicationAbstractions;
 
-public class Folder : Control, IPickable, FileSystem.IFSControl//, IAcceptsItem
+public class Folder : Control, IPickable, FileSystem.IFSControl, IAcceptsItem
 {
 
     public bool Permeable{get;set;} = false;
@@ -49,6 +52,8 @@ public class Folder : Control, IPickable, FileSystem.IFSControl//, IAcceptsItem
         dir.Open(Path);
         label = GetNode<Label>("HSplitContainer/Name");
         label.Text = DispName;
+        GetNode("HSplitContainer").Connect("draw", this, "update");
+        Connect("item_rect_changed", GetNode<ControlledBoxArea>("HSplitContainer/Area").tracker, nameof(ControlTracker.OnLayoutChange));
     }
 
     public void MouseOn(MultiRayCursor cursor)
@@ -59,6 +64,7 @@ public class Folder : Control, IPickable, FileSystem.IFSControl//, IAcceptsItem
     {
 
     }
+
 
     public bool OnInput(InputEvent inputEvent)
     {
@@ -136,17 +142,28 @@ public class Folder : Control, IPickable, FileSystem.IFSControl//, IAcceptsItem
         return true;
     }
 
-    // public bool AcceptItem( DefaultInvPV item)
-    // {
-    //     if(file.Open(Path, Godot.File.ModeFlags.Write) != Error.Ok)
-    //     {
-    //         GD.PrintErr("can't open file bruh");
-    //         return;
-    //     }
-    //     string serialized = MessagePackSerializer.SerializeToJson<SerializedNode>(target);
-    //     GD.Print(serialized);
-    //     file.StoreString(serialized.PrettyPrintJson());
-    //     file.Close();
-    //     return true;
-    // }
+    public bool AcceptItem( DefaultInvPV item)
+    {
+        //Should just be the GUID
+        string name = item.Provider.Name;
+        Godot.File file = new Godot.File();
+        //Needs to be a new file.
+        if(file.FileExists(Path + "/" + name))
+        {
+            GD.PrintErr("file: ", name, " already exists");
+            return false;
+        }
+        Error openErr = file.Open(Path + name, Godot.File.ModeFlags.Write);
+        if( openErr != Error.Ok)
+        {
+            GD.PrintErr("can't open file due to error: ", openErr);
+            return false;
+        }
+
+        string serialized = new SerializedNode(item.Provider).AsJson();
+        GD.Print(serialized);
+        file.StoreString(serialized.PrettyPrintJson());
+        file.Close();
+        return true;
+    }
 }

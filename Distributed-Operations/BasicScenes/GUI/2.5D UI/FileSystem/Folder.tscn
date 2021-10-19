@@ -1,7 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/PickableEmittingArea.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/Folder.cs" type="Script" id=2]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/DrawWatcher.cs" type="Script" id=3]
 
 [sub_resource type="DynamicFontData" id=1]
 font_path = "res://fonts/Arial Black.ttf"
@@ -11,9 +11,6 @@ size = 14
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = SubResource( 1 )
-
-[sub_resource type="BoxShape" id=3]
-extents = Vector3( 1, 1, 0.150729 )
 
 [node name="Folder" type="VBoxContainer"]
 margin_right = 170.0
@@ -28,6 +25,7 @@ __meta__ = {
 [node name="HSplitContainer" type="HBoxContainer" parent="."]
 margin_right = 170.0
 margin_bottom = 21.0
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -49,17 +47,6 @@ color = Color( 0.14902, 1, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="Area" type="Area" parent="HSplitContainer"]
-collision_layer = 8
-collision_mask = 0
-script = ExtResource( 1 )
-ControlPath = NodePath("..")
-depth = 2.0
-OwnerPath = NodePath("../..")
-
-[node name="CollisionShape" type="CollisionShape" parent="HSplitContainer/Area"]
-shape = SubResource( 3 )
 
 [node name="Contents" type="MarginContainer" parent="."]
 margin_top = 21.0

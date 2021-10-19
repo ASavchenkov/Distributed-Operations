@@ -30,13 +30,16 @@
     <Compile Include="BasicScenes\GUI\2.5D UI\ControlledBoxArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\DraggableArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\ControlMarker.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\DrawWatcher.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FileControl.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FileSystem.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\Folder.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FolderEmittingArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\PickableEmittingArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InputPriorityServer.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryMenu.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\MultiRayCursor.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\Text3D\Label3D.cs" />
     <Compile Include="BasicScenes\GUI\MainMenu.cs" />
     <Compile Include="BasicScenes\Items\DefaultInvPV.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryAbstractions.cs" />

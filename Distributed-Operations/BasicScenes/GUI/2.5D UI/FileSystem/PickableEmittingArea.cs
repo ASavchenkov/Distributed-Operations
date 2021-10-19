@@ -5,7 +5,7 @@ public class PickableEmittingArea : ControlledBoxArea, IPickable
 {
     [Export]
     NodePath OwnerPath = "..";
-    IPickable owner;
+    protected IPickable owner;
 
     public override void _Ready()
     {

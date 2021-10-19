@@ -33,11 +33,13 @@ public class ControlTracker : Godot.Object
         this.camera = parent.GetViewport().GetCamera();
         this.depth = depth;
         layoutControl.Connect("item_rect_changed", this, nameof(OnLayoutChange));
+
         OnLayoutChange();
     }
     public void OnLayoutChange()
     {
         Rect2 newRect = layoutControl.GetGlobalRect();
+
         //Swapping corners makes the math much cleaner on the receiving end.
         
         //Relative to the camera. Makes sizing easier on the other end.

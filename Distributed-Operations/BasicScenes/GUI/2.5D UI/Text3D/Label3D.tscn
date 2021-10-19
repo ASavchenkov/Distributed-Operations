@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/Text3D/inconsolDist.fnt" type="BitmapFont" id=1]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/Text3D/Label3D.cs" type="Script" id=3]
+
+[node name="Label3D" type="Sprite3D"]
+script = ExtResource( 3 )
+Text = "Other Text"
+
+[node name="Port" type="Viewport" parent="."]
+size = Vector2( 100, 100 )
+own_world = true
+transparent_bg = true
+hdr = false
+disable_3d = true
+usage = 0
+render_target_v_flip = true
+gui_disable_input = true
+
+[node name="Label" type="Label" parent="Port"]
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 1 )
+text = "Other Text"
