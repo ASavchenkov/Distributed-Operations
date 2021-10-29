@@ -5,6 +5,9 @@
 
 [node name="Label3D" type="Sprite3D"]
 script = ExtResource( 3 )
+__meta__ = {
+"_editor_description_": "Textures and Materials currently assigned in code and not through the editor. Look to the script."
+}
 Text = "Other Text"
 
 [node name="Port" type="Viewport" parent="."]

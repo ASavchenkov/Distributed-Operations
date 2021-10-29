@@ -6,7 +6,7 @@ using ReplicationAbstractions;
 //Huh why isn't this an IObserver?
 //Because it doesn't need the whole generic "Subscribe"
 //function that IObserver has for the GenObserver function.
-public class InvSlotObserver : DraggableArea, IAcceptsItem
+public class InvSlotObserver : DraggableSpatial, IAcceptsItem
 {
     public InvSlot provider;
     public DefaultInvPV OccupantObserver = null;

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/ViewportFillContainer.cs" type="Script" id=1]
+
+[node name="Spatial" type="Spatial"]
+script = ExtResource( 1 )
+__meta__ = {
+"_editor_description_": "Currently only works when parented directly to camera being used."
+}

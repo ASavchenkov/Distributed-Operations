@@ -88,13 +88,13 @@ public class MultiRayCursor : Godot.Object, ITakesInput
             for(int i = 0; i< pickingLimit; i++)
             {
                 //IDK how this could not be a spatial, since we're in 3D exclusively,
-                //but if it is then god help us all.
+                //but if it isn't then god help us all.
                 var collidedObject = ray.GetCollider() as Spatial;
                 if(collidedObject is null) break;
                 newIntersections.Add(collidedObject);
                 intersectionPoints[collidedObject] = ray.GetCollisionPoint();
 
-                if(!hitNonPermeable && collidedObject is IPickable p)
+                if(!hitNonPermeable && collidedObject.GetParent() is IPickable p)
                 {
                     if(!p.Permeable) hitNonPermeable = true;
                     newMouseOvers.Add(p);

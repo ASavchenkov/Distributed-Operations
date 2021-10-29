@@ -6,22 +6,25 @@ using System.Collections.Generic;
 //Will figure out better abstraction for different
 //button choices and dragging behavior later.
 //(when it becomes relevant)
-public abstract class DraggableArea : Area, IPickable
+public abstract class DraggableSpatial : Spatial, IPickable
 {
-
     public bool Permeable {get;set;} = false;
     public InputClaims Claims {get;set;} = new InputClaims();
 
     protected MouseActionTracker M1 = new MouseActionTracker("MousePrimary");
-
     protected MultiRayCursor cursor = null;
     
+    [Export]
+    NodePath AreaPath = "Area";
+    Area collider;
+
     public override void _Ready()
     {
         Claims = M1.Claims;// Just link to M1 for now since it's the only one.
         M1.Connect(nameof(MouseActionTracker.StateUpdate), this, nameof(OnStateUpdate));
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
         M1.Connect(nameof(MouseActionTracker.Drop), this, nameof(OnDrop));
+        collider = GetNode<Area>(AreaPath);
     }
 
     public virtual void MouseOn(MultiRayCursor _cursor)
@@ -48,13 +51,13 @@ public abstract class DraggableArea : Area, IPickable
     public virtual void OnDrag()
     {
         GD.Print("OnDrag");
-        SetCollisionLayerBit(3, false);
+        collider.SetCollisionLayerBit(3, false);
         cursor.Connect(nameof(MultiRayCursor.CursorUpdated), this, nameof(OnCursorUpdate));
     }
 
     public virtual void OnDrop()
     {
-        SetCollisionLayerBit(3, true);
+        collider.SetCollisionLayerBit(3, true);
         cursor.Disconnect(nameof(MultiRayCursor.CursorUpdated), this, nameof(OnCursorUpdate));
     }
 

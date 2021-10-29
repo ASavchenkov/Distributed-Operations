@@ -3,7 +3,7 @@ using System;
 
 using ReplicationAbstractions;
 
-public class DefaultInvPV : DraggableArea, IObserver
+public class DefaultInvPV : DraggableSpatial, IObserver
 {
 
     public virtual IInvItem Provider {get; protected set;}
