@@ -16,17 +16,17 @@ public class SpatialVBoxContainer : SpatialControl
     {
         foreach(Node n in GetChildren())
         {
-            RegisterChild((SpatialControl) n);
+            if(n is SpatialControl sctrl)
+                RegisterChild((SpatialControl) n);
         }
+        base._Ready();
     }
 
-    //overloaded for our specific interface to do extra stuff.
-    //Never put children in that are not ISpatialControl
-    //Make this a child of whatever it is you want to make if you need more complexity.
-    public void AddChild(SpatialControl child, int index = -1)
+    public void AddChild(Node child, int index = -1)
     {
         AddChild(child);
-        RegisterChild(child);
+        if(child is SpatialControl sctrl)
+            RegisterChild(sctrl);
     }
 
     private void RegisterChild(SpatialControl child)

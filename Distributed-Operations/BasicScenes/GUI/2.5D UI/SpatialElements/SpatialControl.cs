@@ -34,6 +34,7 @@ public class SpatialControl : Spatial
             parent.Connect(nameof(SizeChanged), this, nameof(OnReferenceSizeChanged),
                 new Godot.Collections.Array { parent });
         }
+        base._Ready();
     }
 
     public virtual void OnReferenceSizeChanged(SpatialControl reference)
