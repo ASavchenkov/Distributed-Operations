@@ -1,6 +1,7 @@
 using Godot;
 using System;
 
+//Only works with Orthogonal camera at the moment.
 public class ViewportFillContainer : SpatialControl
 {
 

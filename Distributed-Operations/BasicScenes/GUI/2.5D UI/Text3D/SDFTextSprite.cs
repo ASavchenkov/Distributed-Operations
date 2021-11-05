@@ -1,9 +1,9 @@
 using Godot;
 using System;
 
-public class Label3D : Sprite3D
+public class SDFTextSprite : Sprite3D
 {
-    
+
     Label label;
     Viewport port;
 
@@ -21,7 +21,7 @@ public class Label3D : Sprite3D
     }
     private Vector2 _Size = new Vector2(150f,30f);
     [Export]
-    Vector2 Size
+    public Vector2 Size
     {
         get => _Size;
         set

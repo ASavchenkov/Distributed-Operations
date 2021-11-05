@@ -1,14 +1,14 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/Text3D/inconsolDist.fnt" type="BitmapFont" id=1]
-[ext_resource path="res://BasicScenes/GUI/2.5D UI/Text3D/Label3D.cs" type="Script" id=3]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/Text3D/SDFTextSprite.cs" type="Script" id=3]
 
-[node name="Label3D" type="Sprite3D"]
+[node name="TextSprite" type="Sprite3D"]
 script = ExtResource( 3 )
 __meta__ = {
 "_editor_description_": "Textures and Materials currently assigned in code and not through the editor. Look to the script."
 }
-Text = "Other Text"
+Text = "Lorem Ipsum"
 
 [node name="Port" type="Viewport" parent="."]
 size = Vector2( 100, 100 )

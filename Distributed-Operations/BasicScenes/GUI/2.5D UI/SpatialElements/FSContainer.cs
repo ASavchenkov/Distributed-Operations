@@ -1,21 +1,12 @@
 using Godot;
 using System;
 
-public class FSContainer : SpatialVBoxContainer
+public class FSContainer : SpatialControl
 {
-    Viewport viewport;
-   
+    FolderSpatial rootFolder;
     public override void _Ready()
     {
-        viewport = GetViewport();
-        viewport.Connect("size_changed", this, nameof(OnSizeChanged));
-    }
 
-    public void OnSizeChanged()
-    {
-        var cam = viewport.GetCamera();
-        var origin = cam.ProjectRayOrigin(new Vector2(0,viewport.Size.y));
-        var 
-        rect = viewport.Size;
+        base._Ready();
     }
 }

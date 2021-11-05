@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/Text3D/SDFTextSprite.tscn" type="PackedScene" id=1]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/Text3D/SpatialLabel.cs" type="Script" id=2]
+
+[node name="Label" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="TextSprite" parent="." instance=ExtResource( 1 )]
+
+[connection signal="SizeChanged" from="." to="." method="OnOwnSizeChanged"]

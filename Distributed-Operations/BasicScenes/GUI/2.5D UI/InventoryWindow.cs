@@ -3,7 +3,7 @@ using System;
 
 //Used to determine where dragged objects are shown and placed through raycast collision.
 //Also moves all the loot stuff around by moving LootRoot Spatial.
-public class InventoryWindow : ControlledBoxArea, IPickable
+public class InventoryWindow : SpatialControl, IPickable
 {
     public InputClaims Claims {get;set;} = new InputClaims();
     
@@ -28,12 +28,12 @@ public class InventoryWindow : ControlledBoxArea, IPickable
     public void MouseOn(MultiRayCursor _cursor)
     {
         cursor = _cursor;
-        GD.Print("InventoryWorkspace MouseOn");
+        GD.Print("InventoryWindow MouseOn");
     }
 
     public void MouseOff()
     {
-        GD.Print("InventoryWorkspace MouseOff");
+        GD.Print("InventoryWindow MouseOff");
     }
 
     public bool OnInput(InputEvent inputEvent)

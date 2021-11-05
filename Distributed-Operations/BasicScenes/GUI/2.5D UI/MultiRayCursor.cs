@@ -94,10 +94,16 @@ public class MultiRayCursor : Godot.Object, ITakesInput
                 newIntersections.Add(collidedObject);
                 intersectionPoints[collidedObject] = ray.GetCollisionPoint();
 
-                if(!hitNonPermeable && collidedObject.GetParent() is IPickable p)
+                if(!hitNonPermeable)
                 {
-                    if(!p.Permeable) hitNonPermeable = true;
-                    newMouseOvers.Add(p);
+                    if(collidedObject is LinkedArea la)
+                    {
+                        var p = (IPickable) la.GetNode(la.ParentPath);
+                        newMouseOvers.Add(p);
+                    }else if( collidedObject.GetParent() is IPickable p)
+                    {
+                        newMouseOvers.Add(p);
+                    }
                 }
 
                 ray.AddException(collidedObject);

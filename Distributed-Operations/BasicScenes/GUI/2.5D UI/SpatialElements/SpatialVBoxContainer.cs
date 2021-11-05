@@ -5,7 +5,6 @@ using System.Collections.Generic;
 public class SpatialVBoxContainer : SpatialControl
 {
 
-
     private void SetBelow(SpatialControl reference, SpatialControl actual)
     {
         var y = reference.Translation.y + reference.Size.y;
@@ -22,11 +21,10 @@ public class SpatialVBoxContainer : SpatialControl
         base._Ready();
     }
 
-    public void AddChild(Node child, int index = -1)
+    public void AddSpatialControl(SpatialControl child)
     {
         AddChild(child);
-        if(child is SpatialControl sctrl)
-            RegisterChild(sctrl);
+        RegisterChild(child);
     }
 
     private void RegisterChild(SpatialControl child)

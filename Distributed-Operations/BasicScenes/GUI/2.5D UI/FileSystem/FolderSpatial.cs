@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class FileArea : SpatialControl, IPickable
+public class FolderSpatial : SpatialVBoxContainer, IPickable
 {
 
     public bool Permeable {get;set;} = false;
@@ -10,8 +10,11 @@ public class FileArea : SpatialControl, IPickable
     protected MouseActionTracker M1 = new MouseActionTracker("MousePrimary");
     protected MultiRayCursor cursor = null;
     
+    SpatialLabel label;
+
     public override void _Ready()
     {
+        label = GetNode<SpatialLabel>("Label");
         Claims = M1.Claims;// Just link to M1 for now since it's the only one.
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
     }

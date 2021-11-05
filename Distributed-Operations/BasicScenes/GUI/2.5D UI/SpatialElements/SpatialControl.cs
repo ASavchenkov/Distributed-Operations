@@ -21,26 +21,53 @@ public class SpatialControl : Spatial
     public delegate void SizeChanged();
 
     [Export]
-    bool ProportionControl = false;
+    float AnchorLeft = 0;
     [Export]
-    public Vector2 RelativePosition; //(0,0) is top left, (1,-1) is bottom right.
+    float AnchorTop = 0;
     [Export]
-    public Vector2 RelativeSize;
+    float AnchorRight = 1;
+    [Export]
+    float AnchorBottom = 1;
+
+    [Export]
+    float MarginLeft = 0;
+    [Export]
+    float MarginTop = 0;
+    [Export]
+    float MarginRight = 0;
+    [Export]
+    float MarginBottom = 0;
 
     public override void _Ready()
     {
-        if(ProportionControl && GetParent() is SpatialControl parent)
+        if(GetParent() is SpatialControl parent)
         {
             parent.Connect(nameof(SizeChanged), this, nameof(OnReferenceSizeChanged),
                 new Godot.Collections.Array { parent });
         }
         base._Ready();
     }
-
+    
     public virtual void OnReferenceSizeChanged(SpatialControl reference)
     {
-        var s = reference.Size;
-        Translation = new Vector3(RelativePosition.x * s.x, RelativePosition.y * s.y, Translation.z);
-        Size = RelativeSize * s;
+        Translation = new Vector3(AnchorX(reference), AnchorY(reference), Translation.z);
+        Size = new Vector2(AnchorSX(reference), AnchorSY(reference));
+    }
+    
+    public float AnchorX(SpatialControl reference)
+    {
+        return AnchorLeft * reference.Size.x + MarginLeft;
+    }
+    public float AnchorY(SpatialControl reference)
+    {
+        return AnchorTop * reference.Size.y + MarginTop;
+    }
+    public float AnchorSX(SpatialControl reference)
+    {
+        return AnchorRight * reference.Size.x + MarginRight - Translation.x;
+    }
+    public float AnchorSY(SpatialControl reference)
+    {
+        return AnchorBottom * reference.Size.y + MarginRight - Translation.y;
     }
 }
