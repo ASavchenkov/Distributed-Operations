@@ -17,6 +17,7 @@ public class FolderSpatial : SpatialVBoxContainer, IPickable
         label = GetNode<SpatialLabel>("Label");
         Claims = M1.Claims;// Just link to M1 for now since it's the only one.
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
+        base._Ready();
     }
 
     public virtual void MouseOn(MultiRayCursor _cursor)

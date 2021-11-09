@@ -1,53 +1,20 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/Text3D/SpatialLabel.tscn" type="PackedScene" id=1]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/FolderSpatial.cs" type="Script" id=2]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/LinkedArea.cs" type="Script" id=3]
-
-[sub_resource type="CSharpScript" id=2]
-resource_name = "FolderButton"
-script/source = "using Godot;
-using System;
-
-public class FolderButton : Spatial
-{
-    // Declare member variables here. Examples:
-    // private int a = 2;
-    // private string b = \"text\";
-
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-        
-    }
-
-//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-//  public override void _Process(float delta)
-//  {
-//      
-//  }
-}
-"
 
 [sub_resource type="BoxShape" id=1]
 
 [node name="FolderSpatial" type="Spatial"]
 script = ExtResource( 2 )
 
-[node name="FolderButton" type="Spatial" parent="."]
-script = SubResource( 2 )
-__meta__ = {
-"_editor_description_": "This one needs to have a constant vertical size, so it will be "
-}
-AnchorBottom = 0.0
-MarginBottom = 0.5
+[node name="Label" parent="." instance=ExtResource( 1 )]
+Text = "Test Text"
 
-[node name="Area" type="Area" parent="FolderButton"]
+[node name="Area" type="Area" parent="Label"]
 script = ExtResource( 3 )
 ParentPath = NodePath("../..")
 
-[node name="CollisionShape" type="CollisionShape" parent="FolderButton/Area"]
+[node name="CollisionShape" type="CollisionShape" parent="Label/Area"]
 shape = SubResource( 1 )
-
-[node name="Label" parent="." instance=ExtResource( 1 )]
-Text = "Test Text"

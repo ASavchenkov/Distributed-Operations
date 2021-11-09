@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/ViewportFillContainer.tscn" type="PackedScene" id=1]
-[ext_resource path="res://BasicScenes/GUI/2.5D UI/InventoryWindow.cs" type="Script" id=3]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/AnchoredSpatial.cs" type="Script" id=2]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/AnchorMember.tres" type="Resource" id=3]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/PickingRay.tscn" type="PackedScene" id=4]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/AreaControl.tscn" type="PackedScene" id=5]
 
@@ -28,12 +29,11 @@ shape = SubResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 
 [node name="InventoryWindow" type="Spatial" parent="VPFill"]
-script = ExtResource( 3 )
+script = ExtResource( 2 )
 __meta__ = {
 "_editor_description_": "Right click and drag to move the whole workspace around."
 }
-AnchorLeft = 0.25
-WorkspacePath = NodePath("../../InventoryWorkspace")
+aMember = ExtResource( 3 )
 
 [node name="CSGSphere" type="CSGSphere" parent="VPFill/InventoryWindow"]
 radius = 0.2
@@ -41,3 +41,4 @@ radial_segments = 30
 rings = 11
 
 [node name="AreaControl" parent="VPFill/InventoryWindow" instance=ExtResource( 5 )]
+Thiccness = 0.05

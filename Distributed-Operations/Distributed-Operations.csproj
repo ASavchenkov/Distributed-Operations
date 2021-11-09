@@ -36,6 +36,8 @@
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\Folder.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FolderEmittingArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FSControl.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\AnchoredSpatial.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\AnchorMember.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\AreaControl.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\LinkedArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\PickableEmittingArea.cs" />

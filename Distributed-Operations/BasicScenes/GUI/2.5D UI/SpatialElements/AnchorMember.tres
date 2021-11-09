@@ -1,0 +1,18 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/AnchorMember.cs" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+Left = true
+Top = true
+Right = true
+Bottom = true
+AnchorLeft = 0.25
+AnchorTop = 0.0
+AnchorRight = 1.0
+AnchorBottom = 1.0
+MarginLeft = 0.0
+MarginTop = 0.0
+MarginRight = 0.0
+MarginBottom = 0.0

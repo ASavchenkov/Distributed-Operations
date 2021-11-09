@@ -50,24 +50,3 @@ public class SpatialVBoxContainer : SpatialControl
         child.GetIndex();
     }
 }
-
-
-
-//Add instance to class if you want it to scale based off of your classes parent.
-public class ProportionControlMember : Godot.Object
-{
-    SpatialControl parent;
-    public Vector2 RelativePosition; //(0,0) is top left, (1,-1) is bottom right.
-    public Vector2 RelativeSize;
-    public ProportionControlMember( SpatialControl _parent)
-    {
-        ((Spatial) parent).GetViewport().Connect("size_changed", this, nameof(OnReferenceSizeChanged));
-    }
-
-    public void OnReferenceSizeChanged(Vector2 size)
-    {
-        parent.Translation = new Vector3(RelativePosition.x * size.x, RelativePosition.y * size.y, parent.Translation.z);
-        parent.Size = RelativeSize * size;
-    }
-
-}

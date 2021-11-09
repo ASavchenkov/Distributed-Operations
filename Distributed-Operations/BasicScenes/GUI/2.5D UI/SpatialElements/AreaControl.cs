@@ -4,7 +4,7 @@ using System;
 public class AreaControl : Area
 {
     [Export]
-    float Thiccness;
+    float Thiccness = 0.05f;
 
     CollisionShape shape;
     public override void _Ready()
