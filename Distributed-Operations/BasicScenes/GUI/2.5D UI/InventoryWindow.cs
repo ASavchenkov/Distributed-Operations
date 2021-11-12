@@ -6,6 +6,7 @@ using System;
 public class InventoryWindow : SpatialControl, IPickable, IAnchored
 {
     public InputClaims Claims {get;set;} = new InputClaims();
+    [Export]
     public AnchorMember aMember {get;set;}
 
     public bool Permeable {get;set;} = true;
@@ -21,10 +22,9 @@ public class InventoryWindow : SpatialControl, IPickable, IAnchored
 
     public override void _Ready()
     {
+        aMember.Init(this);
         workspace = GetNode<Spatial>(WorkspacePath);
         Claims.Claims.Add("MouseSecondary");
-        aMember = new AnchorMember(this);
-        aMember.AnchorLeft = 0.25f;
         base._Ready();
     }
 
