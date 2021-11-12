@@ -36,7 +36,6 @@
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\Folder.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FolderEmittingArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FSControl.cs" />
-    <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\AnchoredSpatial.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\AnchorMember.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\AreaControl.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\LinkedArea.cs" />
@@ -45,7 +44,6 @@
     <Compile Include="BasicScenes\GUI\2.5D UI\InventoryMenu.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\MultiRayCursor.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FolderSpatial.cs" />
-    <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\FSContainer.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\SpatialControl.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\SpatialVBoxContainer.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\ViewportFillContainer.cs" />

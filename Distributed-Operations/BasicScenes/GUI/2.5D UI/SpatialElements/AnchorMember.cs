@@ -1,38 +1,26 @@
 using Godot;
 using System;
 
-public class AnchorMember : Resource
+public class AnchorMember : Godot.Object
 {
     SpatialControl owner;
 
-    [Export]
-    bool Left = false;
-    [Export]
-    bool Top = false;
-    [Export]
-    bool Right = false;
-    [Export]
-    bool Bottom = false;
+    public bool Left = true;
+    public bool Top = true;
+    public bool Right = true;
+    public bool Bottom = true;
     
-    [Export]
-    float AnchorLeft = 0;
-    [Export]
-    float AnchorTop = 0;
-    [Export]
-    float AnchorRight = 1;
-    [Export]
-    float AnchorBottom = 1;
-
-    [Export]
-    float MarginLeft = 0;
-    [Export]
-    float MarginTop = 0;
-    [Export]
-    float MarginRight = 0;
-    [Export]
-    float MarginBottom = 0;
+    public float AnchorLeft = 0;
+    public float AnchorTop = 0;
+    public float AnchorRight = 1;
+    public float AnchorBottom = 1;
     
-    public void Init( SpatialControl p)
+    public float MarginLeft = 0;
+    public float MarginTop = 0;
+    public float MarginRight = 0;
+    public float MarginBottom = 0;
+    
+    public AnchorMember(SpatialControl p)
     {
         owner = p;
         if(owner.GetParent() is SpatialControl parent)

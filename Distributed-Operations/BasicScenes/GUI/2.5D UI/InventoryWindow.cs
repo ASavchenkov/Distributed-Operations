@@ -3,11 +3,10 @@ using System;
 
 //Used to determine where dragged objects are shown and placed through raycast collision.
 //Also moves all the loot stuff around by moving LootRoot Spatial.
-public class InventoryWindow : SpatialControl, IPickable
+public class InventoryWindow : SpatialControl, IPickable, IAnchored
 {
     public InputClaims Claims {get;set;} = new InputClaims();
-    
-    Spatial workspace;
+    public AnchorMember aMember {get;set;}
 
     public bool Permeable {get;set;} = true;
     private MultiRayCursor cursor = null;
@@ -18,10 +17,14 @@ public class InventoryWindow : SpatialControl, IPickable
     [Export]
     NodePath WorkspacePath;
 
+    Spatial workspace;
+
     public override void _Ready()
     {
         workspace = GetNode<Spatial>(WorkspacePath);
         Claims.Claims.Add("MouseSecondary");
+        aMember = new AnchorMember(this);
+        aMember.AnchorLeft = 0.25f;
         base._Ready();
     }
 
