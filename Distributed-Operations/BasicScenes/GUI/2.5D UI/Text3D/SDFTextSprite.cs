@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class SDFTextSprite : Sprite3D
+public class SDFTextSprite : MeshInstance
 {
 
     Label label;
@@ -17,9 +17,12 @@ public class SDFTextSprite : Sprite3D
             _Text = value; 
             if(!(label is null))
                 label.Text = value;
+            
         }
     }
-    private Vector2 _Size = new Vector2(150f,30f);
+    [Export]
+    float pixelDensity = 100f;
+    private Vector2 _Size = new Vector2(1.5f,0.3f);
     [Export]
     public Vector2 Size
     {
@@ -27,8 +30,9 @@ public class SDFTextSprite : Sprite3D
         set
         {
             _Size = value;
+            Scale = new Vector3(_Size.x, _Size.y, Scale.z);
             if(!(port is null))
-                port.Size = value;
+                port.Size = value * pixelDensity;
         }
     }
 
@@ -39,21 +43,18 @@ public class SDFTextSprite : Sprite3D
         label.Text = Text;
         port = GetNode<Viewport>("Port");
         port.Size = Size;
-        
+
         //It's a bit ridiculous that we have to set this in code
         //instead of assigning in the editor, but it should be fixed
         //in Godot 3.2.4 when it releases so this should be fine for now.
-        Texture = port.GetTexture();
-        Texture.Flags = (uint) Texture.FlagsEnum.Filter;
-        GD.PrintErr(Size, Texture.GetSize());
+        var texture = port.GetTexture();
+        texture.Flags = (uint) Texture.FlagsEnum.Filter;
 
         ShaderMaterial shaderMat = new ShaderMaterial();
         shaderMat.Shader = GD.Load<Shader>("res://BasicScenes/GUI/2.5D UI/Text3D/SDF.shader");
         shaderMat.Shader.SetDefaultTextureParam("sdf_texture", port.GetTexture());
         GD.PrintErr(shaderMat.Shader.GetDefaultTextureParam("sdf_texture"));
         MaterialOverride = shaderMat;
-
-        
     }
 
 }

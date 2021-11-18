@@ -1,8 +1,11 @@
 using Godot;
 using System;
 
-public class SpatialLabel : SpatialControl
+public class SpatialLabel : SpatialControl, IAnchored
 {
+    [Export]
+    public AnchorMember anchorMember {get;set;}
+
     SDFTextSprite sprite;
 
     //Just redirect to the SDFTextSprite.
@@ -21,6 +24,7 @@ public class SpatialLabel : SpatialControl
 
     public override void _Ready()
     {
+        anchorMember.Init(this);
         sprite = GetNode<SDFTextSprite>("TextSprite");
         Size = Size;
         Text = Text;
@@ -33,8 +37,8 @@ public class SpatialLabel : SpatialControl
         if(!(sprite is null))
         {
             sprite.Translation = new Vector3(Size.x/2, -Size.y/2, 0);
-            sprite.Size = Size / sprite.PixelSize;
-            GD.PrintErr(sprite.Translation, sprite.Size);
+            sprite.Size = Size;
+            // GD.PrintErr(sprite.Translation, sprite.Size);
         }
         
     }

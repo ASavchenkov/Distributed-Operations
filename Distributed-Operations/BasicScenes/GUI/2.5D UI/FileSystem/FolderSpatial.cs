@@ -1,11 +1,14 @@
 using Godot;
 using System;
 
-public class FolderSpatial : SpatialVBoxContainer, IPickable
+public class FolderSpatial : SpatialVBoxContainer, IPickable, IAnchored
 {
 
     public bool Permeable {get;set;} = false;
     public InputClaims Claims {get;set;} = new InputClaims();
+
+    [Export]
+    public AnchorMember anchorMember {get;set;}
 
     protected MouseActionTracker M1 = new MouseActionTracker("MousePrimary");
     protected MultiRayCursor cursor = null;
@@ -14,7 +17,9 @@ public class FolderSpatial : SpatialVBoxContainer, IPickable
 
     public override void _Ready()
     {
+        anchorMember.Init(this);
         label = GetNode<SpatialLabel>("Label");
+        label.Text = "something";
         Claims = M1.Claims;// Just link to M1 for now since it's the only one.
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
         base._Ready();

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class SpatialVBoxContainer : SpatialControl
 {
 
+    
     private void SetBelow(SpatialControl reference, SpatialControl actual)
     {
         var y = reference.Translation.y + reference.Size.y;
@@ -29,7 +30,7 @@ public class SpatialVBoxContainer : SpatialControl
 
     private void RegisterChild(SpatialControl child)
     {
-        if(child.GetIndex() !=0)
+        if(child.GetIndex() ==0)
             child.Translation = Vector3.Back * child.Translation.z;
         else
         {

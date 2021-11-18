@@ -7,7 +7,7 @@ public class InventoryWindow : SpatialControl, IPickable, IAnchored
 {
     public InputClaims Claims {get;set;} = new InputClaims();
     [Export]
-    public AnchorMember aMember {get;set;}
+    public AnchorMember anchorMember {get;set;}
 
     public bool Permeable {get;set;} = true;
     private MultiRayCursor cursor = null;
@@ -22,7 +22,7 @@ public class InventoryWindow : SpatialControl, IPickable, IAnchored
 
     public override void _Ready()
     {
-        aMember.Init(this);
+        anchorMember.Init(this);
         workspace = GetNode<Spatial>(WorkspacePath);
         Claims.Claims.Add("MouseSecondary");
         base._Ready();

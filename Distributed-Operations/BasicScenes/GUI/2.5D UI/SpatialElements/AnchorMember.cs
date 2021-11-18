@@ -40,6 +40,7 @@ public class AnchorMember : Resource
     public void Init(SpatialControl p)
     {
         owner = p;
+        // p.GetTree().GetEditedSceneRoot();
         if(owner.GetParent() is SpatialControl parent)
         {
             parent.Connect(nameof(SpatialControl.SizeChanged), this, nameof(OnReferenceSizeChanged),
@@ -81,5 +82,5 @@ public class AnchorMember : Resource
 }
 public interface IAnchored
 {
-    AnchorMember aMember {get;set;}
+    AnchorMember anchorMember {get;set;}
 }

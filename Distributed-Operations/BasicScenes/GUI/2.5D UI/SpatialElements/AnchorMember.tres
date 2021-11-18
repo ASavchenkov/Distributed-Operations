@@ -5,10 +5,10 @@
 [resource]
 resource_local_to_scene = true
 script = ExtResource( 1 )
-Left = false
-Top = false
-Right = false
-Bottom = false
+Left = true
+Top = true
+Right = true
+Bottom = true
 AnchorLeft = 0.0
 AnchorTop = 0.0
 AnchorRight = 1.0
