@@ -10,8 +10,10 @@ shader = ExtResource( 3 )
 
 [node name="Label" type="Spatial"]
 script = ExtResource( 2 )
+Size = Vector2( 1, 0.36 )
 
 [node name="TextSprite" parent="." instance=ExtResource( 1 )]
 material_override = SubResource( 2 )
+Size = Vector2( 1.5, 0.36 )
 
 [connection signal="SizeChanged" from="." to="." method="OnOwnSizeChanged"]

@@ -7,14 +7,15 @@
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/AreaControl.tscn" type="PackedScene" id=5]
 
 [sub_resource type="Resource" id=3]
+resource_local_to_scene = true
 script = ExtResource( 4 )
 Left = true
 Top = false
 Right = true
 Bottom = false
-AnchorLeft = 1.0
+AnchorLeft = 0.0
 AnchorTop = 0.0
-AnchorRight = 2.0
+AnchorRight = 1.0
 AnchorBottom = 1.0
 MarginLeft = 0.0
 MarginTop = 0.0
@@ -37,6 +38,7 @@ MarginRight = 0.0
 MarginBottom = 0.0
 
 [node name="FolderSpatial" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 script = ExtResource( 2 )
 anchorMember = SubResource( 3 )
 

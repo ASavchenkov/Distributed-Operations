@@ -38,7 +38,6 @@ public class SpatialLabel : SpatialControl, IAnchored
         {
             sprite.Translation = new Vector3(Size.x/2, -Size.y/2, 0);
             sprite.Size = Size;
-            // GD.PrintErr(sprite.Translation, sprite.Size);
         }
         
     }

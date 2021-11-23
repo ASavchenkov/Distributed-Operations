@@ -7,18 +7,20 @@ using ReplicationAbstractions;
 using MessagePack;
 using JsonPrettyPrinterPlus;
 
-public class FileControl : Control, IPickable, FileSystem.IFSControl
+public class FileSpatial : SpatialControl, IPickable, IAnchored
 {
-
     public bool Permeable{get;set;} = false;
     public InputClaims Claims {get;set;} = new InputClaims();
 
+    [Export]
+    public AnchorMember anchorMember {get;set;}
+    
     MouseActionTracker M1 = new MouseActionTracker("MousePrimary");
     
     public Godot.File file = new Godot.File();
     public string Path {get;set;}
     public string DispName;
-    Label label;
+    SpatialLabel label;
 
     UserObserver user;
 
@@ -28,7 +30,7 @@ public class FileControl : Control, IPickable, FileSystem.IFSControl
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
         
         user  = GetNode<UserObserver>("/root/UserObserver_1");
-        label = GetNode<Label>("Name");
+        label = GetNode<SpatialLabel>("Label");
         label.Text = DispName;
     }
 

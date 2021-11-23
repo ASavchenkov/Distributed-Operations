@@ -29,11 +29,8 @@
     <Compile Include="BasicScenes\Ballistics\Projectiles\ProjectileFPV.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\ControlledBoxArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\DraggableSpatial.cs" />
-    <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\ControlMarker.cs" />
-    <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\DrawWatcher.cs" />
-    <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FileControl.cs" />
-    <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FileSystem.cs" />
-    <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\Folder.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FileSpatial.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FolderContents.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FolderEmittingArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FSControl.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\AnchorMember.cs" />
