@@ -52,6 +52,11 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
     }
     bool showContents = false;
 
+    public override void _EnterTree()
+    {
+        base._EnterTree();
+    }
+
     public override void _Ready()
     {
         anchorMember.Init(this);
@@ -160,7 +165,7 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
                     //lazy way to indicate this is a folder.
                     //Will replace with better one hopefully.
                     subFolder.DispName = child + "/";
-                    contents.AddChild(subFolder);
+                    contents.AddSpatialControl(subFolder);
                 }
                 else if (dir.FileExists(child))
                 {
@@ -170,7 +175,7 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
                     var file = EasyInstancer.Instance<FileSpatial>("res://BasicScenes/GUI/2.5D UI/FileSystem/FileSpatial.tscn");
                     file.Path = childPath;
                     file.DispName = child;
-                    contents.AddChild(file);
+                    contents.AddSpatialControl(file);
                 }
             }
             child = dir.GetNext();

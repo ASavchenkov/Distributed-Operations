@@ -49,12 +49,13 @@ public class SDFTextSprite : MeshInstance
         //in Godot 3.2.4 when it releases so this should be fine for now.
         var texture = port.GetTexture();
         texture.Flags = (uint) Texture.FlagsEnum.Filter;
-
+        
         ShaderMaterial shaderMat = new ShaderMaterial();
-        shaderMat.Shader = GD.Load<Shader>("res://BasicScenes/GUI/2.5D UI/Text3D/SDF.shader");
+        shaderMat.Shader = (Shader) GD.Load<Shader>("res://BasicScenes/GUI/2.5D UI/Text3D/SDF.shader").Duplicate();
         shaderMat.Shader.SetDefaultTextureParam("sdf_texture", port.GetTexture());
         GD.PrintErr(shaderMat.Shader.GetDefaultTextureParam("sdf_texture"));
         MaterialOverride = shaderMat;
+        
     }
 
 }

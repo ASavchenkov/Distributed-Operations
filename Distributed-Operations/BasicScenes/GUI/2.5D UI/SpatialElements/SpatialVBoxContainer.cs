@@ -11,7 +11,7 @@ public class SpatialVBoxContainer : SpatialControl
     private void SetBelow(SpatialControl reference, SpatialControl actual)
     {
         var y = reference.Translation.y + reference.Size.y;
-        actual.Translation = new Vector3(0, y , actual.Translation.z);
+        actual.Translation = new Vector3(actual.Translation.x, y , actual.Translation.z);
     }
     
     public override void _Ready()
@@ -43,8 +43,10 @@ public class SpatialVBoxContainer : SpatialControl
         }
     }
 
-    public void OnChildSizeChanged(SpatialControl child)
+    public void OnChildSizeChanged(Vector2 oldSize, SpatialControl child)
     {
+        if(Math.Abs(oldSize.y - child.Size.y) < 1e-7)
+            return; //we don't actually care about changes that don't affect vertical size.
         for (int i = child.GetIndex() + 1; i< GetChildCount(); i++)
         {
             var nextChild = (SpatialControl) GetChild(i);

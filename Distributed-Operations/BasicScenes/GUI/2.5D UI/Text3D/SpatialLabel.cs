@@ -32,13 +32,11 @@ public class SpatialLabel : SpatialControl, IAnchored
     }
 
     //Set the sprite size to take up our entire space.
-    public void OnOwnSizeChanged()
+    public void OnOwnSizeChanged(Vector2 oldSize)
     {
-        if(!(sprite is null))
-        {
-            sprite.Translation = new Vector3(Size.x/2, -Size.y/2, 0);
-            sprite.Size = Size;
-        }
+        if(sprite is null) return;
         
+        sprite.Translation = new Vector3(Size.x/2, -Size.y/2, 0);
+        sprite.Size = Size;
     }
 }

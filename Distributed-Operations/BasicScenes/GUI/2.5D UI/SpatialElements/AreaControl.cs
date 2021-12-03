@@ -16,7 +16,7 @@ public class AreaControl : Area
         shape = GetNode<CollisionShape>("CollisionShape");
     }
 
-    public void OnSizeChanged( SpatialControl parent)
+    public void OnSizeChanged( Vector2 oldSize, SpatialControl parent)
     {
         shape.Translation = new Vector3(parent.Size.x/2, -parent.Size.y/2, 0);
         ((BoxShape) shape.Shape).Extents = new Vector3(parent.Size.x/2, parent.Size.y/2, Thiccness);

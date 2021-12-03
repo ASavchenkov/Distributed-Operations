@@ -32,10 +32,7 @@ public class AnchorMember : Resource
     [Export]
     public float MarginBottom = 0;
     
-    public AnchorMember()
-    {
-
-    }
+    public AnchorMember(){}
 
     public void Init(SpatialControl p)
     {
@@ -45,13 +42,14 @@ public class AnchorMember : Resource
         {
             parent.Connect(nameof(SpatialControl.SizeChanged), this, nameof(OnReferenceSizeChanged),
                 new Godot.Collections.Array { parent });
+            OnReferenceSizeChanged(parent.Size, parent);
         }
     }
 
-    public virtual void OnReferenceSizeChanged(SpatialControl reference)
+    public virtual void OnReferenceSizeChanged(Vector2 oldSize, SpatialControl reference)
     {
         owner.Translation = new Vector3(AnchorX(reference), AnchorY(reference), owner.Translation.z);
-        owner.Size = new Vector2(AnchorSX(reference), AnchorSY(reference));
+        owner.Size = new Vector2(AnchorSX(reference) - owner.Translation.x, AnchorSY(reference) - owner.Translation.y);
     }
 
     float AnchorX(SpatialControl reference)
