@@ -30,10 +30,16 @@ public class SpatialVBoxContainer : SpatialControl
         RegisterChild(child);
     }
 
+    public void InsertSpatialControl(SpatialControl child, int index)
+    {
+        AddChildBelowNode(GetChild(index), child);
+        RegisterChild(child);
+    }
+
     private void RegisterChild(SpatialControl child)
     {
         if(child.GetIndex() ==0)
-            child.Translation = Vector3.Back * child.Translation.z;
+            child.Translation = new Vector3(child.Translation.x, 0, child.Translation.z);
         else
         {
             var previousSC = (SpatialControl) GetChild(child.GetIndex() -1 );
@@ -41,6 +47,7 @@ public class SpatialVBoxContainer : SpatialControl
             child.Connect(nameof(SizeChanged), this, nameof(OnChildSizeChanged),
                 new Godot.Collections.Array {child});
         }
+        OnChildSizeChanged(Vector2.Zero, child);
     }
 
     public void OnChildSizeChanged(Vector2 oldSize, SpatialControl child)
