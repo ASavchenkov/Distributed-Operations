@@ -6,7 +6,7 @@
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/AnchorMember.cs" type="Script" id=4]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/AreaControl.tscn" type="PackedScene" id=5]
 
-[sub_resource type="Resource" id=3]
+[sub_resource type="Resource" id=5]
 resource_local_to_scene = true
 script = ExtResource( 4 )
 Left = true
@@ -41,7 +41,7 @@ MarginBottom = 0.0
 [node name="FolderSpatial" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 script = ExtResource( 2 )
-anchorMember = SubResource( 3 )
+anchorMember = SubResource( 5 )
 
 [node name="Label" parent="." instance=ExtResource( 1 )]
 anchorMember = SubResource( 4 )

@@ -5,7 +5,6 @@ using System;
 //And also so you can have good GUI in VR.
 public class SpatialControl : Spatial
 {
-    private float changeThreshold = 1e-6f;
     private Vector2 _Size = new Vector2(1,1);
     [Export]
     public Vector2 Size
@@ -13,6 +12,11 @@ public class SpatialControl : Spatial
         get => _Size;
         set
         {
+            // if(Name == "gunz")
+            // {
+            //     var trace = new System.Diagnostics.StackTrace();
+            //     GD.PrintErr(trace);
+            // }
             var oldSize = _Size;
             _Size = value;
             EmitSignal(nameof(SizeChanged), oldSize);

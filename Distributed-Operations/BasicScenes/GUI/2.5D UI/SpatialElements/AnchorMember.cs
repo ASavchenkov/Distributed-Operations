@@ -49,7 +49,7 @@ public class AnchorMember : Resource
     public virtual void OnReferenceSizeChanged(Vector2 oldSize, SpatialControl reference)
     {
         owner.Translation = new Vector3(AnchorX(reference), AnchorY(reference), owner.Translation.z);
-        owner.Size = new Vector2(AnchorSX(reference) - owner.Translation.x, AnchorSY(reference) - owner.Translation.y);
+        owner.Size = new Vector2(AnchorSX(reference), AnchorSY(reference));
     }
 
     float AnchorX(SpatialControl reference)
@@ -67,14 +67,14 @@ public class AnchorMember : Resource
     float AnchorSX(SpatialControl reference)
     {
         if(Right)
-            return AnchorRight * reference.Size.x + MarginRight;
+            return AnchorRight * reference.Size.x + MarginRight - owner.Translation.x;
         return owner.Size.x;
 
     }
     float AnchorSY(SpatialControl reference)
     {
         if(Bottom)
-            return AnchorBottom * reference.Size.y + MarginRight;
+            return AnchorBottom * reference.Size.y + MarginRight - owner.Translation.y;
         return owner.Size.y;
     }
 }

@@ -10,7 +10,8 @@ public class SpatialVBoxContainer : SpatialControl
     
     private void SetBelow(SpatialControl reference, SpatialControl actual)
     {
-        var y = reference.Translation.y + reference.Size.y;
+        //Size is positive, but we want to go down so we subtract.
+        var y = reference.Translation.y - reference.Size.y;
         actual.Translation = new Vector3(actual.Translation.x, y , actual.Translation.z);
     }
     
@@ -38,6 +39,7 @@ public class SpatialVBoxContainer : SpatialControl
 
     private void RegisterChild(SpatialControl child)
     {
+        GD.Print(child.Name, ": ", child.GetIndex());
         if(child.GetIndex() ==0)
             child.Translation = new Vector3(child.Translation.x, 0, child.Translation.z);
         else
@@ -54,11 +56,13 @@ public class SpatialVBoxContainer : SpatialControl
     {
         if(Math.Abs(oldSize.y - child.Size.y) < 1e-7)
             return; //we don't actually care about changes that don't affect vertical size.
+            
+        GD.Print(child.Name, "; ", child.Translation, "; ", oldSize, " -> ", child.Size);
         for (int i = child.GetIndex() + 1; i< GetChildCount(); i++)
         {
             var nextChild = (SpatialControl) GetChild(i);
             SetBelow(child, nextChild);
+            child = nextChild;
         }
-        child.GetIndex();
     }
 }
