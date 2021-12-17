@@ -120,6 +120,8 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
                 showContents = true;
                 var contents = EasyInstancer.Instance<SpatialVBoxContainer>("res://BasicScenes/GUI/2.5D UI/FileSystem/FolderContents.tscn");
                 AddChild(contents);
+                contents.Connect(nameof(SpatialControl.SizeChanged), this, nameof(OnContentSizeChange),
+                    new Godot.Collections.Array {contents});
                 Refresh();
             }
         }
@@ -183,6 +185,12 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
         return true;
     }
 
+    public void OnContentSizeChange(Vector2 oldSize, SpatialControl contents)
+    {
+        if( Math.Abs(oldSize.y - contents.Size.y) < 1e-7)
+            return;
+        Size = new Vector2( Size.x, 0.36f + contents.Size.y);
+    }
     public bool AcceptItem( DefaultInvPV item)
     {
         //Should just be the GUID

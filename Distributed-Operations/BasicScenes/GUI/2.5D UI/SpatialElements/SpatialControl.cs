@@ -12,11 +12,6 @@ public class SpatialControl : Spatial
         get => _Size;
         set
         {
-            // if(Name == "gunz")
-            // {
-            //     var trace = new System.Diagnostics.StackTrace();
-            //     GD.PrintErr(trace);
-            // }
             var oldSize = _Size;
             _Size = value;
             EmitSignal(nameof(SizeChanged), oldSize);
@@ -25,5 +20,14 @@ public class SpatialControl : Spatial
 
     [Signal]
     public delegate void SizeChanged(Vector2 oldSize);
+    [Signal]
+    public delegate void OnPredelete();
+
+    public override void _Notification(int what)
+    {
+        if(what == NotificationPredelete)
+            EmitSignal(nameof(OnPredelete));
+        base._Notification(what);
+    }
 }
 

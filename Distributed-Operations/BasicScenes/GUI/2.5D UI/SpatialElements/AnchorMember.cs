@@ -4,7 +4,7 @@ using System;
 public class AnchorMember : Resource
 {
     SpatialControl owner;
-
+    SpatialControl parent = null; //parent node of the owner. Null if parent is not SpatialControl
     [Export]
     public bool Left = true;
     [Export]
@@ -34,12 +34,16 @@ public class AnchorMember : Resource
     
     public AnchorMember(){}
 
-    public void Init(SpatialControl p)
+    //NOT an override of Godot.Object._init
+    //That doesn't take arguments and this thing needs a reference to its owner.
+    public void Init(SpatialControl o)
     {
-        owner = p;
+        owner = o;
+        owner.Connect(nameof(SpatialControl.OnPredelete), this, nameof(OnOwnerDelete));
         // p.GetTree().GetEditedSceneRoot();
-        if(owner.GetParent() is SpatialControl parent)
+        if(owner.GetParent() is SpatialControl p)
         {
+            parent = p;
             parent.Connect(nameof(SpatialControl.SizeChanged), this, nameof(OnReferenceSizeChanged),
                 new Godot.Collections.Array { parent });
             OnReferenceSizeChanged(parent.Size, parent);
@@ -74,8 +78,18 @@ public class AnchorMember : Resource
     float AnchorSY(SpatialControl reference)
     {
         if(Bottom)
-            return AnchorBottom * reference.Size.y + MarginRight - owner.Translation.y;
+            return AnchorBottom * reference.Size.y + MarginRight + owner.Translation.y;
         return owner.Size.y;
+    }
+
+    //This is necessary because something else is referencing this object
+    //and we dont know what.
+    public void OnOwnerDelete()
+    {
+        if(!(parent is null))
+            parent.Disconnect(nameof(SpatialControl.SizeChanged), this, nameof(OnReferenceSizeChanged));
+        parent = null;
+        owner = null;
     }
 }
 public interface IAnchored

@@ -41,6 +41,7 @@ MarginBottom = 0.0
 [node name="FolderSpatial" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
 script = ExtResource( 2 )
+Size = Vector2( 1, 0.36 )
 anchorMember = SubResource( 5 )
 
 [node name="Label" parent="." instance=ExtResource( 1 )]

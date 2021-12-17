@@ -56,7 +56,7 @@ public class SpatialVBoxContainer : SpatialControl
     {
         if(Math.Abs(oldSize.y - child.Size.y) < 1e-7)
             return; //we don't actually care about changes that don't affect vertical size.
-            
+
         GD.Print(child.Name, "; ", child.Translation, "; ", oldSize, " -> ", child.Size);
         for (int i = child.GetIndex() + 1; i< GetChildCount(); i++)
         {
@@ -64,5 +64,6 @@ public class SpatialVBoxContainer : SpatialControl
             SetBelow(child, nextChild);
             child = nextChild;
         }
+        Size = new Vector2(Size.x, child.Translation.y + child.Size.y);
     }
 }
