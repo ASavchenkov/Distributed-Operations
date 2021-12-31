@@ -105,6 +105,7 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
         {
             GetNode("Contents").QueueFree();
             showContents = false;
+            Size = new Vector2(Size.x, 0.36f);
         }
         else
         {
