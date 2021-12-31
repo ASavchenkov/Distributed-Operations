@@ -190,6 +190,7 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
         if( Math.Abs(oldSize.y - contents.Size.y) < 1e-7)
             return;
         Size = new Vector2( Size.x, 0.36f + contents.Size.y);
+        GD.Print(Name, ": ContentSize was: ", contents.Size);
     }
     public bool AcceptItem( DefaultInvPV item)
     {

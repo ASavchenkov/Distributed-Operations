@@ -39,21 +39,22 @@ public class SpatialVBoxContainer : SpatialControl
 
     private void RegisterChild(SpatialControl child)
     {
-        GD.Print(child.Name, ": ", child.GetIndex());
+        GD.Print("Registering: ", child.Name, "; ", child.GetIndex());
         if(child.GetIndex() ==0)
             child.Translation = new Vector3(child.Translation.x, 0, child.Translation.z);
         else
         {
             var previousSC = (SpatialControl) GetChild(child.GetIndex() -1 );
             SetBelow(previousSC, child);
-            child.Connect(nameof(SizeChanged), this, nameof(OnChildSizeChanged),
-                new Godot.Collections.Array {child});
         }
+        child.Connect(nameof(SizeChanged), this, nameof(OnChildSizeChanged),
+            new Godot.Collections.Array {child});
         OnChildSizeChanged(Vector2.Zero, child);
     }
 
     public void OnChildSizeChanged(Vector2 oldSize, SpatialControl child)
     {
+
         if(Math.Abs(oldSize.y - child.Size.y) < 1e-7)
             return; //we don't actually care about changes that don't affect vertical size.
 
@@ -64,6 +65,7 @@ public class SpatialVBoxContainer : SpatialControl
             SetBelow(child, nextChild);
             child = nextChild;
         }
-        Size = new Vector2(Size.x, child.Translation.y + child.Size.y);
+        Size = new Vector2(Size.x, -child.Translation.y + child.Size.y);
+        GD.Print(GetPath() + "size set to: ", Size);
     }
 }

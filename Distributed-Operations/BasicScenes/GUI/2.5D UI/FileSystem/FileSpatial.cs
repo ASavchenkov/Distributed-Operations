@@ -19,7 +19,18 @@ public class FileSpatial : SpatialControl, IPickable, IAnchored
     
     public Godot.File file = new Godot.File();
     public string Path {get;set;}
-    public string DispName;
+    string _DispName;
+    public string DispName
+    {
+        get => _DispName;
+        set
+        {
+            Name = value;
+            _DispName = value;
+            if(!(label is null))
+                label.Text = value;
+        }
+    }
     SpatialLabel label;
 
     UserObserver user;

@@ -63,7 +63,7 @@ public class AnchorMember : Resource
         return owner.Translation.x;
     }
     float AnchorY(SpatialControl reference)
-    {
+    { 
         if(Top)
             return AnchorTop * reference.Size.y + MarginTop;
         return owner.Translation.y;
