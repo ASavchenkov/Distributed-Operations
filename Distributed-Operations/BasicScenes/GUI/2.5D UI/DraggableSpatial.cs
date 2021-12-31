@@ -112,7 +112,7 @@ public class MouseActionTracker : Godot.Object, ITakesInput
     {
         Vector2 mousePos = cursor.MousePosition;
         
-        if( clickState == ClickState.Down && mousePos.DistanceTo(clickedPos) > 0.1)
+        if( clickState == ClickState.Down && mousePos.DistanceTo(clickedPos) > 0.2)
         {
             clickState = ClickState.Dragging;
             EmitSignal(nameof(Drag));

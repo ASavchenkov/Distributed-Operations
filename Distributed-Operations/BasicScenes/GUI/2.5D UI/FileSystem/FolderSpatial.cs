@@ -62,7 +62,6 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
         anchorMember.Init(this);
 
         label = GetNode<SpatialLabel>("Label");
-        label.Size = new Vector2(label.Size.x, 0.36f);
         label.Text = DispName;
 
         Claims = M1.Claims;// Just link to M1 for now since it's the only one.
@@ -105,7 +104,7 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
         {
             GetNode("Contents").QueueFree();
             showContents = false;
-            Size = new Vector2(Size.x, 0.36f);
+            Size = new Vector2(Size.x, label.Size.y);
         }
         else
         {
@@ -190,7 +189,7 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
     {
         if( Math.Abs(oldSize.y - contents.Size.y) < 1e-7)
             return;
-        Size = new Vector2( Size.x, 0.36f + contents.Size.y);
+        Size = new Vector2( Size.x, label.Size.y + contents.Size.y);
         GD.Print(Name, ": ContentSize was: ", contents.Size);
     }
     public bool AcceptItem( DefaultInvPV item)
