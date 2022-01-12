@@ -57,7 +57,7 @@ public class UserObserver : Node, ITakesInput, IObserver
             CurrentView.QueueFree();
         var spectatorScene = GD.Load<PackedScene>("res://BasicScenes/Player/Spectator/Spectator.tscn");
         CurrentView = spectatorScene.Instance();
-        GetNode("/root/GameRoot/Map").AddChild(CurrentView);
+        GetNode("/root/GameRoot/GameWorld/Map").AddChild(CurrentView);
     }
 
     public bool OnInput(InputEvent inputEvent)

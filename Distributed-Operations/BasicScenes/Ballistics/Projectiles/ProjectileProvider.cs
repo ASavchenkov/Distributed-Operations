@@ -39,7 +39,7 @@ public class ProjectileProvider : Node, IReplicable, IHasFPV, IHas3PV
         LastTranslation = translation;
         LastLinearVelocity = velocity;
         RigidBody observer = (RigidBody) EasyInstancer.GenObserver(this, (IsNetworkMaster()) ?  ObserverPathFPV: ObserverPath3PV);
-        GetNode("/root/GameRoot/Map").AddChild(observer);
+        GetNode("/root/GameRoot/GameWorld/Map").AddChild(observer);
     }
 
     public override void _Ready()

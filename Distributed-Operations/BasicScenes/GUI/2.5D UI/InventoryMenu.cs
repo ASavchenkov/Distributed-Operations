@@ -22,7 +22,7 @@ public class InventoryMenu : Control
     {
         InventoryWorkspace = GetNode<Area>("Viewport/Camera/InventoryWorkspace");
         ray = GetNode<PickingRay>("Viewport/Camera/PickingRay");
-        GetNode<UserObserver>("/root/UserObserver_1").Cursor.InsertRay(0, ray);
+        GetNode<UserObserver>("/root/GameRoot/Management/UserObserver_1").Cursor.InsertRay(0, ray);
         
         //Technically we also use mouse motion,
         //but that isn't accessible through the Input singleton
@@ -41,7 +41,7 @@ public class InventoryMenu : Control
         //perspective PickingRays should be handled by the cameras
         //or whatever is in charge of the cameras.
         //We should only have to ping them to subscribe and unsub.
-        var user = GetNode<UserObserver>("/root/UserObserver_1");
+        var user = GetNode<UserObserver>("/root/GameRoot/Management/UserObserver_1");
         
         if(!(ray is null))
             user.Cursor.InsertRay(0, ray);
@@ -58,7 +58,7 @@ public class InventoryMenu : Control
 
     public override void _ExitTree()
     {   
-        var user = GetNode<UserObserver>("/root/UserObserver_1");
+        var user = GetNode<UserObserver>("/root/GameRoot/Management/UserObserver_1");
         user.Cursor.RemoveRay(ray);
         user.Cursor.RemoveRay(ray2);
         GetViewport().GetCamera().RemoveChild(ray2);

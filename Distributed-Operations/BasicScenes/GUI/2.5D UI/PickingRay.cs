@@ -21,7 +21,7 @@ public class PickingRay : RayCast
     public override void _Ready()
     {
         cam = GetViewport().GetCamera();
-        parent = GetNode<UserObserver>("/root/UserObserver_1").Cursor;
+        parent = GetNode<UserObserver>("/root/GameRoot/Management/UserObserver_1").Cursor;
     }
 
     public void UpdateCursor(Vector2 mousePos)

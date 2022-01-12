@@ -11,11 +11,7 @@ using ReplicationAbstractions;
 public class NOKManager : Node
 {
 
-    public static NOKManager Instance
-	{
-		get;
-		private set;
-	}
+    public static NOKManager Instance { get; private set;}
 
     public class NOKSignaller : Godot.Object
     {

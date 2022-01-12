@@ -14,15 +14,6 @@ config/name="Distributed-Operations"
 run/main_scene="res://GameRoot.tscn"
 config/icon="res://icon.png"
 
-[autoload]
-
-InputPriorityServer="*res://BasicScenes/GUI/2.5D UI/InputPriorityServer.cs"
-Networking="*res://addons/PurePeerSignaling/Networking.tscn"
-NOKManager="*res://GameManagement/NOKManager.tscn"
-ReplicationServer="*res://GameManagement/ReplicationServer.cs"
-UserObserver_1="*res://GameManagement/UserObserver.tscn"
-GameManager="*res://GameManagement/GameManager.cs"
-
 [gdnative]
 
 singletons=[ "res://webrtc_debug/webrtc_debug.tres" ]

@@ -40,7 +40,7 @@ public class FileSpatial : SpatialControl, IPickable, IAnchored
         Claims = M1.Claims;
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
         
-        user  = GetNode<UserObserver>("/root/UserObserver_1");
+        user  = GetNode<UserObserver>("/root/GameRoot/Management/UserObserver_1");
         label = GetNode<SpatialLabel>("Label");
         label.Text = DispName;
     }
@@ -81,7 +81,7 @@ public class FileSpatial : SpatialControl, IPickable, IAnchored
             //This is just a file with a scene path. Instance it how we normally would.
             //Assume it's an IInvItem because currently it can't be anything else and work.
             Node instanced = EasyInstancer.Instance<Node>(str);
-            GetNode("/root/GameRoot/Assets").AddChild(instanced);
+            GetNode("/root/GameRoot/GameWorld/Assets").AddChild(instanced);
             user.InventoryMenu.AddRootInvItem((IInvItem) instanced);
             GD.Print("instanced: ", instanced.GetPath());
         }

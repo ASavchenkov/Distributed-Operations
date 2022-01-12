@@ -13,7 +13,7 @@ public class GameManager : Node
     public override void _Ready()
     {
 
-        LocalUser = (UserObserver) GetNode("/root/UserObserver_1");
+        LocalUser = (UserObserver) GetNode("/root/GameRoot/Management/UserObserver_1");
         //We've essentially connected to our own session when we start the application
         GetNode("/root").Connect("ready", this, nameof(OnConnectedToSession),
             new Godot.Collections.Array{-1});
@@ -33,11 +33,11 @@ public class GameManager : Node
         
         //Manually replace because the default seems to do it async
         //and we need to do this synchronously.
-        GetNode("/root/GameRoot").Free();
-        var gameRoot = EasyInstancer.Instance<Node>("res://GameRoot.tscn");
-        GetNode("/root").AddChild(gameRoot);
+        GetNode("/root/GameRoot/GameWorld").Free();
+        var gameWorld = EasyInstancer.Instance<Node>("res://GameWorld.tscn");
+        GetNode("/root/GameRoot").AddChild(gameWorld);
 
-        Users = gameRoot.GetNode("Users");
+        Users = gameWorld.GetNode("Users");
         UserProvider provider = UserProvider.Factory.Instance();
         Users.AddChild(provider);
         LocalUser.Subscribe(provider);

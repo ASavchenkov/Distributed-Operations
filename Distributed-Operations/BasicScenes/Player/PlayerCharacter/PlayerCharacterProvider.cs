@@ -99,13 +99,13 @@ public class PlayerCharacterProvider : Node, IHasFPV, IHas3PV, IInvItem
     public override void _Ready()
     {
         this.ReplicableReady();
-        var MapNode = GetNode("/root/GameRoot/Map");
+        var MapNode = GetNode("/root/GameRoot/GameWorld/Map");
         
         ChestSlot = GetNode<InvSlot>("ChestSlot");
         HandSlot = GetNode<InvSlot>("HandSlot");
 
         var rifle = EasyInstancer.Instance<RifleProvider>("res://BasicScenes/Items/Gun/Rifle/M4A1/M4A1Provider.tscn");
-        GetNode("/root/GameRoot/Assets").AddChild(rifle);
+        GetNode("/root/GameRoot/GameWorld/Assets").AddChild(rifle);
         SetHandItem((IInvItem) rifle, ChestSlot);
         
         // GD.Print(new SerializedNode(this).AsJson().PrettyPrintJson());

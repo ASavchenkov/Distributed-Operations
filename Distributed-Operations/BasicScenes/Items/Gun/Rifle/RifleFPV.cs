@@ -35,7 +35,7 @@ public class RifleFPV : Spatial, ITakesInput, IObserver
     public override void _Ready()
     {
         Origin = (Spatial) GetNode("Origin");
-        Projectiles = GetNode("/root/GameRoot/Projectiles");
+        Projectiles = GetNode("/root/GameRoot/GameWorld/Projectiles");
         MainSight = (SightFPV) GetNode("Origin/Gun/FrontPostRail/IronSights");
         HipFireTransform = (Position3D) GetNode("Origin/Gun/HipFireTransform");
         Muzzle = (Spatial) GetNode("Origin/Gun/Muzzle");

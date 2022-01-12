@@ -44,7 +44,7 @@ public class TDMMenu : Node
         BlueTeam.Clear();
 
 
-        UserManager = GetNode("/root/GameRoot/Users");
+        UserManager = GetNode("/root/GameRoot/GameWorld/Users");
         Godot.Collections.Array users = UserManager.GetChildren();
 
         foreach( Node p in users)
