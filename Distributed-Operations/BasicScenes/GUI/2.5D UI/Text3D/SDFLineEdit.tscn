@@ -1,0 +1,25 @@
+[gd_scene format=2]
+
+[node name="GameRoot" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LineEdit" type="LineEdit" parent="."]
+margin_right = 107.0
+margin_bottom = 24.0
+text = "Test Text"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 79.0
+margin_top = 47.0
+margin_right = 190.0
+margin_bottom = 117.0
+text = "Test Text"
+
+[node name="Users" type="Node" parent="."]

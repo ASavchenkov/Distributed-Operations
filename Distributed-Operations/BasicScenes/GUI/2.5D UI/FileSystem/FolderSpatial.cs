@@ -8,19 +8,20 @@ using JsonPrettyPrinterPlus;
 
 using ReplicationAbstractions;
 
-public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem 
+public class FolderSpatial : SpatialControl, ITakesInput, IAnchored, IAcceptsItem 
 {
 
     public static NodeFactory<FolderSpatial> Factory
          = new NodeFactory<FolderSpatial>("res://BasicScenes/GUI/2.5D UI/FileSystem/FolderSpatial.tscn");
 
-    public bool Permeable {get;set;} = false;
     public InputClaims Claims {get;set;} = new InputClaims();
+    PickableAreaControl aCtrl;
 
     [Export]
     public AnchorMember anchorMember {get;set;}
 
     protected MouseActionTracker M1 = new MouseActionTracker("MousePrimary");
+    protected DoubleClickTracker DoubleClickM1 = new DoubleClickTracker();
     protected MultiRayCursor cursor = null;
     
     SpatialLabel label;
@@ -59,6 +60,7 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
 
     public override void _Ready()
     {
+        base._Ready();
         anchorMember.Init(this);
 
         label = GetNode<SpatialLabel>("Label");
@@ -67,9 +69,11 @@ public class FolderSpatial : SpatialControl, IPickable, IAnchored, IAcceptsItem
         Claims = M1.Claims;// Just link to M1 for now since it's the only one.
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
         M1.Connect(nameof(MouseActionTracker.FullClick), this, nameof(OnClick));
-        base._Ready();
+        M1.Connect(nameof(MouseActionTracker.FullClick), DoubleClickM1, nameof(DoubleClickTracker.OnClick));
+        
+        aCtrl = GetNode<PickableAreaControl>("Label/AreaControl");
+        aCtrl.PickingMember = new PickingMixin(this, false, nameof(MouseOn), nameof(MouseOff));
     }
-
     public virtual void MouseOn(MultiRayCursor _cursor)
     {
         GD.Print(Name, ": Moused on");

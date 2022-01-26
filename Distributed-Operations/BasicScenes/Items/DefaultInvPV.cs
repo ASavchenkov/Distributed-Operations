@@ -8,7 +8,7 @@ public class DefaultInvPV : DraggableSpatial, IObserver
 
     public virtual IInvItem Provider {get; protected set;}
     public Spatial parent;
-    
+
     [Export]
     public float Radius = 1; //For automatic spacing.
 
@@ -20,19 +20,18 @@ public class DefaultInvPV : DraggableSpatial, IObserver
         Provider = (IInvItem) _provider;
     }
 
-    public override void _Ready()
-    {
-        base._Ready();
-        parent = GetParentSpatial();
-    }
 
     public override void OnCursorUpdate()
     {
-        foreach(Spatial intersected in cursor.mouseIntersections)
+        //Come on. We can do better for searching right?
+        foreach(IPickable intersected in cursor.mouseIntersections)
         {
-            if(intersected.Name == "InventoryWorkspace")
+            if(((Spatial)intersected).Name == "InventoryWorkspace")
             {
-                Translation = parent.ToLocal(cursor.intersectionPoints[intersected]);
+                //Something has gone horribly wrong if the parent is not a Spatial.
+                //Intentionally crash if GetParentSpatial returns null;
+                //Protects against silent failure down the development chain.
+                Translation = GetParentSpatial().ToLocal(cursor.intersectionPoints[intersected]);
                 break;
             }
         }
@@ -59,7 +58,7 @@ public class DefaultInvPV : DraggableSpatial, IObserver
         //Since Accepted drops result in QueueFreeing this node anyways.
 
         base.OnDrop();
-        if(parent is InvSlotObserver invSlotObserver)
+        if(GetParent() is InvSlotObserver invSlotObserver)
             invSlotObserver.RecomputeOccupantPos();
     }
 

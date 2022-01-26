@@ -7,10 +7,10 @@ using ReplicationAbstractions;
 using MessagePack;
 using JsonPrettyPrinterPlus;
 
-public class FileSpatial : SpatialControl, IPickable, IAnchored
+public class FileSpatial : SpatialControl, ITakesInput, IAnchored
 {
-    public bool Permeable{get;set;} = false;
     public InputClaims Claims {get;set;} = new InputClaims();
+    PickableAreaControl aCtrl;
 
     [Export]
     public AnchorMember anchorMember {get;set;}
@@ -37,9 +37,13 @@ public class FileSpatial : SpatialControl, IPickable, IAnchored
 
     public override void _Ready()
     {
+        base._Ready();
+
+        aCtrl = GetNode<PickableAreaControl>("Label/AreaControl");
+        aCtrl.PickingMember = new PickingMixin(this, false, nameof(MouseOn), nameof(MouseOff));
+
         Claims = M1.Claims;
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
-        
         user  = GetNode<UserObserver>("/root/GameRoot/Management/UserObserver_1");
         label = GetNode<SpatialLabel>("Label");
         label.Text = DispName;

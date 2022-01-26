@@ -1,12 +1,13 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Timers;
 
 //Hardcoded Mouse Button 1 dragging.
 //Will figure out better abstraction for different
 //button choices and dragging behavior later.
 //(when it becomes relevant)
-public abstract class DraggableSpatial : Spatial, IPickable
+public abstract class DraggableSpatial : Spatial, ITakesInput
 {
     public bool Permeable {get;set;} = false;
     public InputClaims Claims {get;set;} = new InputClaims();
@@ -16,7 +17,7 @@ public abstract class DraggableSpatial : Spatial, IPickable
     
     [Export]
     NodePath AreaPath = "Area";
-    Area collider;
+    IPickable collider;
 
     public override void _Ready()
     {
@@ -24,7 +25,9 @@ public abstract class DraggableSpatial : Spatial, IPickable
         M1.Connect(nameof(MouseActionTracker.StateUpdate), this, nameof(OnStateUpdate));
         M1.Connect(nameof(MouseActionTracker.Drag), this, nameof(OnDrag));
         M1.Connect(nameof(MouseActionTracker.Drop), this, nameof(OnDrop));
-        collider = GetNode<Area>(AreaPath);
+
+        collider = (IPickable) GetNode(AreaPath);
+        collider.PickingMember = new PickingMixin(this, false, nameof(MouseOn), nameof(MouseOff));
     }
 
     public virtual void MouseOn(MultiRayCursor _cursor)
@@ -51,13 +54,13 @@ public abstract class DraggableSpatial : Spatial, IPickable
     public virtual void OnDrag()
     {
         GD.Print("OnDrag");
-        collider.SetCollisionLayerBit(3, false);
+        ((Area)collider).SetCollisionLayerBit(3, false);
         cursor.Connect(nameof(MultiRayCursor.CursorUpdated), this, nameof(OnCursorUpdate));
     }
 
     public virtual void OnDrop()
     {
-        collider.SetCollisionLayerBit(3, true);
+        ((Area)collider).SetCollisionLayerBit(3, true);
         cursor.Disconnect(nameof(MultiRayCursor.CursorUpdated), this, nameof(OnCursorUpdate));
     }
 
@@ -136,6 +139,7 @@ public class MouseActionTracker : Godot.Object, ITakesInput
         {
             if(cursor.IsConnected(nameof(MultiRayCursor.CursorUpdated), this, nameof(MouseActionTracker.OnCursorUpdate)))
                 cursor.Disconnect(nameof(MultiRayCursor.CursorUpdated), this, nameof(MouseActionTracker.OnCursorUpdate));
+            
             if(clickState == ClickState.Down)
                 EmitSignal(nameof(FullClick));
             else //end of drag. Dropping.
@@ -145,5 +149,36 @@ public class MouseActionTracker : Godot.Object, ITakesInput
             return true;
         }
         return false;
+    }
+}
+
+public class DoubleClickTracker : Godot.Object
+{
+    private const float delay = 0.1f;
+    System.Timers.Timer resetTimer = null;
+
+    [Signal]
+    public delegate void DoubleClick();
+    
+    public void OnClick()
+    {
+        if(resetTimer is null)
+        {
+            resetTimer = new System.Timers.Timer(100);
+            resetTimer.Elapsed += Reset;
+            resetTimer.Start();
+        }
+        else
+        {
+            GD.Print("Double click");
+            resetTimer.Stop();
+            resetTimer = null;
+            EmitSignal(nameof(DoubleClick));
+        }
+    }
+
+    private void Reset(object source, System.Timers.ElapsedEventArgs e)
+    {
+        resetTimer = null;
     }
 }

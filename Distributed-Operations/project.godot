@@ -18,6 +18,11 @@ config/icon="res://icon.png"
 
 singletons=[ "res://webrtc_debug/webrtc_debug.tres" ]
 
+[global]
+
+addons=false
+plugins=true
+
 [input]
 
 ui_accept={

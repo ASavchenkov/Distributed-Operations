@@ -13,8 +13,8 @@ public class MultiRayCursor : Godot.Object, ITakesInput
     List<PickingRay> rays = new List<PickingRay>();
     public int RayCount {get => rays.Count;}
 
-    public List<Spatial> mouseIntersections {get; private set;} = new List<Spatial>();
-    public Dictionary<Spatial, Vector3> intersectionPoints {get; private set;} = new Dictionary<Spatial, Vector3>();
+    public List<IPickable> mouseIntersections {get; private set;} = new List<IPickable>();
+    public Dictionary<IPickable, Vector3> intersectionPoints {get; private set;} = new Dictionary<IPickable, Vector3>();
     
     //Passes along actual mouse (or controller based simulated mouse) position
     public Vector2 MousePosition;
@@ -79,7 +79,7 @@ public class MultiRayCursor : Godot.Object, ITakesInput
     public void _PhysicsProcess(float delta)
     {
         const int pickingLimit = 10;
-        var newIntersections = new List<Spatial>();
+        var newIntersections = new List<IPickable>();
         var newMouseOvers = new List<ITakesInput>();
         bool hitNonPermeable = false;
 
@@ -89,53 +89,44 @@ public class MultiRayCursor : Godot.Object, ITakesInput
             {
                 //IDK how this could not be a spatial, since we're in 3D exclusively,
                 //but if it isn't then god help us all.
-                var collidedObject = ray.GetCollider() as Spatial;
+                var collidedObject = ray.GetCollider() as IPickable;
                 if(collidedObject is null) break;
                 newIntersections.Add(collidedObject);
                 intersectionPoints[collidedObject] = ray.GetCollisionPoint();
 
-                if(!hitNonPermeable)
+                if(!(collidedObject.PickingMember.InputRecipient is null))
+                    newMouseOvers.Add(collidedObject.PickingMember.InputRecipient);
+
+                if(!collidedObject.PickingMember.Permeable)
                 {
-                    if(collidedObject is LinkedArea la)
-                    {
-                        var p = (IPickable) la.GetNode(la.ParentPath);
-                        newMouseOvers.Add(p);
-                    }else if( collidedObject.GetParent() is IPickable p)
-                    {
-                        newMouseOvers.Add(p);
-                    }
+                    hitNonPermeable = true;
+                    break;
                 }
 
-                ray.AddException(collidedObject);
+                ray.AddException((Godot.Object) collidedObject);
                 ray.ForceRaycastUpdate();
             }
             ray.ClearExceptions();
+            if(hitNonPermeable)
+                break;
         }
 
         //Call mouseOn/mouseOff to any changed IPickables.
         //Honestly this is overkill considering you regularly only have 2 lol.
-        foreach(ITakesInput t in newMouseOvers)
+        foreach(IPickable t in newIntersections)
         {
-            if(!mouseOverRouter.LayerPriorities.Contains(t))
-                ((IPickable) t).MouseOn(this);
+            if(!mouseIntersections.Contains(t))
+                t.PickingMember.MouseOn(this);
         }
-        foreach(ITakesInput t in mouseOverRouter.LayerPriorities)
+        foreach(IPickable t in mouseIntersections)
         {
-            if(!newMouseOvers.Contains(t))
+            if(!newIntersections.Contains(t))
             {
-                ((IPickable) t).MouseOff();
+                t.PickingMember.MouseOff();
+                intersectionPoints.Remove(t);
             }
         }
         mouseOverRouter.LayerPriorities = newMouseOvers;
-
-        List<Spatial> removals = (from ip in intersectionPoints.Keys
-                                where !newIntersections.Contains(ip)
-                                select ip).ToList<Spatial>();
-        foreach(Spatial s in removals)
-        {
-            intersectionPoints.Remove(s);
-        }
-        
         mouseIntersections = newIntersections;
     }
 }

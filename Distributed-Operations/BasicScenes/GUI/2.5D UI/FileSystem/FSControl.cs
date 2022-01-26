@@ -3,25 +3,28 @@ using System;
 
 using ReplicationAbstractions;
 
-public class FSControl : SpatialControl, IAnchored, IPickable
+public class FSControl : SpatialControl, IAnchored, ITakesInput
 {
-    public InputClaims Claims {get;set;} = new InputClaims();
     [Export]
     public AnchorMember anchorMember {get;set;}
 
-    public bool Permeable {get;set;} = true;
+    public InputClaims Claims {get;set;} = new InputClaims();
+    private PickableAreaControl aCtrl;
 
     [Export]
     string RootPath = "res://Blueprints/";
 
     public override void _Ready()
     {
+        base._Ready();
         anchorMember.Init(this);
+        aCtrl = GetNode<PickableAreaControl>("AreaControl");
+        aCtrl.PickingMember = new PickingMixin(this, true, nameof(MouseOn), nameof(MouseOff));
+        
         var rootFolder = FolderSpatial.Factory.Instance();
         rootFolder.Path = RootPath;
         rootFolder.DispName = RootPath;
         AddChild(rootFolder);
-        base._Ready();
     }
 
     public void MouseOn( MultiRayCursor _cursor)

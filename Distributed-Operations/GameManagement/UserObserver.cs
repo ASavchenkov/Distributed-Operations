@@ -28,7 +28,7 @@ public class UserObserver : Node, ITakesInput, IObserver
         mainMenu = (MainMenu) GetNode("MainMenu/MainMenu");
         Input.SetMouseMode(Input.MouseMode.Visible);
         
-        InventoryMenu = EasyInstancer.Instance<InventoryMenu>("res://BasicScenes/GUI/2.5D UI/InventoryMenu.tscn");
+        InventoryMenu = EasyInstancer.Instance<InventoryMenu>("res://BasicScenes/GUI/2.5D UI/Inventory/InventoryMenu.tscn");
         
         //We are the last ones in line, since we only care about Esc key.
         //Any other system that uses it gets it first.

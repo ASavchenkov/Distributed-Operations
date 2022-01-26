@@ -2,7 +2,7 @@
 
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/FileSpatial.cs" type="Script" id=1]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/AnchorMember.cs" type="Script" id=2]
-[ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/LinkedArea.cs" type="Script" id=3]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/Inventory/PickableAreaControl.cs" type="Script" id=3]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/AreaControl.tscn" type="PackedScene" id=4]
 [ext_resource path="res://BasicScenes/GUI/2.5D UI/Text3D/SpatialLabel.tscn" type="PackedScene" id=5]
 
@@ -49,4 +49,3 @@ Text = "Test Text"
 
 [node name="AreaControl" parent="Label" instance=ExtResource( 4 )]
 script = ExtResource( 3 )
-ParentPath = NodePath("../..")

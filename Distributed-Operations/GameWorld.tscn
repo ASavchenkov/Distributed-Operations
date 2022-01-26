@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://BasicScenes/MapObjects/Paintball/StaticCube.tscn" type="PackedScene" id=2]
+[ext_resource path="res://GameManagement/TDM.tscn" type="PackedScene" id=3]
+[ext_resource path="res://BasicScenes/MapObjects/Paintball/Tetra.glb" type="PackedScene" id=4]
+[ext_resource path="res://BasicScenes/MapObjects/Paintball/Obelisk.glb" type="PackedScene" id=5]
+
+[node name="GameWorld" type="Node"]
+
+[node name="Users" type="Node" parent="."]
+__meta__ = {
+"_editor_description_": "A place to organize all the players."
+}
+
+[node name="TDM" parent="." instance=ExtResource( 3 )]
+
+[node name="Projectiles" type="Node" parent="."]
+__meta__ = {
+"_editor_description_": "Just a place to organize all projectiles if we want to look at them when debugging."
+}
+
+[node name="Assets" type="Node" parent="."]
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Map" type="Spatial" parent="."]
+
+[node name="Floor" parent="Map" instance=ExtResource( 2 )]
+transform = Transform( 10, 0, 0, 0, 0.1, 0, 0, 0, 10, 0, 0, 0 )
+
+[node name="Tetra" parent="Map" instance=ExtResource( 4 )]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, -4.38383 )
+
+[node name="Obelisk" parent="Map" instance=ExtResource( 5 )]
+transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 5.14684, 0, 0 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Map"]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4.60879, 0 )

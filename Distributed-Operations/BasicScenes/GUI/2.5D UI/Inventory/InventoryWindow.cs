@@ -3,13 +3,14 @@ using System;
 
 //Used to determine where dragged objects are shown and placed through raycast collision.
 //Also moves all the loot stuff around by moving LootRoot Spatial.
-public class InventoryWindow : SpatialControl, IPickable, IAnchored
+public class InventoryWindow : SpatialControl, IAnchored, ITakesInput
 {
     public InputClaims Claims {get;set;} = new InputClaims();
+
     [Export]
     public AnchorMember anchorMember {get;set;}
 
-    public bool Permeable {get;set;} = true;
+    private PickableAreaControl aCtrl;
     private MultiRayCursor cursor = null;
 
     private Vector3 clickedOffset = new Vector3();
@@ -22,10 +23,14 @@ public class InventoryWindow : SpatialControl, IPickable, IAnchored
 
     public override void _Ready()
     {
+        base._Ready();
+
         anchorMember.Init(this);
         workspace = GetNode<Spatial>(WorkspacePath);
         Claims.Claims.Add("MouseSecondary");
-        base._Ready();
+
+        aCtrl = GetNode<PickableAreaControl>("AreaControl");
+        aCtrl.PickingMember = new PickingMixin(this, true, nameof(MouseOn), nameof(MouseOff));
     }
 
     public void MouseOn(MultiRayCursor _cursor)
@@ -44,7 +49,7 @@ public class InventoryWindow : SpatialControl, IPickable, IAnchored
         if(inputEvent.IsActionPressed("MouseSecondary"))
         {
             cursor.Connect(nameof(MultiRayCursor.CursorUpdated), this, nameof(OnCursorUpdate));
-            clickedOffset = ToLocal(cursor.intersectionPoints[workspace]) - workspace.Translation;
+            clickedOffset = ToLocal(cursor.intersectionPoints[(IPickable)workspace]) - workspace.Translation;
             InputPriorityServer.Base.Subscribe(this, BaseRouter.dragging);
             trackMouse = true;
             return true;
@@ -60,7 +65,7 @@ public class InventoryWindow : SpatialControl, IPickable, IAnchored
     }
     public void OnCursorUpdate()
     {
-        workspace.Translation = ToLocal(cursor.intersectionPoints[workspace]) - clickedOffset;
+        workspace.Translation = ToLocal(cursor.intersectionPoints[(IPickable)workspace]) - clickedOffset;
     }
 
 }

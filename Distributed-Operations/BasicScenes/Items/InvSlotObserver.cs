@@ -48,9 +48,9 @@ public class InvSlotObserver : DraggableSpatial, IAcceptsItem
 
     public override void OnCursorUpdate()
     {
-        foreach(Spatial intersected in cursor.mouseIntersections)
+        foreach(IPickable intersected in cursor.mouseIntersections)
         {
-            if(intersected.Name == "InventoryWorkspace")
+            if(((Spatial)intersected).Name == "InventoryWorkspace")
             {
                 SetLTranslation(((Spatial)GetParent()).ToLocal(cursor.intersectionPoints[intersected]));
                 break;
