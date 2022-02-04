@@ -121,7 +121,6 @@ public class FolderSpatial : SpatialControl, ITakesInput, IAnchored, IAcceptsIte
             contents.Connect(nameof(SpatialControl.SizeChanged), this, nameof(OnContentSizeChange),
                     new Godot.Collections.Array {contents});
             AddChild(contents);
-            
             foreach(FolderSpatial subfolder in CachedSubfolders)
             {
                 if(subfolder.Exists)
@@ -135,12 +134,16 @@ public class FolderSpatial : SpatialControl, ITakesInput, IAnchored, IAcceptsIte
         }
         else
         {
-            foreach( Node child in GetNode("Contents").GetChildren())
+            var contents = GetNode("Contents");
+            foreach( Node child in contents.GetChildren())
             {
                 if(child is FolderSpatial f && f.HasNode("Contents"))
+                {
                     CachedSubfolders.Add(f);
+                    contents.RemoveChild(f);
+                }
             }
-            GetNode("Contents").QueueFree();
+            contents.QueueFree();
             Size = new Vector2(Size.x, label.Size.y);
         }
     }
@@ -209,7 +212,6 @@ public class FolderSpatial : SpatialControl, ITakesInput, IAnchored, IAcceptsIte
         while(child != "")
         {
             var childPath = Path + "/" +  child;
-            GD.Print(childPath);
             if(!existingPaths.Contains(childPath))
             {
                 if(dir.DirExists(child))
