@@ -12,13 +12,13 @@ Left = true
 Top = true
 Right = true
 Bottom = false
-AnchorLeft = 0.1
+AnchorLeft = 0.0
 AnchorTop = 0.0
-AnchorRight = 0.2
+AnchorRight = 0.0
 AnchorBottom = 1.0
-MarginLeft = 0.0
+MarginLeft = 0.1
 MarginTop = 0.0
-MarginRight = 0.0
+MarginRight = 0.2
 MarginBottom = 0.0
 
 [node name="FolderButton" type="Spatial"]
@@ -30,6 +30,7 @@ anchorMember = SubResource( 1 )
 script = ExtResource( 1 )
 
 [node name="CSGTorus" type="CSGTorus" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.18, 0 )
 inner_radius = 0.1
 outer_radius = 0.2
 sides = 32

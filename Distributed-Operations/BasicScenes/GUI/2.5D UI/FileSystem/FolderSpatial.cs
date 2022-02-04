@@ -115,7 +115,6 @@ public class FolderSpatial : SpatialControl, ITakesInput, IAnchored, IAcceptsIte
     //Open/Close the folder
     public void OnButtonClick( bool newState)
     {
-        GD.Print("folder onclick");
         if(newState)
         {
             var contents = EasyInstancer.Instance<FolderContents>("res://BasicScenes/GUI/2.5D UI/FileSystem/FolderContents.tscn");
@@ -209,7 +208,8 @@ public class FolderSpatial : SpatialControl, ITakesInput, IAnchored, IAcceptsIte
         //and child already definitely has a real string in it.
         while(child != "")
         {
-            var childPath = Path + child;
+            var childPath = Path + "/" +  child;
+            GD.Print(childPath);
             if(!existingPaths.Contains(childPath))
             {
                 if(dir.DirExists(child))
@@ -242,7 +242,7 @@ public class FolderSpatial : SpatialControl, ITakesInput, IAnchored, IAcceptsIte
         if( Math.Abs(oldSize.y - contents.Size.y) < 1e-7)
             return;
         Size = new Vector2( Size.x, contents.Translation.y + contents.Size.y);
-        GD.Print(Name, ": ContentSize was: ", contents.Size);
+        // GD.Print(Name, ": ContentSize was: ", contents.Size);
     }
     public bool AcceptItem( DefaultInvPV item)
     {
