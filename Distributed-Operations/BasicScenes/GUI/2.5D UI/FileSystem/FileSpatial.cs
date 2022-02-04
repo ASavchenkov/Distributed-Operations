@@ -7,7 +7,7 @@ using ReplicationAbstractions;
 using MessagePack;
 using JsonPrettyPrinterPlus;
 
-public class FileSpatial : SpatialControl, ITakesInput, IAnchored
+public class FileSpatial : SpatialControl, ITakesInput, IAnchored, IFSControl
 {
     public InputClaims Claims {get;set;} = new InputClaims();
     PickableAreaControl aCtrl;
@@ -19,6 +19,8 @@ public class FileSpatial : SpatialControl, ITakesInput, IAnchored
     
     public Godot.File file = new Godot.File();
     public string Path {get;set;}
+    public bool Exists {get => file.FileExists(Path);}
+
     string _DispName;
     public string DispName
     {
@@ -49,15 +51,6 @@ public class FileSpatial : SpatialControl, ITakesInput, IAnchored
         label.Text = DispName;
     }
 
-    public bool Refresh()
-    {
-        if(!file.FileExists(Path))
-        {
-            QueueFree();
-            return false;
-        }
-        return true;
-    }
     public void MouseOn(MultiRayCursor cursor)
     {
         M1.cursor = cursor;

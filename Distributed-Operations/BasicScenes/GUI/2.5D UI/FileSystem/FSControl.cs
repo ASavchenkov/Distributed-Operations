@@ -22,7 +22,7 @@ public class FSControl : SpatialControl, IAnchored, ITakesInput
         aCtrl.PickingMember = new PickingMixin(this, true, nameof(MouseOn), nameof(MouseOff));
         
         var rootFolder = FolderSpatial.Factory.Instance();
-        rootFolder.Path = RootPath;
+        rootFolder.Open(RootPath);
         rootFolder.DispName = RootPath;
         AddChild(rootFolder);
     }

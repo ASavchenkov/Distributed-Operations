@@ -30,11 +30,13 @@
     <Compile Include="BasicScenes\GUI\2.5D UI\ControlledBoxArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\DraggableSpatial.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FileSpatial.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FolderButton.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FolderContents.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\FileSystem\FSControl.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\DefaultPickableArea.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\Inventory\InventoryWorkspace.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\Inventory\PickableAreaControl.cs" />
+    <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\AnchoredSpatialControl.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\AnchorMember.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\SpatialElements\AreaControl.cs" />
     <Compile Include="BasicScenes\GUI\2.5D UI\InputPriorityServer.cs" />

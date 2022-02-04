@@ -5,6 +5,7 @@ using System.Collections.Generic;
 //Doesn't actually change any sizes.
 //Just places things in order vertically.
 //Not even anchored. Derive it to make an anchored thing.
+
 public class SpatialVBoxContainer : SpatialControl
 {
     

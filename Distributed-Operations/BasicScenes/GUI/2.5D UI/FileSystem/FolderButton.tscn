@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/Inventory/PickableAreaControl.cs" type="Script" id=1]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/AnchorMember.cs" type="Script" id=2]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/SpatialElements/AreaControl.tscn" type="PackedScene" id=3]
+[ext_resource path="res://BasicScenes/GUI/2.5D UI/FileSystem/FolderButton.cs" type="Script" id=4]
+
+[sub_resource type="Resource" id=1]
+resource_local_to_scene = true
+script = ExtResource( 2 )
+Left = true
+Top = true
+Right = true
+Bottom = false
+AnchorLeft = 0.1
+AnchorTop = 0.0
+AnchorRight = 0.2
+AnchorBottom = 1.0
+MarginLeft = 0.0
+MarginTop = 0.0
+MarginRight = 0.0
+MarginBottom = 0.0
+
+[node name="FolderButton" type="Spatial"]
+script = ExtResource( 4 )
+Size = Vector2( 1, 0.36 )
+anchorMember = SubResource( 1 )
+
+[node name="AreaControl" parent="." instance=ExtResource( 3 )]
+script = ExtResource( 1 )
+
+[node name="CSGTorus" type="CSGTorus" parent="."]
+inner_radius = 0.1
+outer_radius = 0.2
+sides = 32
+ring_sides = 32
